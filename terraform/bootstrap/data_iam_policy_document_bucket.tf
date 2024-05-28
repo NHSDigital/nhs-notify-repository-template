@@ -21,7 +21,7 @@ data "aws_iam_policy_document" "bucket" {
     }
 
     condition {
-      test = "Bool"
+      test     = "Bool"
       variable = "aws:SecureTransport"
 
       values = [

@@ -12,7 +12,7 @@ data "aws_iam_policy_document" "kms_key_s3" {
     ]
 
     principals {
-      type        = "AWS"
+      type = "AWS"
       identifiers = [
         "arn:aws:iam::${var.aws_account_id}:root",
       ]

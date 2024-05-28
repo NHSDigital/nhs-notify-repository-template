@@ -1,2 +1,2 @@
 # Specific to region within project/AWS Account
-region                 = "eu-west-2"
+region = "eu-west-2"
