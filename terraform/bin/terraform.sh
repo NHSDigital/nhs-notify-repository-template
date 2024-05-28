@@ -48,62 +48,62 @@ Usage: ${0} \\
   <additional arguments to forward to the terraform binary call>
 
 action:
- - Special actions:
+  - Special actions:
     * plan / plan-destroy
     * apply / destroy
     * graph
     * taint / untaint
     * shell
-- Generic actions:
+  - Generic actions:
     * See https://www.terraform.io/docs/commands/
 
 bucket_prefix (optional):
- Defaults to: "\${project_name}-tfscaffold"
- - myproject-terraform
- - terraform-yourproject
- - my-first-tfscaffold-project
+  Defaults to: "\${project_name}-tfscaffold"
+  - myproject-terraform
+  - terraform-yourproject
+  - my-first-tfscaffold-project
 
 build_id (optional):
- - testing
- - \$BUILD_ID (jenkins)
+  - testing
+  - \$BUILD_ID (jenkins)
 
 component_name:
- - the name of the terraform component module in the components directory
+  - the name of the terraform component module in the components directory
 
 environment:
- - dev
- - test
- - prod
- - management
+  - dev
+  - test
+  - prod
+  - management
 
 group:
- - dev
- - live
- - mytestgroup
+  - dev
+  - live
+  - mytestgroup
 
 project:
- - The name of the project being deployed
+  - The name of the project being deployed
 
 region (optional):
- Defaults to value of \$AWS_DEFAULT_REGION
- - the AWS region name unique to all components and terraform processes
+  Defaults to value of \$AWS_DEFAULT_REGION
+  - the AWS region name unique to all components and terraform processes
 
 detailed-exitcode (optional):
- When not provided, false.
- Changes the plan operation to exit 0 only when there are no changes.
- Will be ignored for actions other than plan.
+  When not provided, false.
+  Changes the plan operation to exit 0 only when there are no changes.
+  Will be ignored for actions other than plan.
 
 no-color (optional):
- Append -no-color to all terraform calls
+  Append -no-color to all terraform calls
 
 compact-warnings (optional):
- Append -compact-warnings to all terraform calls
+  Append -compact-warnings to all terraform calls
 
 lockfile:
- Append -lockfile=MODE to calls to terraform init
+  Append -lockfile=MODE to calls to terraform init
 
 additional arguments:
- Any arguments provided after "--" will be passed directly to terraform as its own arguments
+  Any arguments provided after "--" will be passed directly to terraform as its own arguments
 EOF
 };
 
@@ -120,11 +120,11 @@ fi
 ##
 readonly raw_arguments="${*}";
 ARGS=$(getopt \
-         -o dhnvwa:b:c:e:g:i:l:p:r: \
-         -l "help,version,bootstrap,action:,bucket-prefix:,build-id:,component:,environment:,group:,project:,region:,lockfile:,detailed-exitcode,no-color,compact-warnings" \
-         -n "${0}" \
-         -- \
-         "$@");
+        -o dhnvwa:b:c:e:g:i:l:p:r: \
+        -l "help,version,bootstrap,action:,bucket-prefix:,build-id:,component:,environment:,group:,project:,region:,lockfile:,detailed-exitcode,no-color,compact-warnings" \
+        -n "${0}" \
+        -- \
+        "$@");
 
 #Bad arguments
 if [ $? -ne 0 ]; then
@@ -746,7 +746,7 @@ case "${action}" in
         # If we are here, and we are in bootstrap mode, and not already bootstrapped,
         # Then we have just bootstrapped for the first time! Congratulations.
         # Now we need to copy our state file into the bootstrap bucket
-         echo -e "${backend_config}" > backend_tfscaffold.tf \
+        echo -e "${backend_config}" > backend_tfscaffold.tf \
           || error_and_die "Failed to write backend config to $(pwd)/backend_tfscaffold.tf";
 
         # Nix the horrible hack on exit
