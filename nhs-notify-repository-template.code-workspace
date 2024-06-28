@@ -13,7 +13,7 @@
       "path": "./tests"
     },
     {
-      "name": "Infra",
+      "name": "Infrastructure",
       "path": "./infrastructure"
     },
     {
@@ -32,10 +32,6 @@
       "name": "Dev Container",
       "path": ".devcontainer"
     },
-    {
-      "name": "Terraform",
-      "path": "terraform"
-    }
   ],
   "settings": {
 
