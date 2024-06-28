@@ -1,0 +1,3 @@
+This is an implementation of https://github.com/tfutils/tfscaffold for NHS Notify
+
+Update the `etc/global.tfvars` file according to your NHS Notify Domain, and follow https://github.com/tfutils/tfscaffold?tab=readme-ov-file#bootstrapping to get your tfstate s3 bucket set up
