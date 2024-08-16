@@ -66,6 +66,14 @@ terraform-install: # Install Terraform @Installation
 
 # ==============================================================================
 
+# ==============================================================================
+# Configuration - please DO NOT edit this section!
+
+tfsec-install: # Install Terraform @Installation
+	make _install-dependency name="tfsec"
+
+# ==============================================================================
+
 ${VERBOSE}.SILENT: \
 	_terraform \
 	clean \
