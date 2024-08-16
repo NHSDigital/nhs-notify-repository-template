@@ -1,0 +1,21 @@
+name: "TFSec Scan"
+description: "Scan HCL using TFSec"
+inputs:
+  root-modules:
+    description: "Comma separated list of root module directories to validate, content of the 'infrastructure/environments' is checked by default"
+    required: false
+runs:
+  using: "composite"
+  steps:
+    - name: "TFSec Scan Components"
+      shell: bash
+      run: |
+        for component in $(find infrastructure/terraform/components -mindepth 1 -type d); do
+          scripts/terraform/tfsec.sh $component
+        done
+    - name: "TFSec Scan Modules"
+      shell: bash
+      run: |
+        for module in $(find infrastructure/terraform/modules -mindepth 1 -type d); do
+          scripts/terraform/tfsec.sh $module
+        done
