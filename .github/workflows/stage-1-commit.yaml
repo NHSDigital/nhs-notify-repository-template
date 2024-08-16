@@ -93,7 +93,7 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
-      - name: "Lint Terraform"
+      - name: "TFSec Scan"
         uses: ./.github/actions/tfsec
   count-lines-of-code:
     name: "Count lines of code"
