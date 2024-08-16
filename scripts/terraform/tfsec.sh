@@ -26,11 +26,11 @@ function run-tfsec() {
   local dir_to_scan="$1"
 
   if ! command -v tfsec &> /dev/null; then
-    echo "tfsec could not be found, please install it first."
+    echo "TFSec could not be found. Please install using 'asdf install tfsec'."
     exit 1
   fi
 
-  echo "Running tfsec on directory: $dir_to_scan"
+  echo "Running TFSec on directory: $dir_to_scan"
   tfsec \
     --concise-output \
     --force-all-dirs \
