@@ -62,3 +62,9 @@ variable "root_domain_name" {
   description = "The service's root DNS root nameespace, like nonprod.nhsnotify.national.nhs.uk"
   default     = "nonprod.nhsnotify.national.nhs.uk"
 }
+
+
+variable "workflow_test_var" {
+  type        = string
+  description = "A variable to check things are working"
+}
