@@ -21,6 +21,7 @@
 | <a name="input_project"></a> [project](#input\_project) | The name of the tfscaffold project | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |
 | <a name="input_root_domain_name"></a> [root\_domain\_name](#input\_root\_domain\_name) | The service's root DNS root nameespace, like nonprod.nhsnotify.national.nhs.uk | `string` | `"nonprod.nhsnotify.national.nhs.uk"` | no |
+| <a name="input_workflow_test_var"></a> [workflow\_test\_var](#input\_workflow\_test\_var) | A variable to check things are working | `string` | n/a | yes |
 ## Modules
 
 No modules.
