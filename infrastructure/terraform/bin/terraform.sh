@@ -539,24 +539,26 @@ fi;
 [ -f "${dynamic_file_path}" ] && tf_var_file_paths+=("${dynamic_file_path}");
 
 # Warn on duplication
-duplicate_variables="$(cat "${tf_var_file_paths[@]}" | sed -n -e 's/\(^[a-zA-Z0-9_\-]\+\)\s*=.*$/\1/p' | sort | uniq -d)";
-[ -n "${duplicate_variables}" ] \
-  && echo -e "
-###################################################################
-# WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING #
-###################################################################
-The following input variables appear to be duplicated:
+if [ ${#tf_var_file_paths[@]} -gt 0 ]; then
+  duplicate_variables="$(cat "${tf_var_file_paths[@]}" | sed -n -e 's/\(^[a-zA-Z0-9_\-]\+\)\s*=.*$/\1/p' | sort | uniq -d)";
+  [ -n "${duplicate_variables}" ] \
+    && echo -e "
+  ###################################################################
+  # WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING #
+  ###################################################################
+  The following input variables appear to be duplicated:
 
-${duplicate_variables}
+  ${duplicate_variables}
 
-This could lead to unexpected behaviour. Overriding of variables
-has previously been unpredictable and is not currently supported,
-but it may work.
+  This could lead to unexpected behaviour. Overriding of variables
+  has previously been unpredictable and is not currently supported,
+  but it may work.
 
-Recent changes to terraform might give you useful overriding and
-map-merging functionality, please use with caution and report back
-on your successes & failures.
-###################################################################";
+  Recent changes to terraform might give you useful overriding and
+  map-merging functionality, please use with caution and report back
+  on your successes & failures.
+  ###################################################################";
+fi
 
 # Build up the tfvars arguments for terraform command line
 for file_path in "${tf_var_file_paths[@]}"; do
@@ -791,8 +793,8 @@ case "${action}" in
     ;;
   *)
     echo -e "Generic action case invoked. Only the additional arguments will be passed to terraform, you break it you fix it:";
-    echo -e "\tterraform ${action} ${extra_args}";
-    terraform "${action}" ${extra_args} \
+    echo -e "\tterraform ${action} ${extra_args} | tee terraform_output";
+    terraform "${action}" ${extra_args} | tee terraform_output \
       || error_and_die "Terraform ${action} failed.";
     ;;
 esac;
