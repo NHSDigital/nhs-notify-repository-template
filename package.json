@@ -1,4 +1,5 @@
 {
+  "//": "PLEASE UPDATE THE NAME AND WORKSPACES APPROPRIATELY.",
   "devDependencies": {
     "@tsconfig/node20": "^20.1.5",
     "@types/jest": "^29.5.14",

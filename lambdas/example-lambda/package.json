@@ -1,4 +1,5 @@
 {
+  "//": "PLEASE UPDATE THE NAME APPROPRIATELY.",
   "dependencies": {
     "esbuild": "^0.24.0"
   },
