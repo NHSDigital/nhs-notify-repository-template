@@ -21,6 +21,7 @@
     "jest-html-reporter": "^3.10.2",
     "jest-mock-extended": "^3.0.7",
     "lcov-result-merger": "^5.0.1",
+    "ts-jest": "^29.3.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.3"
   },
