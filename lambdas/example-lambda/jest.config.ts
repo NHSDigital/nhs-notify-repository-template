@@ -25,7 +25,7 @@ export const baseJestConfig: Config = {
   },
 
   coveragePathIgnorePatterns: ['/__tests__/'],
-
+  transform: { '^.+\\.ts$': '@swc/jest' },
   testPathIgnorePatterns: ['.build'],
   testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
 
