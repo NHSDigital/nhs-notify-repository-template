@@ -18,6 +18,7 @@ cd "$(git rev-parse --show-toplevel)"
 # tasks in scripts/test.mk.
 
 # run tests
+npm ci
 npm run test:unit --workspaces
 
 # merge coverage reports
