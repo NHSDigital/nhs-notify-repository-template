@@ -1,3 +1,4 @@
+// Replace me with the actual code for your Lambda function
 import { Handler } from 'aws-lambda';
 
 export const handler: Handler = async (event) => {
