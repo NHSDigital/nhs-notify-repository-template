@@ -99,6 +99,22 @@ jobs:
       - name: "Run linting"
         run: |
           make test-lint
+  test-typecheck:
+    name: "Typecheck"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+      - name: "Repo setup"
+        run: |
+          npm ci
+      - name: "Generate dependencies"
+        run: |
+          npm run generate-dependencies --workspaces --if-present
+      - name: "Run typecheck"
+        run: |
+          make test-typecheck
   test-coverage:
     name: "Test coverage"
     needs: [test-unit]
