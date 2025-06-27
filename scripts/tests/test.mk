@@ -87,6 +87,7 @@ ${VERBOSE}.SILENT: \
 	test-soak \
 	test-integration \
 	test-lint \
+	test-typecheck \
 	test-load \
 	test-response-time \
 	test-security \
