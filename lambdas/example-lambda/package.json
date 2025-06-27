@@ -4,8 +4,6 @@
     "esbuild": "^0.24.0"
   },
   "devDependencies": {
-    "@swc/core": "^1.11.13",
-    "@swc/jest": "^0.2.37",
     "@tsconfig/node22": "^22.0.2",
     "@types/aws-lambda": "^8.10.148",
     "@types/jest": "^29.5.14",
