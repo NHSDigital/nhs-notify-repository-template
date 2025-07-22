@@ -65,8 +65,8 @@ repos:
         pass_filenames: false
   - repo: local
     hooks:
-      - id: check-english-usage
-        name: Check todos without work references
+      - id: check-todo-usage
+        name: Check TODO usage
         entry: /usr/bin/env check=branch ./scripts/githooks/check-todos.sh
         language: script
         pass_filenames: false

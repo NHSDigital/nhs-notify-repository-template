@@ -68,9 +68,10 @@ function get_files_to_check() {
 
 function build_exclude_args() {
   local args=(
-    --exclude="scripts/githooks/check-todos.sh"
-    --exclude="scripts/config/pre-commit.yaml"
     --exclude=".github/actions/check-todo-usage/action.yaml"
+    --exclude=".github/workflows/stage-1-commit.yaml"
+    --exclude="scripts/config/pre-commit.yaml"
+    --exclude="scripts/githooks/check-todos.sh"
   ) # Exclude this script and its references by default, as it naturally contains TODOs. Todo todo todo <- see?
 
   if [ ${#EXCLUDED_DIRS[@]} -gt 0 ]; then
