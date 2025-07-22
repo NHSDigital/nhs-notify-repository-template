@@ -150,8 +150,7 @@ function filter_todos_with_valid_jira_ticket() {
 function print_output() {
   local todos="$1"
   local exclude_args="$2"
-  local todo_count
-  todo_count=$(wc -l <<< "$todos")
+  local todo_count=$(line_count "$todos")
 
   echo "TODO Check Configuration:"
   echo "========================================="
@@ -172,29 +171,30 @@ function print_output() {
 
   if is-arg-true "${VERBOSE:-false}"; then
     echo "Grep Exclude Args: $exclude_args"
+  fi
 
-    echo "========================================="
-    echo "All TODOs found: $todo_count"
-    echo "========================================="
+  echo -e "\n========================================="
+  echo "All TODOs found: $todo_count"
+  echo "========================================="
 
-    if [ "$todo_count" -gt 0 ]; then
-      echo "All detected TODOs:"
-      echo "-----------------------------------------"
-      echo "$todos"
-    else
-      echo "No TODOs found."
-    fi
+  if [ "$todo_count" -gt 0 ]; then
+    echo "$todos"
+  else
+    echo "No TODOs found."
   fi
 
   local results=$(filter_todos_with_valid_jira_ticket "$todos")
-  local results_count=$(wc -l <<< "$results")
+  local results_count=$(line_count "$results")
 
-  if [ -n "$results" ]; then
-    echo "========================================="
-    echo "TODOs without a Jira ticket: $results_count"
-    echo "========================================="
+  echo -e "\n========================================="
+  echo "TODOs without a Jira ticket: $results_count"
+  echo "========================================="
+
+  if [ "$results_count" -gt 0 ]; then
     echo "$results"
     exit 1
+  else
+      echo "No TODOs found without a Jira reference."
   fi
 }
 
@@ -210,6 +210,16 @@ function main() {
 
 # ==============================================================================
 
+# Count non-empty lines in a string
+function line_count() {
+  local input="$1"
+  if [ -n "$input" ]; then
+    echo -e "$input" | wc -l
+  else
+    echo 0
+  fi
+}
+
 function is-arg-true() {
   if [[ "$1" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
     return 0
@@ -219,6 +229,8 @@ function is-arg-true() {
 }
 
 # ==============================================================================
+
+is-arg-true "${VERBOSE:-false}" && set -x
 
 main "$@"
 
