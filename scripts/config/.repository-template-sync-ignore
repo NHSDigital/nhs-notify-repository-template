@@ -18,6 +18,7 @@ VERSION
 # Files and Folders in the template repository to disregard
 .devcontainer/
 .github/actions/build-docs
+.github/workflows/*.disabled
 */examples/
 docs/
 eslint.config.mjs
