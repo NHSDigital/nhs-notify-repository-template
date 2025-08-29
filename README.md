@@ -14,6 +14,8 @@ This repository template aims to foster a user-friendly development environment 
 
 Make use of this repository template to expedite your project setup and enhance your productivity right from the get-go. Enjoy the advantage of having a well-structured, self-documented project that reduces overhead and increases focus on what truly matters - coding!
 
+Any code files or example documentation that is not used in the new repository should be removed to prevent the proliferation of duplicate copies of redundant code that if not maintained could introduce vulnerabilities (e.g. via un-patched Dependabot issues).
+
 ## Table of Contents
 
 - [NHS Notify Repository Template](#nhs-notify-repository-template)
