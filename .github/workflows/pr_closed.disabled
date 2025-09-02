@@ -36,6 +36,7 @@ jobs:
   deploy-main:
     needs: check-merge-or-workflow-dispatch
     name: Deploy changes to main in dev AWS account
+    runs-on: ubuntu-latest
     if: needs.check-merge-or-workflow-dispatch.outputs.deploy == 'true'
 
     permissions:
@@ -47,12 +48,18 @@ jobs:
       matrix:
         component: [acct, app]
 
-    uses: ./.github/workflows/reusable_internal_repo_build.yaml
-    secrets: inherit
-    with:
-      releaseVersion: main
-      targetWorkflow: "dispatch-deploy-static-notify-bounded-context-env.yaml" ## Replace with correct targetWorkflow
-      targetEnvironment: "main"
-      targetAccountGroup: "nhs-notify-bounded-context-dev" ## Replace with correct targetAccountGroup
-      targetComponent: ${{ matrix.component }}
-      terraformAction: "apply"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5.0.0
+
+      - name: Updating Main Environment
+        env:
+          PR_TRIGGER_PAT: ${{ secrets.PR_TRIGGER_PAT }}
+        run: |
+          bash .github/scripts/dispatch_internal_repo_workflow.sh \
+            --releaseVersion "main" \
+            --targetWorkflow "dispatch-deploy-static-notify-bounded-context-env.yaml" ## Replace with correct targetWorkflow \
+            --targetEnvironment "main" \
+            --targetAccountGroup "nhs-notify-bounded-context-dev" ## Replace with correct targetAccountGroup \
+            --targetComponent "${{ matrix.component }}" \
+            --terraformAction "apply"
