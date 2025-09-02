@@ -53,7 +53,6 @@ jobs:
         uses: actions/checkout@v5.0.0
 
       - name: Updating Main Environment
-        secrets: inherit
         env:
           PR_TRIGGER_PAT: ${{ secrets.PR_TRIGGER_PAT }}
         run: |
