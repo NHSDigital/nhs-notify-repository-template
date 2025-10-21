@@ -59,7 +59,7 @@ clean:: # Remove all generated and temporary files (common) @Operations
 		docs/diagrams/.*.dtmp \
 		.version
 
-config:: # Configure development environment (common) @Configuration
+_config: # Configure development environment (common) @Configuration
 	make \
 		githooks-config
 
@@ -147,7 +147,7 @@ ${VERBOSE}.SILENT: \
 	_install-dependencies \
 	_install-dependency \
 	clean \
-	config \
+	_config \
 	githooks-config \
 	githooks-run \
 	help \
