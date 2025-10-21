@@ -23,7 +23,8 @@ clean:: # Clean-up project resources (main) @Operations
 	rm -f .version
 	# TODO: Implement project resources clean-up step
 
-config:: _install-dependencies version _config # Configure development environment (main) @Configuration
+config:: _install-dependencies version # Configure development environment (main) @Configuration
+	make _config
 	(cd docs && make install)
 
 version:
