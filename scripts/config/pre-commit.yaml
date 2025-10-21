@@ -7,6 +7,10 @@ repos:
         args: [--allow-missing-credentials]
       - id: check-added-large-files
         args: ['--maxkb=750']
+        exclude: |
+          (?x)^(
+            docs/assets/aws-icons-mermaid.json
+          )$        
       - id: check-symlinks
       - id: detect-private-key
       - id: end-of-file-fixer
@@ -14,7 +18,12 @@ repos:
       - id: mixed-line-ending
       - id: pretty-format-json
         args: ['--autofix']
-    # -   id: ...
+        exclude: |
+        (?x)^(
+          .*/?package-lock.json |
+          docs/assets/js/zzzz-search-data.json |
+          packages/event-schemas/schemas/[^/]+/[^/]+\.json
+        )$
   - repo: local
     hooks:
       - id: sort-dictionary
