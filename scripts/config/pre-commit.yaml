@@ -19,11 +19,11 @@ repos:
       - id: pretty-format-json
         args: ['--autofix']
         exclude: |
-        (?x)^(
-          .*/?package-lock.json |
-          docs/assets/js/zzzz-search-data.json |
-          packages/event-schemas/schemas/[^/]+/[^/]+\.json
-        )$
+          (?x)^(
+            .*/?package-lock.json |
+            docs/assets/js/zzzz-search-data.json |
+            packages/event-schemas/schemas/[^/]+/[^/]+\.json
+          )$
   - repo: local
     hooks:
       - id: sort-dictionary
