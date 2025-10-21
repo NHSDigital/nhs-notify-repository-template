@@ -30,10 +30,12 @@ shellscript-lint-all: # Lint all shell scripts in this project, do not fail on e
 	done
 
 githooks-config: # Trigger Git hooks on commit that are defined in this repository @Configuration
+	echo "Running git hooks config"
 	make _install-dependency name="pre-commit"
 	pre-commit install \
 		--config scripts/config/pre-commit.yaml \
 		--install-hooks
+	echo "Run git hooks config"
 
 githooks-run: # Run git hooks configured in this repository @Operations
 	pre-commit run \
@@ -47,7 +49,9 @@ _install-dependency: # Install asdf dependency - mandatory: name=[listed in the 
 
 _install-dependencies: # Install all the dependencies listed in .tool-versions
 	for plugin in $$(grep ^[a-z] .tool-versions | sed 's/[[:space:]].*//'); do
+		echo "Installing $${plugin}"
 		make _install-dependency name="$${plugin}"
+		echo "Installed $${plugin}"
 	done
 
 clean:: # Remove all generated and temporary files (common) @Operations
