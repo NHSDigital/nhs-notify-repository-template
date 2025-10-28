@@ -30,7 +30,8 @@ jobs:
 
       - name: Updating Main Environment
         env:
-          PR_TRIGGER_PAT: ${{ secrets.PR_TRIGGER_PAT }}
+          APP_PEM_FILE: ${{ secrets.APP_PEM_FILE }}
+          APP_CLIENT_ID: ${{ secrets.APP_CLIENT_ID }}
         run: |
           bash .github/scripts/dispatch_internal_repo_workflow.sh \
             --releaseVersion "${{ github.event.release.tag_name }}" \
