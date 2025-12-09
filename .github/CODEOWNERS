@@ -7,6 +7,9 @@
 *.code-workspace            @NHSDigital/nhs-notify-repository-template-admins
 /infrastructure/terraform/  @NHSDigital/nhs-notify-platform
 
+# Root level AGENTS.md owned by platform.
+AGENTS.md
+
 # Codeowners must be final check
 /.github/CODEOWNERS         @NHSDigital/nhs-notify-code-owners
 /CODEOWNERS                 @NHSDigital/nhs-notify-code-owners
