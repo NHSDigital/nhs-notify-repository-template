@@ -1,0 +1,16 @@
+name: "Trivy Package Scan"
+description: "Scan project packages using Trivy"
+runs:
+  using: "composite"
+  steps:
+    - name: "Trivy Package Scan"
+      shell: bash
+      run: |
+        exit_code=0
+
+        ./scripts/terraform/trivy-scan.sh --mode package . || exit_code=$?
+
+        if [ $exit_code -ne 0 ]; then
+          echo "Trivy has detected package vulnerablilites. Please refer to https://nhsd-confluence.digital.nhs.uk/spaces/RIS/pages/1257636917/PLAT-KOP-012+-+Trivy+Pipeline+Vulnerability+Scanning+Exemption"
+          exit 1
+        fi
