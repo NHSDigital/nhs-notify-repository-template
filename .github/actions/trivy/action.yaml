@@ -8,8 +8,13 @@ runs:
         components_exit_code=0
         modules_exit_code=0
 
-        ./scripts/terraform/trivy.sh ./infrastructure/terraform/components || components_exit_code=$?
-        ./scripts/terraform/trivy.sh ./infrastructure/terraform/modules || modules_exit_code=$?
+        if [ -d ./infrastructure/terraform/components ]; then
+          ./scripts/terraform/trivy.sh ./infrastructure/terraform/components || components_exit_code=$?
+        fi
+
+        if [ -d ./infrastructure/terraform/modules ]; then
+          ./scripts/terraform/trivy.sh ./infrastructure/terraform/modules || modules_exit_code=$?
+        fi
 
         if [ $components_exit_code -ne 0 ] || [ $modules_exit_code -ne 0 ]; then
           echo "Trivy misconfigurations detected."
