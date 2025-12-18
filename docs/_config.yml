@@ -38,6 +38,15 @@ plugins:
   - jekyll-feed
   - jemoji
 
+# Sass configuration to suppress deprecation warnings from theme
+sass:
+  style: compressed
+  quiet_deps: true
+  silence_deprecations:
+    - import
+    - global-builtin
+    - color-functions
+
 color_scheme: nhs
 mermaid:
   # Version of mermaid library
