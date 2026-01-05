@@ -23,6 +23,10 @@ on:
         description: "Python version, set by the CI/CD pipeline workflow"
         required: true
         type: string
+      skip_trivy_package:
+        description: "Skip Trivy package scan when true"
+        type: boolean
+        default: false
       terraform_version:
         description: "Terraform version, set by the CI/CD pipeline workflow"
         required: true
@@ -164,6 +168,7 @@ jobs:
       - name: "Trivy IaC Scan"
         uses: ./.github/actions/trivy-iac
   trivy-package:
+    if: ${{ !inputs.skip_trivy_package }}
     name: "Trivy Package Scan"
     permissions:
       contents: read
