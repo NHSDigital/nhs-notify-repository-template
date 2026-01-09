@@ -599,7 +599,6 @@ readonly backend_config="terraform {
     region         = \"${region}\"
     bucket         = \"${bucket}\"
     key            = \"${backend_key}\"
-    dynamodb_table = \"${bucket}\"
     use_lockfile   = true
   }
 }";
