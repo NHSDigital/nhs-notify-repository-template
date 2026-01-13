@@ -8,7 +8,8 @@ runs:
       run: |
         components_exit_code=0
         modules_exit_code=0
-
+        asdf plugin add trivy || true
+        asdf install trivy || true
         ./scripts/terraform/trivy-scan.sh --mode iac ./infrastructure/terraform/components || components_exit_code=$?
         ./scripts/terraform/trivy-scan.sh --mode iac ./infrastructure/terraform/modules || modules_exit_code=$?
 
