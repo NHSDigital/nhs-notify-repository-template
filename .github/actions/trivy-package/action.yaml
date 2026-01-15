@@ -7,7 +7,8 @@ runs:
       shell: bash
       run: |
         exit_code=0
-
+        asdf plugin add trivy || true
+        asdf install trivy || true
         ./scripts/terraform/trivy-scan.sh --mode package . || exit_code=$?
 
         if [ $exit_code -ne 0 ]; then
