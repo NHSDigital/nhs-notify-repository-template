@@ -29,11 +29,11 @@ function main() {
 #   check_only=[do not format, run check only]
 function terraform-fmt() {
 
-  local opts=
   if is-arg-true "$check_only"; then
-    opts="-check"
+    make terraform-fmt-check
+  else
+    make terraform-fmt
   fi
-  opts=$opts make terraform-fmt
 }
 
 # ==============================================================================
