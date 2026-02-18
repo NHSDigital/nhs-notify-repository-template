@@ -14,7 +14,8 @@
   "name": "nhs-notify-repository-template-example-lambda",
   "private": true,
   "scripts": {
-    "lambda-build": "rm -rf dist && npx esbuild --bundle --minify --sourcemap --target=es2020 --platform=node --loader:.node=file --entry-names=[name] --outdir=dist src/index.ts",
+    "//": "For a standard zip based Lambda use './build.sh', For a Container based lambda use '../../scripts/lambda-container-build/docker.sh --base-image <base-image>'",
+    "lambda-build": "./build.sh",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test:unit": "jest",
