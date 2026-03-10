@@ -53,7 +53,7 @@ function terraform-destroy() {
 #   dir=[path to a directory where the command will be executed, relative to the project's top-level directory, default is '.']
 #   opts=[options to pass to the Terraform fmt command, default is '-recursive']
 function terraform-fmt() {
-  for d in "${PWD}infrastructure/"*; do
+  for d in "${PWD}/infrastructure/"*; do
     if [ -d "$d" ]; then
         terraform fmt --recursive "${d}"
     fi
