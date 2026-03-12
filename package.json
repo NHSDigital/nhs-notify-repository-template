@@ -34,6 +34,7 @@
   },
   "name": "nhs-notify-repository-template",
   "overrides": {
+    "minimatch": "^10.2.4",
     "pretty-format": {
       "react-is": "19.0.0"
     },
