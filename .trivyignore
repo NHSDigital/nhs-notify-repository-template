@@ -1,1 +1,0 @@
-CVE-2026-26996 # https://avd.aquasec.com/nvd/cve-2026-26996 - minimatch - used by several dependencies, most notably eslint. Fix version has introduced breaking changes. Ticket to backport fixes: https://nhsd-jira.digital.nhs.uk/browse/CCM-14784
