@@ -21,9 +21,7 @@ No requirements.
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_example_container_lambda"></a> [example\_container\_lambda](#module\_example\_container\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.32/terraform-lambda.zip | n/a |
+No modules.
 ## Outputs
 
 No outputs.
