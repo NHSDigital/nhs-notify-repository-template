@@ -13,9 +13,11 @@
   },
   "name": "nhs-notify-repository-template-example-lambda",
   "private": true,
+  "unused-scripts": {
+    "build:container": "cd ../.. && make docker-build-and-push base_image=public.ecr.aws/lambda/nodejs:22 dir=lambdas/example-lambda"
+  },
   "scripts": {
-    "//": "For a standard zip based Lambda use './build.sh', For a Container based lambda use '../../scripts/lambda-container-build/docker.sh --base-image <base-image>'",
-    "lambda-build": "./build.sh",
+    "build:archive": "rm -rf dist && npx esbuild --bundle --minify --sourcemap --target=es2020 --platform=node --loader:.node=file --entry-names=[name] --outdir=dist src/index.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test:unit": "jest",

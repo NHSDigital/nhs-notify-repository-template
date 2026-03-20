@@ -1,0 +1,23 @@
+{
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.2",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.0.0",
+    "jest": "^29.7.0",
+    "jest-mock-extended": "^3.0.7",
+    "typescript": "^5.8.2"
+  },
+  "name": "nhs-notify-admail-example-app",
+  "private": true,
+  "unused-scripts": {
+    "build:archive": "rm -rf dist && npx esbuild --bundle --minify --sourcemap --target=es2020 --platform=node --loader:.node=file --entry-names=[name] --outdir=dist src/index.ts"
+  },
+  "scripts": {
+    "build:container": "cd ../.. && make docker-build-and-push base_image=node:22-alpine dir=containers/example-app",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test:unit": "jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "version": "0.0.1"
+}
