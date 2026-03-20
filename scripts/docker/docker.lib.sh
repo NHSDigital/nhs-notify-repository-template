@@ -348,13 +348,24 @@ function docker-ecr-login() {
 #   GITHUB_TOKEN=[GitHub personal access token with packages:read/write scope]
 function docker-ghcr-login() {
 
+  local ghcr_username="${GITHUB_ACTOR:-}"
+
   if [ -z "${GITHUB_TOKEN:-}" ]; then
     echo "Error: GITHUB_TOKEN environment variable is required" >&2
     return 1
   fi
 
+  if [ -z "${ghcr_username}" ]; then
+    ghcr_username="$(git config user.name 2>/dev/null || true)"
+  fi
+
+  if [ -z "${ghcr_username}" ]; then
+    echo "Error: unable to determine GHCR username. Set GITHUB_ACTOR or configure git user.name" >&2
+    return 1
+  fi
+
   echo "Authenticating Docker with GitHub Container Registry..."
-  echo "${GITHUB_TOKEN}" | docker login ghcr.io --username "$(git config user.name)" --password-stdin
+  echo "${GITHUB_TOKEN}" | docker login ghcr.io --username "${ghcr_username}" --password-stdin
 }
 
 # Build container image.
