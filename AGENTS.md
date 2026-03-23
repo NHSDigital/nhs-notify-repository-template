@@ -26,14 +26,14 @@ Agents should look for a nested `AGENTS.md` in or near these areas before making
 The root `package.json` is the orchestration manifestgit co for this repo. It does not ship application code; it wires up shared dev tooling and delegates to workspace-level projects.
 
 - Workspaces: Declares the set of npm workspaces (e.g. under `lambdas/`, `utils/`, `tests/`, `scripts/`). Agents should add a new workspace path here when introducing a new npm project.
-- Scripts: Provides top-level commands that fan out across workspaces using `--workspaces` (lint, typecheck, unit tests) and project-specific runners (e.g. `lambda-build`).
+- Scripts: Provides top-level commands that fan out across workspaces using `--workspaces` (lint, typecheck, unit tests) and project-specific runners (e.g. `build-archive`).
 - Dev tool dependencies: Centralises Jest, TypeScript, ESLint configurations and plugins to keep versions consistent across workspaces. Workspace projects should rely on these unless a local override is strictly needed.
 - Overrides/resolutions: Pins transitive dependencies (e.g. Jest/react-is) to avoid ecosystem conflicts. Agents must not remove overrides without verifying tests across all workspaces.
 
 Agent guidance:
 
 - Before adding or removing a workspace, update the root `workspaces` array and ensure CI scripts still succeed with `npm run lint`, `npm run typecheck`, and `npm run test:unit` at the repo root.
-- When adding repo-wide scripts, keep names consistent with existing patterns (e.g. `lint`, `lint:fix`, `typecheck`, `test:unit`, `lambda-build`) and prefer `--workspaces` fan-out.
+- When adding repo-wide scripts, keep names consistent with existing patterns (e.g. `lint`, `lint:fix`, `typecheck`, `test:unit`, `build-archive`) and prefer `--workspaces` fan-out.
 - Do not publish from the root. If adding a new workspace intended for publication, mark that workspace package as `private: false` and keep the root as private.
 - Validate changes by running the repo pre-commit hooks: `make githooks-run`.
 
@@ -41,7 +41,7 @@ Success criteria for changes affecting the root `package.json`:
 
 - `npm run lint`, `npm run typecheck`, and `npm run test:unit` pass at the repo root.
 - Workspace discovery is correct (new projects appear under `npm run typecheck --workspaces`).
-- No regression in lambda build tooling (`npm run lambda-build`).
+- No regression in lambda build tooling (`npm run build-archive`).
 
 ## What Agents Can / Can’t Do
 
