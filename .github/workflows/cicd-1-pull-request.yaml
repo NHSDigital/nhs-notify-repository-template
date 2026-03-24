@@ -28,7 +28,8 @@ jobs:
       is_version_prerelease: ${{ steps.variables.outputs.is_version_prerelease }}
       does_pull_request_exist: ${{ steps.pr_exists.outputs.does_pull_request_exist }}
       pr_number: ${{ steps.pr_exists.outputs.pr_number }}
-      skip_trivy_package: ${{ steps.skip_trivy.outputs.skip_trivy_package }}
+      #TODO - Re-visit Trivy usage https://nhsd-jira.digital.nhs.uk/browse/CCM-15549
+      # skip_trivy_package: ${{ steps.skip_trivy.outputs.skip_trivy_package }}
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
@@ -68,26 +69,27 @@ jobs:
             echo "does_pull_request_exist=false" >> $GITHUB_OUTPUT
             echo "pr_number=" >> $GITHUB_OUTPUT
           fi
-      - name: "Determine if Trivy package scan should be skipped"
-        id: skip_trivy
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ steps.pr_exists.outputs.pr_number }}
-        run: |
-          if [[ -z "$PR_NUMBER" ]]; then
-            echo "No pull request detected; Trivy package scan will run."
-            echo "skip_trivy_package=false" >> $GITHUB_OUTPUT
-            exit 0
-          fi
+      #TODO - Re-visit Trivy usage https://nhsd-jira.digital.nhs.uk/browse/CCM-15549
+      # - name: "Determine if Trivy package scan should be skipped"
+      #   id: skip_trivy
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     PR_NUMBER: ${{ steps.pr_exists.outputs.pr_number }}
+      #   run: |
+      #     if [[ -z "$PR_NUMBER" ]]; then
+      #       echo "No pull request detected; Trivy package scan will run."
+      #       echo "skip_trivy_package=false" >> $GITHUB_OUTPUT
+      #       exit 0
+      #     fi
 
-          labels=$(gh pr view "$PR_NUMBER" --json labels --jq '.labels[].name')
-          echo "Labels on PR #$PR_NUMBER: $labels"
+      #     labels=$(gh pr view "$PR_NUMBER" --json labels --jq '.labels[].name')
+      #     echo "Labels on PR #$PR_NUMBER: $labels"
 
-          if echo "$labels" | grep -Fxq 'skip-trivy-package'; then
-            echo "skip_trivy_package=true" >> $GITHUB_OUTPUT
-          else
-            echo "skip_trivy_package=false" >> $GITHUB_OUTPUT
-          fi
+      #     if echo "$labels" | grep -Fxq 'skip-trivy-package'; then
+      #       echo "skip_trivy_package=true" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "skip_trivy_package=false" >> $GITHUB_OUTPUT
+      #     fi
       - name: "List variables"
         run: |
           export BUILD_DATETIME_LONDON="${{ steps.variables.outputs.build_datetime_london }}"
@@ -111,7 +113,8 @@ jobs:
       build_epoch: "${{ needs.metadata.outputs.build_epoch }}"
       nodejs_version: "${{ needs.metadata.outputs.nodejs_version }}"
       python_version: "${{ needs.metadata.outputs.python_version }}"
-      skip_trivy_package: ${{ needs.metadata.outputs.skip_trivy_package == 'true' }}
+      #TODO - Re-visit Trivy usage https://nhsd-jira.digital.nhs.uk/browse/CCM-15549
+      # skip_trivy_package: ${{ needs.metadata.outputs.skip_trivy_package == 'true' }}
       terraform_version: "${{ needs.metadata.outputs.terraform_version }}"
       version: "${{ needs.metadata.outputs.version }}"
     secrets: inherit
