@@ -15,8 +15,7 @@ jobs:
     steps:
       - name: combine-prs
         id: combine-prs
-        uses: github/combine-prs@v5.2.0
-        with:
+        uses: github/combine-prs@e6d37110da1b512313419ba6992492dad622139f # v5.2.0        with:
           ci_required: false
           labels: dependencies
           pr_title: Combined Dependabot PRs

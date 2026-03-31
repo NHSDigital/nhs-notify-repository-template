@@ -37,8 +37,7 @@ jobs:
       # tag: ${{ steps.variables.outputs.tag }}
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v4
-      - name: "Set CI/CD variables"
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4      - name: "Set CI/CD variables"
         id: variables
         run: |
           datetime=$(date -u +'%Y-%m-%dT%H:%M:%S%z')
@@ -70,8 +69,7 @@ jobs:
     needs: metadata
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - name: "Get version"
         id: get-asset-version
         shell: bash
@@ -110,6 +108,5 @@ jobs:
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
-        with:
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4        with:
           artifact_name: jekyll-docs-${{steps.get-asset-version.outputs.release_version}}
