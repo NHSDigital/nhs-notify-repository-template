@@ -32,7 +32,8 @@ jobs:
       # skip_trivy_package: ${{ steps.skip_trivy.outputs.skip_trivy_package }}
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4      - name: "Set CI/CD variables"
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - name: "Set CI/CD variables"
         id: variables
         run: |
           datetime=$(date -u +'%Y-%m-%dT%H:%M:%S%z')
