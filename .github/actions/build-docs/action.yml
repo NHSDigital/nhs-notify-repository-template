@@ -8,8 +8,7 @@ runs:
   using: "composite"
   steps:
     - name: Checkout
-      uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6    - uses: actions/setup-node@v4
       with:
         node-version: 18
     - name: Npm cli install
@@ -17,16 +16,14 @@ runs:
       run: npm ci
       shell: bash
     - name: Setup Ruby
-      uses: ruby/setup-ruby@3783f195e29b74ae398d7caca108814bbafde90e # v1.180.1
-      with:
+      uses: ruby/setup-ruby@3783f195e29b74ae398d7caca108814bbafde90e # v1.180.1      with:
         ruby-version: "3.2" # Not needed with a .ruby-version file
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
         cache-version: 0 # Increment this number if you need to re-download cached gems
         working-directory: "./docs"
     - name: Setup Pages
       id: pages
-      uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
-    - name: Build with Jekyll
+      uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5    - name: Build with Jekyll
       working-directory: ./docs
       # Outputs to the './_site' directory by default
       shell: bash
@@ -36,7 +33,6 @@ runs:
         JEKYLL_ENV: production
     - name: Upload artifact
       # Automatically uploads an artifact from the './_site' directory by default
-      uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
-      with:
+      uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3      with:
         path: "docs/_site/"
         name: jekyll-docs-${{ inputs.version }}

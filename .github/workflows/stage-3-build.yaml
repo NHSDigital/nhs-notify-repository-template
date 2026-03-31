@@ -39,8 +39,7 @@ jobs:
     timeout-minutes: 3
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-      - name: "Build docs"
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6      - name: "Build docs"
         uses: ./.github/actions/build-docs
         with:
           version: "${{ inputs.version }}"
@@ -50,8 +49,7 @@ jobs:
     timeout-minutes: 3
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-      - name: "Build artefact 1"
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6      - name: "Build artefact 1"
         run: |
           echo "Building artefact 1 ..."
       - name: "Check artefact 1"
@@ -67,8 +65,7 @@ jobs:
     timeout-minutes: 3
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-      - name: "Build artefact n"
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6      - name: "Build artefact n"
         run: |
           echo "Building artefact n ..."
       - name: "Check artefact n"
