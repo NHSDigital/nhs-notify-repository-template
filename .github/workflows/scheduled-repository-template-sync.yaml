@@ -16,10 +16,9 @@ jobs:
 
     steps:
     - name: Check out the repository
-      uses: actions/checkout@v4
-
+      uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
     - name: Check out external repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       with:
         repository: NHSDigital/nhs-notify-repository-template
         path: nhs-notify-repository-template
@@ -32,7 +31,7 @@ jobs:
 
     - name: Create Pull Request
       if: ${{ !env.ACT }}
-      uses: peter-evans/create-pull-request@v7.0.8
+      uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         commit-message: Drift from template
