@@ -44,9 +44,13 @@ docker-ghcr-login: # Authenticate Docker with GitHub Container Registry - requir
 		docker-ghcr-login
 
 clean:: # Remove container image and resources - required: DOCKER_IMAGE @Development
-	source scripts/docker/docker.lib.sh; \
-	DOCKER_IMAGE="$${DOCKER_IMAGE:-}" \
-		docker-clean
+	@if [ -z "$${DOCKER_IMAGE:-}" ]; then \
+		echo "DOCKER_IMAGE is not set. Skipping container cleanup."; \
+	else \
+		source scripts/docker/docker.lib.sh; \
+		DOCKER_IMAGE="$${DOCKER_IMAGE}" \
+			docker-clean; \
+	fi
 
 # ==============================================================================
 # Quality checks - please DO NOT edit this section!

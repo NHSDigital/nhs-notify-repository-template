@@ -34,6 +34,35 @@
 
 set -e
 
+usage() {
+  cat >&2 <<'EOF'
+Usage:
+  ./dispatch_internal_repo_workflow.sh \
+    --infraRepoName <repo> \
+    --releaseVersion <version> \
+    --targetWorkflow <workflow.yaml> \
+    --targetEnvironment <env> \
+    --targetComponent <component> \
+    --targetAccountGroup <group> \
+    [--terraformAction <action>] \
+    [--internalRef <ref>] \
+    [--overrides <overrides>] \
+    [--overrideProjectName <name>] \
+    [--overrideRoleName <name>]
+EOF
+}
+
+require_arg() {
+  local name="$1"
+  local value="$2"
+
+  if [[ -z "$value" ]]; then
+    echo "[ERROR] Missing required argument: $name" >&2
+    usage
+    exit 1
+  fi
+}
+
 while [[ $# -gt 0 ]]; do
   case $1 in
     --infraRepoName) # Name of the infrastructure repo in NHSDigital org (required)
@@ -86,6 +115,13 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+require_arg "--infraRepoName" "${infraRepoName:-}"
+require_arg "--releaseVersion" "${releaseVersion:-}"
+require_arg "--targetWorkflow" "${targetWorkflow:-}"
+require_arg "--targetEnvironment" "${targetEnvironment:-}"
+require_arg "--targetComponent" "${targetComponent:-}"
+require_arg "--targetAccountGroup" "${targetAccountGroup:-}"
 
 if [[ -z "$APP_PEM_FILE" ]]; then
   echo "[ERROR] PEM_FILE environment variable is not set or is empty."
@@ -166,9 +202,9 @@ echo "  internalRef:        $internalRef"
 echo "  overrides:          $overrides"
 echo "  overrideProjectName: $overrideProjectName"
 echo "  overrideRoleName:   $overrideRoleName"
-echo "  targetProject:      $targetProject"
 
 DISPATCH_EVENT=$(jq -ncM \
+  --arg internalRef "$internalRef" \
   --arg infraRepoName "$infraRepoName" \
   --arg releaseVersion "$releaseVersion" \
   --arg targetEnvironment "$targetEnvironment" \
@@ -179,21 +215,19 @@ DISPATCH_EVENT=$(jq -ncM \
   --arg overrides "$overrides" \
   --arg overrideProjectName "$overrideProjectName" \
   --arg overrideRoleName "$overrideRoleName" \
-  --arg targetProject "$targetProject" \
   '{
-    "ref": "'"$internalRef"'",
+    "ref": $internalRef,
     "inputs": (
       (if $infraRepoName != "" then { "infraRepoName": $infraRepoName } else {} end) +
       (if $terraformAction != "" then { "terraformAction": $terraformAction } else {} end) +
       (if $overrideProjectName != "" then { "overrideProjectName": $overrideProjectName } else {} end) +
       (if $overrideRoleName != "" then { "overrideRoleName": $overrideRoleName } else {} end) +
-      (if $targetProject != "" then { "targetProject": $targetProject } else {} end) +
       {
         "releaseVersion": $releaseVersion,
         "targetEnvironment": $targetEnvironment,
         "targetAccountGroup": $targetAccountGroup,
         "targetComponent": $targetComponent,
-        "overrides": $overrides,
+        "overrides": $overrides
       }
     )
   }')
