@@ -1,23 +1,25 @@
 {
   "//": "PLEASE UPDATE THE NAME APPROPRIATELY.",
   "dependencies": {
-    "esbuild": "^0.25.0"
+    "esbuild": "catalog:tools"
   },
   "devDependencies": {
-    "@tsconfig/node22": "^22.0.2",
-    "@types/aws-lambda": "^8.10.148",
-    "@types/jest": "^29.5.14",
-    "jest": "^29.7.0",
-    "jest-mock-extended": "^3.0.7",
-    "typescript": "^5.8.2"
+    "@tsconfig/node22": "catalog:tools",
+    "@types/jest": "catalog:test",
+    "jest": "catalog:test",
+    "jest-mock-extended": "catalog:test",
+    "typescript": "catalog:tools"
+  },
+  "engines": {
+    "node": ">=24.14.1"
   },
   "name": "nhs-notify-repository-template-example-lambda",
   "private": true,
   "unused-scripts": {
-    "build:container": "cd ../.. && make docker-build-and-push base_image=public.ecr.aws/lambda/nodejs:22 dir=lambdas/example-lambda"
+    "build:container": "cd ../.. && make docker-build-and-push base_image=public.ecr.aws/lambda/nodejs:24 dir=lambdas/example-lambda"
   },
   "scripts": {
-    "build:archive": "rm -rf dist && npx esbuild --bundle --minify --sourcemap --target=es2020 --platform=node --loader:.node=file --entry-names=[name] --outdir=dist src/index.ts",
+    "build:archive": "rm -rf dist && pnpm exec esbuild --bundle --minify --sourcemap --target=es2020 --platform=node --loader:.node=file --entry-names=[name] --outdir=dist src/index.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test:unit": "jest",

@@ -12,7 +12,7 @@ updates:
     schedule:
       interval: "daily"
 
-  - package-ecosystem: "npm"
+  - package-ecosystem: "pnpm"
     directory: "/"
     schedule:
       interval: "daily"

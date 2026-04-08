@@ -4,6 +4,7 @@ import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import { importX } from 'eslint-plugin-import-x';
 import * as eslintImportResolverTypescript from 'eslint-import-resolver-typescript';
 import noRelativeImportPaths from 'eslint-plugin-no-relative-import-paths';
+import nextPlugin from '@next/eslint-plugin-next';
 import react from 'eslint-plugin-react';
 import security from 'eslint-plugin-security';
 import sonarjs from 'eslint-plugin-sonarjs';
@@ -19,17 +20,6 @@ import {
   plugins as airbnbPlugins,
 } from 'eslint-config-airbnb-extended';
 import { rules as prettierConfigRules } from 'eslint-config-prettier';
-
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { FlatCompat } from '@eslint/eslintrc';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
 
 export default defineConfig([
   globalIgnores([
@@ -77,7 +67,7 @@ export default defineConfig([
       'import-x/resolver-next': [
         eslintImportResolverTypescript.createTypeScriptImportResolver({
           project: [
-            'frontend/tsconfig.json',
+            'containers/*/tsconfig.json',
             'lambdas/*/tsconfig.json',
             'tests/test-team/tsconfig.json',
             'utils/*/tsconfig.json',
@@ -169,24 +159,28 @@ export default defineConfig([
     plugins: { html },
   },
 
-  // Next.js
-  ...compat.config({
-    extends: ['next', 'next/core-web-vitals', 'next/typescript'],
+  // json
+  {
+    files: ['**/*.json'],
+    ...json.configs['recommended'],
+  },
+
+  // Next.js — use @next/eslint-plugin-next directly in flat config mode.
+  // Projects using Next.js should set rootDir to match their app directory.
+  {
+    plugins: {
+      '@next/next': nextPlugin,
+    },
+    rules: {
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs['core-web-vitals'].rules,
+      '@next/next/no-html-link-for-pages': 0,
+    },
     settings: {
       next: {
         rootDir: 'frontend',
       },
     },
-    rules: {
-      // needed because next lint rules look for a pages directory
-      '@next/next/no-html-link-for-pages': 0,
-    },
-  }),
-
-  // json
-  {
-    files: ['**/*.json'],
-    ...json.configs['recommended'],
   },
 
   // destructure sorting
@@ -230,7 +224,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['**/utils/**', 'tests/test-team/**'],
+    files: ['**/utils/**', 'tests/test-team/**', 'lambdas/**/src/**', 'containers/**/src/**'],
     rules: {
       'import-x/prefer-default-export': 0,
     },
@@ -241,6 +235,12 @@ export default defineConfig([
     },
     rules: {
       'no-relative-import-paths/no-relative-import-paths': 2,
+    },
+  },
+  {
+    files: ['**/__tests__/**'],
+    rules: {
+      'no-relative-import-paths/no-relative-import-paths': 0,
     },
   },
   {

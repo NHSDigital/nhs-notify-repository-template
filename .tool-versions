@@ -1,7 +1,8 @@
 act 0.2.64
 gitleaks 8.24.0
 jq 1.6
-nodejs 22.11.0
+nodejs 24.14.1
+pnpm 10.33.0
 pre-commit 3.6.0
 terraform 1.14.3
 terraform-docs 0.21.0

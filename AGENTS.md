@@ -32,16 +32,16 @@ The root `package.json` is the orchestration manifestgit co for this repo. It do
 
 Agent guidance:
 
-- Before adding or removing a workspace, update the root `workspaces` array and ensure CI scripts still succeed with `npm run lint`, `npm run typecheck`, and `npm run test:unit` at the repo root.
-- When adding repo-wide scripts, keep names consistent with existing patterns (e.g. `lint`, `lint:fix`, `typecheck`, `test:unit`, `build-archive`) and prefer `--workspaces` fan-out.
+- Before adding or removing a workspace, update the root `workspaces` array in `pnpm-workspace.yaml` and ensure CI scripts still succeed with `pnpm run lint`, `pnpm run typecheck`, and `pnpm run test:unit` at the repo root.
+- When adding repo-wide scripts, keep names consistent with existing patterns (e.g. `lint`, `lint:fix`, `typecheck`, `test:unit`, `build-archive`) and prefer `pnpm -r run` fan-out.
 - Do not publish from the root. If adding a new workspace intended for publication, mark that workspace package as `private: false` and keep the root as private.
 - Validate changes by running the repo pre-commit hooks: `make githooks-run`.
 
 Success criteria for changes affecting the root `package.json`:
 
-- `npm run lint`, `npm run typecheck`, and `npm run test:unit` pass at the repo root.
-- Workspace discovery is correct (new projects appear under `npm run typecheck --workspaces`).
-- No regression in lambda build tooling (`npm run build-archive`).
+- `pnpm run lint`, `pnpm run typecheck`, and `pnpm run test:unit` pass at the repo root.
+- Workspace discovery is correct (new projects appear under `pnpm run typecheck`).
+- No regression in lambda build tooling (`pnpm run build:archive`).
 
 ## What Agents Can / Can’t Do
 
