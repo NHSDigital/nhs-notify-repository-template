@@ -14,7 +14,7 @@ terraform-plan: # Plan Terraform changes - mandatory: component=[component_name]
 		project=$(or ${project}, nhs) \
 		region=$(or ${region}, eu-west-2) \
 		group=$(or ${group}, dev) \
-		opts=$(or ${opts}, )
+		opts=$(or ${opts},)
 
 terraform-plan-destroy: # Plan Terraform destroy - mandatory: component=[component_name], environment=[environment]; optional: project, region, group, opts @Development
 	# Example: make terraform-plan-destroy component=mycomp environment=myenv group=mygroup
@@ -25,7 +25,7 @@ terraform-plan-destroy: # Plan Terraform destroy - mandatory: component=[compone
 		project=$(or ${project}, nhs) \
 		region=$(or ${region}, eu-west-2) \
 		group=$(or ${group}, dev) \
-		opts=$(or ${opts}, )
+		opts=$(or ${opts},)
 
 terraform-apply: # Apply Terraform changes - mandatory: component=[component_name], environment=[environment]; optional: project, region, group, build_id, opts @Development
 	# Example: make terraform-apply component=mycomp environment=myenv group=mygroup
@@ -36,8 +36,8 @@ terraform-apply: # Apply Terraform changes - mandatory: component=[component_nam
 		project=$(or ${project}, nhs) \
 		region=$(or ${region}, eu-west-2) \
 		group=$(or ${group}, dev) \
-		build_id=$(or ${build_id}, ) \
-		opts=$(or ${opts}, )
+		build_id=$(or ${build_id},) \
+		opts=$(or ${opts},)
 
 terraform-destroy: # Destroy Terraform resources - mandatory: component=[component_name], environment=[environment]; optional: project, region, group, opts @Development
 	# Example: make terraform-destroy component=mycomp environment=myenv group=mygroup
@@ -48,7 +48,7 @@ terraform-destroy: # Destroy Terraform resources - mandatory: component=[compone
 		project=$(or ${project}, nhs) \
 		region=$(or ${region}, eu-west-2) \
 		group=$(or ${group}, dev) \
-		opts=$(or ${opts}, )
+		opts=$(or ${opts},)
 
 terraform-output: # Get Terraform outputs - mandatory: component=[component_name], environment=[environment]; optional: project, region, group @Development
 	# Example: make terraform-output component=mycomp environment=myenv group=mygroup
@@ -169,6 +169,6 @@ ${VERBOSE}.SILENT: \
 	terraform-output \
 	terraform-plan \
 	terraform-plan-destroy \
-#	terraform-sec \
 	terraform-validate \
 	terraform-validate-all \
+#	terraform-sec \

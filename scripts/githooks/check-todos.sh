@@ -4,12 +4,12 @@
 
 set -euo pipefail
 
-# Pre-commit git hook to scan for secrets hard-coded in the codebase. This is a
-# gitleaks command wrapper. It will run gitleaks natively if it is installed,
-# otherwise it will run it in a Docker container.
+# Pre-commit git hook to scan for TODO markers in the codebase.
+# It checks repository files for TODO entries and fails when a TODO does not
+# include a Jira ticket reference.
 #
 # Usage:
-#   $ [options] ./scan-secrets.sh
+#   $ [options] ./check-todos.sh
 #
 # Options:
 #   check=all                   # check all files in the repository
@@ -19,8 +19,8 @@ set -euo pipefail
 #   VERBOSE=true                # Show all the executed commands, default is 'false'
 #
 # Exit codes:
-#   0 - No Todos
-#   1 - Todos found or error encountered
+#   0 - No TODOs without a Jira ticket reference
+#   1 - TODOs without a Jira ticket reference found, or error encountered
 #   126 - Unknown flag
 
 # ==============================================================================
@@ -93,7 +93,7 @@ function build_exclude_args() {
 function search_todos() {
   local mode="$1"
   shift # Shift positional parameters so $@ contains only exclude_args
-  local exclude_args=("$@")
+  local -a exclude_args=("$@")
   local todos=""
 
   local files
@@ -109,7 +109,7 @@ function search_todos() {
     for ex in "${exclude_args[@]}"; do
       if [[ "$ex" == --exclude* ]]; then
         pattern=${ex#--exclude=}
-        [[ "$file" == $pattern ]] && skip=true && break
+        [[ "$file" == "$pattern" ]] && skip=true && break
       fi
     done
 
@@ -150,8 +150,10 @@ function filter_todos_with_valid_jira_ticket() {
 
 function print_output() {
   local todos="$1"
-  local exclude_args="$2"
-  local todo_count=$(line_count "$todos")
+  shift
+  local -a exclude_args=("$@")
+  local todo_count
+  todo_count=$(line_count "$todos")
 
   echo "TODO Check Configuration:"
   echo "========================================="
@@ -171,7 +173,7 @@ function print_output() {
   fi
 
   if is-arg-true "${VERBOSE:-false}"; then
-    echo "Grep Exclude Args: $exclude_args"
+    echo "Grep Exclude Args: ${exclude_args[*]}"
   fi
 
   echo -e "\n========================================="
@@ -184,8 +186,10 @@ function print_output() {
     echo "No TODOs found."
   fi
 
-  local results=$(filter_todos_with_valid_jira_ticket "$todos")
-  local results_count=$(line_count "$results")
+  local results
+  results=$(filter_todos_with_valid_jira_ticket "$todos")
+  local results_count
+  results_count=$(line_count "$results")
 
   echo -e "\n========================================="
   echo "TODOs without a Jira ticket: $results_count"
@@ -204,9 +208,11 @@ function main() {
   cd "$(git rev-parse --show-toplevel)"
 
   local check_mode="${check:-working-tree-changes}"
-  local exclude_args=$(build_exclude_args)
-  local todos=$(search_todos "$check_mode" $exclude_args)
-  print_output "$todos" "$exclude_args"
+  local -a exclude_args
+  read -r -a exclude_args <<< "$(build_exclude_args)"
+  local todos
+  todos=$(search_todos "$check_mode" "${exclude_args[@]}")
+  print_output "$todos" "${exclude_args[@]}"
 }
 
 # ==============================================================================

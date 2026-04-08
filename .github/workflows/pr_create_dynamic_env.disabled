@@ -33,12 +33,12 @@ jobs:
             '{ "ref": "main",
               "inputs": {
                 "infraRepoName": $infraRepoName,
-                "releaseVersion", $releaseVersion,
-                "targetEnvironment", $targetEnvironment,
-                "targetAccountGroup", $targetAccountGroup,
-                "targetComponent", $targetComponent,
-                "terraformAction", $terraformAction,
-                "overrides", $overrides,
+                "releaseVersion": $releaseVersion,
+                "targetEnvironment": $targetEnvironment,
+                "targetAccountGroup": $targetAccountGroup,
+                "targetComponent": $targetComponent,
+                "terraformAction": $terraformAction,
+                "overrides": $overrides
               }
             }')
 

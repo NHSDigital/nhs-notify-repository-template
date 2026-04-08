@@ -29,7 +29,7 @@ function docker-build() {
   _create-effective-dockerfile
   # The current directory must be changed for the image build script to access
   # assets that need to be copied
-  current_dir=$(pwd)
+  local current_dir=$(pwd)
   cd "$dir"
   docker build \
     --progress=plain \
@@ -108,6 +108,14 @@ function docker-push() {
 function docker-clean() {
 
   local dir=${dir:-$PWD}
+
+  if [ -z "${DOCKER_IMAGE:-}" ]; then
+    echo "DOCKER_IMAGE is not set. Skipping container cleanup."
+    rm -f \
+      .version \
+      Dockerfile.effective
+    return 0
+  fi
 
   for version in $(dir="$dir" _get-all-effective-versions) latest; do
     docker rmi "${DOCKER_IMAGE}:${version}" > /dev/null 2>&1 ||:
@@ -385,6 +393,11 @@ function docker-build-container() {
     return 1
   fi
 
+  if [ -z "${DOCKER_IMAGE:-}" ]; then
+    echo "Error: DOCKER_IMAGE environment variable is required" >&2
+    return 1
+  fi
+
   if [ ! -f "${dir}/build.sh" ]; then
     echo "Error: build.sh not found in ${dir}" >&2
     return 1
@@ -397,7 +410,7 @@ function docker-build-container() {
 
   # Run the container build script first
   echo "Running build.sh in ${dir}..."
-  current_dir=$(pwd)
+  local current_dir=$(pwd)
   cd "$dir"
   chmod +x ./build.sh
   ./build.sh
@@ -424,6 +437,11 @@ function docker-build-container() {
 function docker-push-container() {
 
   if [ "${PUBLISH_CONTAINER_IMAGE:-true}" = "true" ]; then
+    if [ -z "${DOCKER_IMAGE:-}" ]; then
+      echo "Error: DOCKER_IMAGE environment variable is required" >&2
+      return 1
+    fi
+
     echo "Pushing to ECR..."
     echo "Pushing ${DOCKER_IMAGE}..."
     docker push "${DOCKER_IMAGE}"
@@ -440,6 +458,22 @@ function docker-push-container() {
 #   CONTAINER_IMAGE_SUFFIX, ECR_REPO, CONTAINER_NAME, dir (optional)
 function docker-calculate-image-name() {
   local dir=${dir:-$PWD}
+
+  if [ -z "${CONTAINER_IMAGE_PREFIX:-}" ]; then
+    echo "Error: CONTAINER_IMAGE_PREFIX environment variable is required" >&2
+    return 1
+  fi
+
+  if [ -z "${AWS_ACCOUNT_ID:-}" ]; then
+    echo "Error: AWS_ACCOUNT_ID environment variable is required" >&2
+    return 1
+  fi
+
+  if [ -z "${AWS_REGION:-}" ]; then
+    echo "Error: AWS_REGION environment variable is required" >&2
+    return 1
+  fi
+
   local container_name="${CONTAINER_NAME:-$(basename "$dir")}"
   local ecr_repo="${ECR_REPO:-nhs-main-acct-admail}"
   local image_suffix="${CONTAINER_IMAGE_SUFFIX:-$(docker-get-git-version-suffix)}"

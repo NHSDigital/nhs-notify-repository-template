@@ -1,5 +1,5 @@
 build:
-	make -C ../../ Makefile version
+	$(MAKE) -C ../../ version
 	npm install -g @devcontainers/cli
 	ver=$$(head -n 1 ../../.version 2> /dev/null || echo unknown); \
 	verb=$$(echo $$ver | sed 's/\+.*//'); \
