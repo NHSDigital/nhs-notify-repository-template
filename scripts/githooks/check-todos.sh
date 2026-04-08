@@ -93,7 +93,7 @@ function build_exclude_args() {
 function search_todos() {
   local mode="$1"
   shift # Shift positional parameters so $@ contains only exclude_args
-  local exclude_args=("$@")
+  local -a exclude_args=("$@")
   local todos=""
 
   local files

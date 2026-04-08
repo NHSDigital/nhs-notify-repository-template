@@ -169,6 +169,6 @@ ${VERBOSE}.SILENT: \
 	terraform-output \
 	terraform-plan \
 	terraform-plan-destroy \
-#	terraform-sec \
 	terraform-validate \
 	terraform-validate-all \
+#	terraform-sec \
