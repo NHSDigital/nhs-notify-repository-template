@@ -30,10 +30,12 @@ runs:
       working-directory: ./docs
       # Outputs to the './_site' directory by default
       shell: bash
-      run: make build BASE_URL="${{ steps.pages.outputs.base_path }}" VERSION="${{ inputs.version }}"
+      run: make build BASE_URL="$BASE_URL" VERSION="$VERSION"
       #run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
       env:
         JEKYLL_ENV: production
+        BASE_URL: ${{ steps.pages.outputs.base_path }}
+        VERSION: ${{ inputs.version }}
     - name: Upload artifact
       # Automatically uploads an artifact from the './_site' directory by default
       uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3

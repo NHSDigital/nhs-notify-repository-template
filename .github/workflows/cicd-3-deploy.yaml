@@ -76,8 +76,10 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
+          INCLUDE_PRERELEASES: ${{ inputs.include_prereleases }}
+          REQUESTED_VERSION: ${{ inputs.version }}
         run: |
-          if [[ ${{inputs.include_prereleases}} == true ]]; then
+          if [[ "$INCLUDE_PRERELEASES" == "true" ]]; then
             json=$(gh release list --json tagName --limit 1 --exclude-drafts)
           else
             json=$(gh release list --json tagName --limit 1 --exclude-drafts --exclude-pre-releases)
@@ -88,10 +90,10 @@ jobs:
           release_version=$(echo $json | (jq -r '.[0].tagName'))
           if [[ $release_version == null ]]; then exit 1; else echo $release_version; fi
 
-          if [[ ${{inputs.version}} == latest ]]; then
-            echo release_version=$(echo $release_version) >> $GITHUB_OUTPUT
+          if [[ "$REQUESTED_VERSION" == "latest" ]]; then
+            echo "release_version=$release_version" >> "$GITHUB_OUTPUT"
           else
-            echo release_version=$(echo ${{inputs.version}}) >> $GITHUB_OUTPUT
+            echo "release_version=$REQUESTED_VERSION" >> "$GITHUB_OUTPUT"
           fi
 
       - name: "Get release version"
@@ -99,8 +101,9 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ steps.get-asset-version.outputs.release_version }}
         run: |
-          gh release download ${{steps.get-asset-version.outputs.release_version}} -p jekyll-docs-*.tar --output artifact.tar
+          gh release download "$RELEASE_VERSION" -p jekyll-docs-*.tar --output artifact.tar
 
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
