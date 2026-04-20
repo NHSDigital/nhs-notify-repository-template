@@ -318,17 +318,17 @@ while true; do
   status=$(echo "$response" | jq -r '.status')
   echo "[$(date '+%Y-%m-%d %H:%M:%S')] Workflow status: $status"
 
-  if [ "$status" == "completed" ]; then
+  if [[ "$status" == "completed"  ]]; then
     conclusion=$(echo "$response" | jq -r '.conclusion')
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] Workflow conclusion: $conclusion"
 
-    if [ -z "$conclusion" ] || [ "$conclusion" == "null" ]; then
+    if [[ -z "$conclusion" || "$conclusion" == "null" ]]; then
       echo "[WARN] Workflow marked completed but conclusion not yet available, retrying..."
       sleep 5
       continue
     fi
 
-    if [ "$conclusion" == "success" ]; then
+    if [[ "$conclusion" == "success"  ]]; then
       echo "[SUCCESS] Workflow completed successfully!"
       exit 0
     else

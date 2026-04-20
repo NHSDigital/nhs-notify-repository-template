@@ -75,13 +75,13 @@ function build_exclude_args() {
     --exclude="scripts/githooks/check-todos.sh"
   ) # Exclude this script and its references by default, as it naturally contains TODOs. Todo todo todo <- see?
 
-  if [ ${#EXCLUDED_DIRS[@]} -gt 0 ]; then
+  if [[ ${#EXCLUDED_DIRS[@]} -gt 0  ]]; then
     for dir in "${EXCLUDED_DIRS[@]}"; do
       args+=(--exclude-dir="$dir")
     done
   fi
 
-  if [ ${#EXCLUDED_FILES[@]} -gt 0 ]; then
+  if [[ ${#EXCLUDED_FILES[@]} -gt 0  ]]; then
     for file in "${EXCLUDED_FILES[@]}"; do
       args+=(--exclude="$file")
     done
@@ -119,7 +119,7 @@ function search_todos() {
     done
 
     # If the file is excluded, skip it
-    if [ "$skip" = false ] && [ -f "$file" ]; then
+    if [[ "$skip" = false && -f "$file" ]]; then
       file_todos=$(grep -nHiE '\bTODO\b' "$file" || true)
       [ -n "$file_todos" ] && todos+="$file_todos\n"
     fi
@@ -160,13 +160,13 @@ function print_output() {
   echo "  Check Mode: ${check:-working-tree-changes}"
   echo "  Total TODOs found: $todo_count"
 
-  if [ ${#EXCLUDED_DIRS[@]} -gt 0 ]; then
+  if [[ ${#EXCLUDED_DIRS[@]} -gt 0  ]]; then
     echo "  Excluded Directories: ${EXCLUDED_DIRS[*]}"
   else
     echo "  Excluded Directories: (none)"
   fi
 
-  if [ ${#EXCLUDED_FILES[@]} -gt 0 ]; then
+  if [[ ${#EXCLUDED_FILES[@]} -gt 0  ]]; then
     echo "  Excluded Files: ${EXCLUDED_FILES[*]}"
   else
     echo "  Excluded Files: (none)"
@@ -180,7 +180,7 @@ function print_output() {
   echo "All TODOs found: $todo_count"
   echo "========================================="
 
-  if [ "$todo_count" -gt 0 ]; then
+  if [[ "$todo_count" -gt 0  ]]; then
     echo "$todos"
   else
     echo "No TODOs found."
@@ -195,7 +195,7 @@ function print_output() {
   echo "TODOs without a Jira ticket: $results_count"
   echo "========================================="
 
-  if [ "$results_count" -gt 0 ]; then
+  if [[ "$results_count" -gt 0  ]]; then
     echo "$results"
     exit 1
   else
@@ -220,7 +220,7 @@ function main() {
 # Count non-empty lines in a string
 function line_count() {
   local input="$1"
-  if [ -n "$input" ]; then
+  if [[ -n "$input"  ]]; then
     echo -e "$input" | wc -l
   else
     echo 0

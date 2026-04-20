@@ -28,7 +28,7 @@ function run-setup() {
 # Check the exit status of tfsec.
 function check-setup-status() {
 
-  if [ $? -eq 0 ]; then
+  if [[ $? -eq 0  ]]; then
     echo "Setup completed successfully."
   else
     echo "Setup was unsuccessful."

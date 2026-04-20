@@ -109,7 +109,7 @@ function docker-clean() {
 
   local dir=${dir:-$PWD}
 
-  if [ -z "${DOCKER_IMAGE:-}" ]; then
+  if [[ -z "${DOCKER_IMAGE:-}"  ]]; then
     echo "DOCKER_IMAGE is not set. Skipping container cleanup."
     rm -f \
       .version \
@@ -135,7 +135,7 @@ function version-create-effective-file() {
   local version_file="$dir/VERSION"
   local build_datetime=${BUILD_DATETIME:-$(date -u +'%Y-%m-%dT%H:%M:%S%z')}
 
-  if [ -f "$version_file" ]; then
+  if [[ -f "$version_file"  ]]; then
     # shellcheck disable=SC2002
     cat "$version_file" | \
       sed "s/\(\${yyyy}\|\$yyyy\)/$(date --date="${build_datetime}" -u +"%Y")/g" | \
@@ -175,7 +175,7 @@ function docker-get-image-version-and-pull() {
   # match it by name and version regex, if given.
   local versions_file="${TOOL_VERSIONS:=$(git rev-parse --show-toplevel)/.tool-versions}"
   local version="latest"
-  if [ -f "$versions_file" ]; then
+  if [[ -f "$versions_file"  ]]; then
     line=$(grep "docker/${name} " "$versions_file" | sed "s/^#\s*//; s/\s*#.*$//" | grep "${match_version:-".*"}")
     [ -n "$line" ] && version=$(echo "$line" | awk '{print $2}')
   fi
@@ -186,7 +186,7 @@ function docker-get-image-version-and-pull() {
 
   # Check if the image exists locally already
   if ! docker images | awk '{ print $1 ":" $2 }' | grep -q "^${name}:${tag}$"; then
-    if [ "$digest" != "latest" ]; then
+    if [[ "$digest" != "latest"  ]]; then
       # Pull image by the digest sha256 and tag it
       docker pull \
         --platform linux/amd64 \
@@ -230,7 +230,7 @@ function _replace-image-latest-by-specific-version() {
   local dockerfile="${dir}/Dockerfile.effective"
   local build_datetime=${BUILD_DATETIME:-$(date -u +'%Y-%m-%dT%H:%M:%S%z')}
 
-  if [ -f "$versions_file" ]; then
+  if [[ -f "$versions_file"  ]]; then
     # First, list the entries specific for Docker to take precedence, then the rest but exclude comments
     content=$(grep " docker/" "$versions_file"; grep -v " docker/" "$versions_file" ||: | grep -v "^#")
     echo "$content" | while IFS= read -r line; do
@@ -242,7 +242,7 @@ function _replace-image-latest-by-specific-version() {
     done
   fi
 
-  if [ -f "$dockerfile" ]; then
+  if [[ -f "$dockerfile"  ]]; then
     # shellcheck disable=SC2002
     cat "$dockerfile" | \
       sed "s/\(\${yyyy}\|\$yyyy\)/$(date --date="${build_datetime}" -u +"%Y")/g" | \
@@ -300,9 +300,9 @@ function _get-git-branch-name() {
 
   local branch_name=$(git rev-parse --abbrev-ref HEAD)
 
-  if [ -n "${GITHUB_HEAD_REF:-}" ]; then
+  if [[ -n "${GITHUB_HEAD_REF:-}"  ]]; then
     branch_name=$GITHUB_HEAD_REF
-  elif [ -n "${GITHUB_REF:-}" ]; then
+  elif [[ -n "${GITHUB_REF:-}"  ]]; then
     # shellcheck disable=SC2001
     branch_name=$(echo "$GITHUB_REF" | sed "s#refs/heads/##")
   fi
@@ -321,7 +321,7 @@ function docker-get-git-version-suffix() {
   local short_sha=$(git rev-parse --short HEAD)
   local git_tag=$(git describe --tags --exact-match 2>/dev/null || true)
 
-  if [ -n "$git_tag" ]; then
+  if [[ -n "$git_tag"  ]]; then
     local release_version="${git_tag#v}"
     echo "release-${release_version}-${short_sha}"
   else
@@ -335,12 +335,12 @@ function docker-get-git-version-suffix() {
 #   AWS_REGION=[AWS region, e.g., eu-west-2]
 function docker-ecr-login() {
 
-  if [ -z "${AWS_ACCOUNT_ID:-}" ]; then
+  if [[ -z "${AWS_ACCOUNT_ID:-}"  ]]; then
     echo "Error: AWS_ACCOUNT_ID environment variable is required" >&2
     return 1
   fi
 
-  if [ -z "${AWS_REGION:-}" ]; then
+  if [[ -z "${AWS_REGION:-}"  ]]; then
     echo "Error: AWS_REGION environment variable is required" >&2
     return 1
   fi
@@ -358,16 +358,16 @@ function docker-ghcr-login() {
 
   local ghcr_username="${GITHUB_ACTOR:-}"
 
-  if [ -z "${GITHUB_TOKEN:-}" ]; then
+  if [[ -z "${GITHUB_TOKEN:-}"  ]]; then
     echo "Error: GITHUB_TOKEN environment variable is required" >&2
     return 1
   fi
 
-  if [ -z "${ghcr_username}" ]; then
+  if [[ -z "${ghcr_username}"  ]]; then
     ghcr_username="$(git config user.name 2>/dev/null || true)"
   fi
 
-  if [ -z "${ghcr_username}" ]; then
+  if [[ -z "${ghcr_username}"  ]]; then
     echo "Error: unable to determine GHCR username. Set GITHUB_ACTOR or configure git user.name" >&2
     return 1
   fi
@@ -388,22 +388,22 @@ function docker-build-container() {
 
   local dir=${dir:-$PWD}
 
-  if [ -z "${BASE_IMAGE:-}" ]; then
+  if [[ -z "${BASE_IMAGE:-}"  ]]; then
     echo "Error: BASE_IMAGE environment variable is required" >&2
     return 1
   fi
 
-  if [ -z "${DOCKER_IMAGE:-}" ]; then
+  if [[ -z "${DOCKER_IMAGE:-}"  ]]; then
     echo "Error: DOCKER_IMAGE environment variable is required" >&2
     return 1
   fi
 
-  if [ ! -f "${dir}/build.sh" ]; then
+  if [[ ! -f "${dir}/build.sh"  ]]; then
     echo "Error: build.sh not found in ${dir}" >&2
     return 1
   fi
 
-  if [ ! -f "${dir}/docker/Dockerfile" ]; then
+  if [[ ! -f "${dir}/docker/Dockerfile"  ]]; then
     echo "Error: docker/Dockerfile not found in ${dir}" >&2
     return 1
   fi
@@ -436,8 +436,8 @@ function docker-build-container() {
 #   PUBLISH_CONTAINER_IMAGE=[true to push, false to skip, default is true]
 function docker-push-container() {
 
-  if [ "${PUBLISH_CONTAINER_IMAGE:-true}" = "true" ]; then
-    if [ -z "${DOCKER_IMAGE:-}" ]; then
+  if [[ "${PUBLISH_CONTAINER_IMAGE:-true}" = "true"  ]]; then
+    if [[ -z "${DOCKER_IMAGE:-}"  ]]; then
       echo "Error: DOCKER_IMAGE environment variable is required" >&2
       return 1
     fi
@@ -459,17 +459,17 @@ function docker-push-container() {
 function docker-calculate-image-name() {
   local dir=${dir:-$PWD}
 
-  if [ -z "${CONTAINER_IMAGE_PREFIX:-}" ]; then
+  if [[ -z "${CONTAINER_IMAGE_PREFIX:-}"  ]]; then
     echo "Error: CONTAINER_IMAGE_PREFIX environment variable is required" >&2
     return 1
   fi
 
-  if [ -z "${AWS_ACCOUNT_ID:-}" ]; then
+  if [[ -z "${AWS_ACCOUNT_ID:-}"  ]]; then
     echo "Error: AWS_ACCOUNT_ID environment variable is required" >&2
     return 1
   fi
 
-  if [ -z "${AWS_REGION:-}" ]; then
+  if [[ -z "${AWS_REGION:-}"  ]]; then
     echo "Error: AWS_REGION environment variable is required" >&2
     return 1
   fi

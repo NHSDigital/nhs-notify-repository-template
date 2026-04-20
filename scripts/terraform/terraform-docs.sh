@@ -33,7 +33,7 @@ function run-terraform-docs-natively() {
 
   local dir_to_scan="$1"
   echo "Terraform-docs found locally, running natively"
-  if [ -d "$dir_to_scan" ]; then
+  if [[ -d "$dir_to_scan"  ]]; then
     echo "Running Terraform-docs on directory: $dir_to_scan"
     terraform-docs \
       -c scripts/config/terraform-docs.yml \
