@@ -28,35 +28,38 @@ function main() {
   local dir_to_scan="."
 
   while [[ $# -gt 0 ]]; do
-    case "$1" in
+    local current_arg="$1"
+    case "$current_arg" in
       --mode|-m)
         if [[ $# -lt 2 ]]; then
           echo "Error: --mode requires an argument." >&2
           usage
           exit 1
         fi
-        scan_mode="$2"
+        local mode_arg="$2"
+        scan_mode="$mode_arg"
         shift 2
+          exit 0
+          ;;
+        --)
+          shift
+          break
+          ;;
+        -*)
         ;;
+          usage
+          exit 1
+          ;;
+        *)
+          dir_to_scan="$current_arg"
+          shift
       --help|-h)
-        usage
-        exit 0
-        ;;
-      --)
-        shift
-        break
-        ;;
-      -*)
-        echo "Unknown option: $1" >&2
-        usage
-        exit 1
-        ;;
-      *)
-        dir_to_scan="$1"
+      dir_to_scan="$trailing_arg"
         shift
         ;;
     esac
-  done
+      local trailing_arg="$1"
+      dir_to_scan="$trailing_arg"
 
   if [[ $# -gt 0 ]]; then
     dir_to_scan="$1"

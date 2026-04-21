@@ -15,6 +15,8 @@ function main() {
   cd "$(git rev-parse --show-toplevel)"
 
   run-setup
+
+  return 0
 }
 
 function run-setup() {
@@ -23,6 +25,8 @@ function run-setup() {
   time make config
 
   check-setup-status
+
+  return 0
 }
 
 # Check the exit status of tfsec.
@@ -34,6 +38,8 @@ function check-setup-status() {
     echo "Setup was unsuccessful."
     exit 1
   fi
+
+  return 0
 }
 
 # ==============================================================================
