@@ -17,6 +17,8 @@ Environment variables:
   FORCE_USE_DOCKER=true  Force execution through Docker even if Trivy is installed locally.
   VERBOSE=true           Enable bash -x tracing.
 EOF
+
+  return 0
 }
 
 function main() {
@@ -81,6 +83,8 @@ function main() {
   else
     run-trivy-in-docker "$scan_mode" "$dir_to_scan"
   fi
+
+  return 0
 }
 
 function run-trivy-natively() {
@@ -96,6 +100,8 @@ function run-trivy-natively() {
     local status=$?
     check-trivy-status "$status"
   fi
+
+  return 0
 }
 
 function run-trivy-in-docker() {
@@ -117,6 +123,8 @@ function run-trivy-in-docker() {
     local status=$?
     check-trivy-status "$status"
   fi
+
+  return 0
 }
 
 function execute-trivy-command() {
@@ -136,6 +144,8 @@ function execute-trivy-command() {
       --severity HIGH,CRITICAL \
       --include-dev-deps
   fi
+
+  return 0
 }
 
 function execute-trivy-in-docker() {
@@ -163,6 +173,8 @@ function execute-trivy-in-docker() {
       --severity HIGH,CRITICAL \
       --include-dev-deps
   fi
+
+  return 0
 }
 
 function check-trivy-status() {
@@ -178,7 +190,9 @@ function check-trivy-status() {
 }
 
 function is-arg-true() {
-  if [[ "$1" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
+  local arg="$1"
+
+  if [[ "$arg" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
     return 0
   else
     return 1

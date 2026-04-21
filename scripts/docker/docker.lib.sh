@@ -53,6 +53,8 @@ function docker-build() {
     docker tag "${DOCKER_IMAGE}:$(_get-effective-version)" "${DOCKER_IMAGE}:${version}"
   done
   docker rmi --force "$(docker images | grep "<none>" | awk '{print $3}')" 2> /dev/null ||:
+
+  return 0
 }
 
 # Check test Docker image.
@@ -71,6 +73,8 @@ function docker-check-test() {
     "${DOCKER_IMAGE}:$(_get-effective-version)" 2>/dev/null \
     ${cmd:-} \
   | grep -q "${check}" && echo PASS || echo FAIL
+
+  return 0
 }
 
 # Run Docker image.
@@ -87,6 +91,8 @@ function docker-run() {
     ${args:-} \
     "${DOCKER_IMAGE}:$(dir="$dir" _get-effective-version)" \
     ${cmd:-}
+
+  return 0
 }
 
 # Push Docker image.
@@ -100,6 +106,8 @@ function docker-push() {
   for version in $(dir="$dir" _get-all-effective-versions) latest; do
     docker push "${DOCKER_IMAGE}:${version}"
   done
+
+  return 0
 }
 
 # Remove Docker resources.
@@ -123,6 +131,8 @@ function docker-clean() {
   rm -f \
     .version \
     Dockerfile.effective
+
+  return 0
 }
 
 # Create effective version from the VERSION file.
@@ -147,6 +157,8 @@ function version-create-effective-file() {
       sed "s/\(\${hash}\|\$hash\)/$(git rev-parse --short HEAD)/g" \
     > "$dir/.version"
   fi
+
+  return 0
 }
 
 # ==============================================================================
@@ -203,6 +215,8 @@ function docker-get-image-version-and-pull() {
   fi
 
   echo "${name}:${version}"
+
+  return 0
 }
 
 # ==============================================================================
@@ -218,6 +232,8 @@ function _create-effective-dockerfile() {
   cp "${dir}/Dockerfile" "${dir}/Dockerfile.effective"
   _replace-image-latest-by-specific-version
   _append-metadata
+
+  return 0
 }
 
 # Replace image:latest by a specific version.
@@ -258,6 +274,8 @@ function _replace-image-latest-by-specific-version() {
 
   # Do not ignore the issue if 'latest' is used in the effective image
   sed -Ei "/# hadolint ignore=DL3007$/d" "${dir}/Dockerfile.effective"
+
+  return 0
 }
 
 # Append metadata to the end of Dockerfile.
@@ -272,6 +290,8 @@ function _append-metadata() {
     "$(git rev-parse --show-toplevel)/scripts/docker/Dockerfile.metadata" \
   > "$dir/Dockerfile.effective.tmp"
   mv "$dir/Dockerfile.effective.tmp" "$dir/Dockerfile.effective"
+
+  return 0
 }
 
 # Print top Docker image version.
@@ -282,6 +302,8 @@ function _get-effective-version() {
   local dir=${dir:-$PWD}
 
   head -n 1 "${dir}/.version" 2> /dev/null ||:
+
+  return 0
 }
 
 # Print all Docker image versions.
@@ -292,6 +314,8 @@ function _get-all-effective-versions() {
   local dir=${dir:-$PWD}
 
   cat "${dir}/.version" 2> /dev/null ||:
+
+  return 0
 }
 
 # Print Git branch name. Check the GitHub variables first and then the local Git
@@ -308,6 +332,8 @@ function _get-git-branch-name() {
   fi
 
   echo "$branch_name"
+
+  return 0
 }
 
 # ==============================================================================
@@ -327,6 +353,8 @@ function docker-get-git-version-suffix() {
   else
     echo "sha-${short_sha}"
   fi
+
+  return 0
 }
 
 # Authenticate Docker with AWS ECR.
@@ -349,6 +377,8 @@ function docker-ecr-login() {
   aws ecr get-login-password --region "${AWS_REGION}" | \
     docker login --username AWS --password-stdin \
     "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+
+  return 0
 }
 
 # Authenticate Docker with GitHub Container Registry.
@@ -374,6 +404,8 @@ function docker-ghcr-login() {
 
   echo "Authenticating Docker with GitHub Container Registry..."
   echo "${GITHUB_TOKEN}" | docker login ghcr.io --username "${ghcr_username}" --password-stdin
+
+  return 0
 }
 
 # Build container image.
@@ -428,6 +460,8 @@ function docker-build-container() {
     .
 
   cd "$current_dir"
+
+  return 0
 }
 
 # Push container image to ECR.
@@ -450,6 +484,8 @@ function docker-push-container() {
     echo "PUBLISH_CONTAINER_IMAGE is false. Skipping push."
     echo "Built image is available locally as: ${DOCKER_IMAGE}"
   fi
+
+  return 0
 }
 
 # Calculate and print Docker image name for NHS Notify containers.
@@ -480,4 +516,6 @@ function docker-calculate-image-name() {
   local image_tag="${CONTAINER_IMAGE_PREFIX}-${container_name}"
   local ecr_repo_uri="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ecr_repo}"
   echo "${ecr_repo_uri}:${image_tag}-${image_suffix}"
+
+  return 0
 }

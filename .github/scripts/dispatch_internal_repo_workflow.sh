@@ -50,6 +50,7 @@ Usage:
     [--overrideProjectName <name>] \
     [--overrideRoleName <name>]
 EOF
+  return 0
 }
 
 require_arg() {
@@ -61,6 +62,8 @@ require_arg() {
     usage
     exit 1
   fi
+
+  return 0
 }
 
 while [[ $# -gt 0 ]]; do
@@ -110,7 +113,7 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
     *)
-    echo "[ERROR] Unknown argument: $1"
+    echo "[ERROR] Unknown argument: $1" >&2
       exit 1
       ;;
   esac
@@ -124,12 +127,12 @@ require_arg "--targetComponent" "${targetComponent:-}"
 require_arg "--targetAccountGroup" "${targetAccountGroup:-}"
 
 if [[ -z "$APP_PEM_FILE" ]]; then
-  echo "[ERROR] PEM_FILE environment variable is not set or is empty."
+  echo "[ERROR] PEM_FILE environment variable is not set or is empty." >&2
   exit 1
 fi
 
 if [[ -z "$APP_CLIENT_ID" ]]; then
-  echo "[ERROR] CLIENT_ID environment variable is not set or is empty."
+  echo "[ERROR] CLIENT_ID environment variable is not set or is empty." >&2
   exit 1
 fi
 
@@ -137,7 +140,10 @@ now=$(date +%s)
 iat=$((${now} - 60)) # Issues 60 seconds in the past
 exp=$((${now} + 600)) # Expires 10 minutes in the future
 
-b64enc() { openssl base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n'; }
+b64enc() {
+  openssl base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n'
+  return 0
+}
 
 header_json='{
     "typ":"JWT",
@@ -178,7 +184,7 @@ PR_TRIGGER_PAT=$(curl --request POST \
 
 # Set default values if not provided
 if [[ -z "$PR_TRIGGER_PAT" ]]; then
-  echo "[ERROR] PR_TRIGGER_PAT environment variable is not set or is empty."
+  echo "[ERROR] PR_TRIGGER_PAT environment variable is not set or is empty." >&2
   exit 1
 fi
 
@@ -244,7 +250,7 @@ trigger_response=$(curl -s -L \
   -d "$DISPATCH_EVENT" 2>&1)
 
 if [[ $? -ne 0 ]]; then
-  echo "[ERROR] Failed to trigger workflow. Response: $trigger_response"
+  echo "[ERROR] Failed to trigger workflow. Response: $trigger_response" >&2
   exit 1
 fi
 
@@ -264,8 +270,8 @@ for _ in {1..18}; do
     "https://api.github.com/repos/NHSDigital/nhs-notify-internal/actions/runs?event=workflow_dispatch")
 
   if ! echo "$response" | jq empty 2>/dev/null; then
-    echo "[ERROR] Invalid JSON response from GitHub API during workflow polling:"
-    echo "$response"
+    echo "[ERROR] Invalid JSON response from GitHub API during workflow polling:" >&2
+    echo "$response" >&2
     exit 1
   fi
 
@@ -303,7 +309,7 @@ for _ in {1..18}; do
 done
 
 if [[ -z "$workflow_run_url" || "$workflow_run_url" == null ]]; then
-  echo "[ERROR] Failed to get the workflow run url. Exiting."
+  echo "[ERROR] Failed to get the workflow run url. Exiting." >&2
   exit 1
 fi
 
@@ -332,7 +338,7 @@ while true; do
       echo "[SUCCESS] Workflow completed successfully!"
       exit 0
     else
-      echo "[FAIL] Workflow failed with conclusion: $conclusion"
+      echo "[FAIL] Workflow failed with conclusion: $conclusion" >&2
       exit 1
     fi
   fi

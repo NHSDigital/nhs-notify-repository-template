@@ -1,5 +1,5 @@
 // Placeholder HTTP server for AppRunner. Replace with real application code.
-import http from 'http';
+import http from 'node:http';
 
 export const createRequestHandler = () => {
   return (_req: http.IncomingMessage, res: http.ServerResponse) => {

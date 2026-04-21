@@ -64,6 +64,8 @@ function get_files_to_check() {
       exit 126
       ;;
   esac
+
+  return 0
 }
 
 
@@ -87,6 +89,8 @@ function build_exclude_args() {
     done
   fi
   echo "${args[@]}"
+
+  return 0
 }
 
 
@@ -126,6 +130,8 @@ function search_todos() {
   done
 
   echo -e "$todos"
+
+  return 0
 }
 
 
@@ -136,15 +142,15 @@ function filter_todos_with_valid_jira_ticket() {
 
   while IFS= read -r line; do
     # Only lines with TODO but without a valid JIRA ticket
-    if grep -qnHiE '\bTODO\b' <<< "$line"; then
-      if ! [[ "$line" =~ $jira_regex ]]; then
-        todos_without_ticket+="$line\n"
-      fi
+    if grep -qnHiE '\bTODO\b' <<< "$line" && ! [[ "$line" =~ $jira_regex ]]; then
+      todos_without_ticket+="$line\n"
     fi
   done <<< "$(echo -e "$todos")"
 
   # Output only TODOs without a valid JIRA ticket
   echo -e "$todos_without_ticket"
+
+  return 0
 }
 
 
@@ -201,6 +207,8 @@ function print_output() {
   else
       echo "No TODOs found without a Jira reference."
   fi
+
+  return 0
 }
 
 
@@ -213,6 +221,8 @@ function main() {
   local todos
   todos=$(search_todos "$check_mode" "${exclude_args[@]}")
   print_output "$todos" "${exclude_args[@]}"
+
+  return 0
 }
 
 # ==============================================================================
@@ -225,10 +235,14 @@ function line_count() {
   else
     echo 0
   fi
+
+  return 0
 }
 
 function is-arg-true() {
-  if [[ "$1" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
+  local arg="$1"
+
+  if [[ "$arg" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
     return 0
   else
     return 1

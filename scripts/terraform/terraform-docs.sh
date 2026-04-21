@@ -24,6 +24,8 @@ function main() {
   else
     run-terraform-docs-in-docker "$dir_to_document"
   fi
+
+  return 0
 }
 
 # Run terraform-docs on the specified directory.
@@ -40,6 +42,8 @@ function run-terraform-docs-natively() {
       --output-file README.md \
       "$dir_to_scan"
   fi
+
+  return 0
 }
 
 function run-terraform-docs-in-docker() {
@@ -61,12 +65,15 @@ function run-terraform-docs-in-docker() {
       --output-file README.md \
       "$dir_to_scan"
 
+  return 0
+
 }
 # ==============================================================================
 
 function is-arg-true() {
+  local arg="$1"
 
-  if [[ "$1" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
+  if [[ "$arg" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
     return 0
   else
     return 1

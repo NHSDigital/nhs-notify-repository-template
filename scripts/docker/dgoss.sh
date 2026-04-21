@@ -15,6 +15,7 @@ CONTAINER_RUNTIME="${CONTAINER_RUNTIME:-docker}"
 
 info() {
     echo -e "INFO: $*" >&2;
+    return 0
 }
 error() {
     echo -e "ERROR: $*" >&2;
@@ -32,6 +33,7 @@ cleanup() {
         info "Deleting container"
         $CONTAINER_RUNTIME rm -vf "$id" > /dev/null
     fi
+    return 0
 }
 
 run(){
@@ -67,6 +69,7 @@ run(){
     $CONTAINER_RUNTIME logs -f "$id" > "$tmp_dir/docker_output.log" 2>&1 &
     log_pid=$!
     info "Container ID: ${id:0:8}"
+    return 0
 }
 
 get_docker_file() {
@@ -79,6 +82,7 @@ get_docker_file() {
         $CONTAINER_RUNTIME cp "${cid}:${src}" "${dst}"
         info "Copied '${src}' from container to '${dst}'"
     fi
+    return 0
 }
 
 # Main

@@ -19,6 +19,8 @@ function main() {
   cd "$(git rev-parse --show-toplevel)"
 
   terraform-docs
+
+  return 0
 }
 
 # Generate Terraform documentation.
@@ -28,13 +30,16 @@ function terraform-docs() {
 
   make terraform-docs
   git add infrastructure/terraform/**/*.md
+
+  return 0
 }
 
 # ==============================================================================
 
 function is-arg-true() {
+  local arg="$1"
 
-  if [[ "$1" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
+  if [[ "$arg" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
     return 0
   else
     return 1

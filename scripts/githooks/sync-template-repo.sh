@@ -52,7 +52,7 @@ cp "${MERGE_FILE}" "${TMP_SYNC_MERGE}/.gitignore"
 
 # Check if a file is ignored.
 is_ignored() {
-  local file=${1}
+  local file="$1"
 
   # Ignore .git directories and files
   if [[ "$file" == *.git/* ]]; then
@@ -67,7 +67,7 @@ is_ignored() {
 }
 
 is_merge() {
-  local file=${1}
+  local file="$1"
 
   pushd "${TMP_SYNC_MERGE}" > /dev/null
   git check-ignore -q "${file}"
@@ -102,22 +102,20 @@ while IFS= read -r -d '' file || [[ -n $file ]]; do
 
   else
     # If the file exists, check if it's different
-    if [[ "$new_only" == false  ]]; then
-      if ! diff -q "$file" "$target_path" > /dev/null 2>&1; then
-        if is_merge "$relative_path"; then
-          echo "Merging changes from $relative_path"
-          cp "$target_path" "${target_path}.bak"
-          node "${scriptdir}/../maintenance/merge.js" "$target_path" "$file" > "${target_path}.merged"
-          if ! cmp -s "${target_path}.merged" "${target_path}.bak"; then
-            FILES_WITH_CHANGES+=("${relative_path}")
-            mv "${target_path}.merged" "$target_path"
-          fi
-          rm -f "${target_path}.merged" "${target_path}.bak"
-        else
-          echo "Copying changes from $relative_path"
-          cp "$file" "$target_path"
+    if [[ "$new_only" == false  ]] && ! diff -q "$file" "$target_path" > /dev/null 2>&1; then
+      if is_merge "$relative_path"; then
+        echo "Merging changes from $relative_path"
+        cp "$target_path" "${target_path}.bak"
+        node "${scriptdir}/../maintenance/merge.js" "$target_path" "$file" > "${target_path}.merged"
+        if ! cmp -s "${target_path}.merged" "${target_path}.bak"; then
           FILES_WITH_CHANGES+=("${relative_path}")
+          mv "${target_path}.merged" "$target_path"
         fi
+        rm -f "${target_path}.merged" "${target_path}.bak"
+      else
+        echo "Copying changes from $relative_path"
+        cp "$file" "$target_path"
+        FILES_WITH_CHANGES+=("${relative_path}")
       fi
     fi
   fi

@@ -51,13 +51,13 @@ function main() {
       ;;
   esac
 
-  if [[ -n "$files"  ]]; then
-    if command -v markdownlint > /dev/null 2>&1 && ! is-arg-true "${FORCE_USE_DOCKER:-false}"; then
-      files="$files" run-markdownlint-natively
-    else
-      files="$files" run-markdownlint-in-docker
-    fi
+  if [[ -n "$files" ]] && command -v markdownlint > /dev/null 2>&1 && ! is-arg-true "${FORCE_USE_DOCKER:-false}"; then
+    files="$files" run-markdownlint-natively
+  elif [[ -n "$files"  ]]; then
+    files="$files" run-markdownlint-in-docker
   fi
+
+  return 0
 }
 
 # Run markdownlint natively.
@@ -69,6 +69,8 @@ function run-markdownlint-natively() {
   markdownlint \
     $files \
     --config "$PWD/scripts/config/markdownlint.yaml"
+
+  return 0
 }
 
 # Run markdownlint in a Docker container.
@@ -87,13 +89,16 @@ function run-markdownlint-in-docker() {
     "$image" \
       $files \
       --config /workdir/scripts/config/markdownlint.yaml
+
+  return 0
 }
 
 # ==============================================================================
 
 function is-arg-true() {
+  local arg="$1"
 
-  if [[ "$1" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
+  if [[ "$arg" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
     return 0
   else
     return 1
