@@ -15,6 +15,7 @@ CONTAINER_RUNTIME="${CONTAINER_RUNTIME:-docker}"
 
 info() {
     echo -e "INFO: $*" >&2;
+    return 0
 }
 error() {
     echo -e "ERROR: $*" >&2;
@@ -24,7 +25,7 @@ error() {
 cleanup() {
     set +e
     { kill "$log_pid" && wait "$log_pid"; } 2> /dev/null
-    if [ -n "$CONTAINER_LOG_OUTPUT" ]; then
+    if [[ -n "$CONTAINER_LOG_OUTPUT"  ]]; then
         cp "$tmp_dir/docker_output.log" "$CONTAINER_LOG_OUTPUT"
     fi
     rm -rf "$tmp_dir"
@@ -32,6 +33,7 @@ cleanup() {
         info "Deleting container"
         $CONTAINER_RUNTIME rm -vf "$id" > /dev/null
     fi
+    return 0
 }
 
 run(){
@@ -47,7 +49,7 @@ run(){
     case "$GOSS_FILES_STRATEGY" in
       mount)
         info "Starting $CONTAINER_RUNTIME container"
-        if [ "$CONTAINER_RUNTIME" == "podman" -a $# == 2 ]; then
+        if [[ "$CONTAINER_RUNTIME" == "podman" && $# == 2 ]]; then
             id=$($CONTAINER_RUNTIME run -d -v "$tmp_dir:/goss:z" "${@:2}" sleep infinity)
         else
             id=$($CONTAINER_RUNTIME run -d -v "$tmp_dir:/goss:z" "${@:2}")
@@ -67,6 +69,7 @@ run(){
     $CONTAINER_RUNTIME logs -f "$id" > "$tmp_dir/docker_output.log" 2>&1 &
     log_pid=$!
     info "Container ID: ${id:0:8}"
+    return 0
 }
 
 get_docker_file() {
@@ -79,6 +82,7 @@ get_docker_file() {
         $CONTAINER_RUNTIME cp "${cid}:${src}" "${dst}"
         info "Copied '${src}' from container to '${dst}'"
     fi
+    return 0
 }
 
 # Main
@@ -113,7 +117,7 @@ case "$1" in
         fi
         [[ $GOSS_SLEEP ]] && { info "Sleeping for $GOSS_SLEEP"; sleep "$GOSS_SLEEP"; }
         info "Container health"
-        if [ "true" != "$($CONTAINER_RUNTIME inspect -f '{{.State.Running}}' "$id")" ]; then
+        if [[ "true" != "$($CONTAINER_RUNTIME inspect -f '{{.State.Running}}' "$id")"  ]]; then
             $CONTAINER_RUNTIME logs "$id" >&2
             error "the container failed to start"
         fi

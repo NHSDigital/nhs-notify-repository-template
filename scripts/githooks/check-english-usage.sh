@@ -52,6 +52,8 @@ function main() {
   else
     filter="$filter" run-vale-in-docker
   fi
+
+  return 0
 }
 
 # Run Vale natively.
@@ -63,6 +65,8 @@ function run-vale-natively() {
   vale \
     --config "$PWD/scripts/config/vale/vale.ini" \
     $($filter)
+
+  return 0
 }
 
 # Run Vale in a Docker container.
@@ -86,13 +90,16 @@ function run-vale-in-docker() {
     "$image" \
       --config /workdir/scripts/config/vale/vale.ini \
       $($filter) /dev/null
+
+  return 0
 }
 
 # ==============================================================================
 
 function is-arg-true() {
+  local arg="$1"
 
-  if [[ "$1" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
+  if [[ "$arg" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
     return 0
   else
     return 1

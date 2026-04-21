@@ -22,6 +22,8 @@ function main() {
 
   local check_only=${check_only:-false}
   check_only=$check_only terraform-fmt
+
+  return 0
 }
 
 # Format Terraform files.
@@ -34,13 +36,16 @@ function terraform-fmt() {
   else
     make terraform-fmt
   fi
+
+  return 0
 }
 
 # ==============================================================================
 
 function is-arg-true() {
+  local arg="$1"
 
-  if [[ "$1" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
+  if [[ "$arg" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
     return 0
   else
     return 1

@@ -27,6 +27,8 @@ function main() {
   else
     file="$file" run-hadolint-in-docker
   fi
+
+  return 0
 }
 
 # Run hadolint natively.
@@ -36,6 +38,8 @@ function run-hadolint-natively() {
 
   # shellcheck disable=SC2001
   hadolint "$(echo "$file" | sed "s#$PWD#.#")"
+
+  return 0
 }
 
 # Run hadolint in a Docker container.
@@ -56,13 +60,16 @@ function run-hadolint-in-docker() {
       hadolint \
         --config /workdir/scripts/config/hadolint.yaml \
         "/workdir/$(echo "$file" | sed "s#$PWD#.#")"
+
+  return 0
 }
 
 # ==============================================================================
 
 function is-arg-true() {
+  local arg="$1"
 
-  if [[ "$1" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
+  if [[ "$arg" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
     return 0
   else
     return 1

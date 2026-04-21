@@ -24,8 +24,9 @@ runs:
   steps:
     - name: "Create CLOC report"
       shell: bash
+      env:
+        BUILD_DATETIME: ${{ inputs.build_datetime }}
       run: |
-        export BUILD_DATETIME=${{ inputs.build_datetime }}
         ./scripts/reports/create-lines-of-code-report.sh
     - name: "Compress CLOC report"
       shell: bash
@@ -40,8 +41,15 @@ runs:
     - name: "Check prerequisites for sending the report"
       shell: bash
       id: check
+      env:
+        ROLE_NAME: ${{ inputs.idp_aws_report_upload_role_name }}
+        BUCKET_ENDPOINT: ${{ inputs.idp_aws_report_upload_bucket_endpoint }}
       run: |
-        echo "secrets_exist=${{ inputs.idp_aws_report_upload_role_name != '' && inputs.idp_aws_report_upload_bucket_endpoint != '' }}" >> $GITHUB_OUTPUT
+        if [[ -n "$ROLE_NAME" && -n "$BUCKET_ENDPOINT" ]]; then
+          echo "secrets_exist=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "secrets_exist=false" >> "$GITHUB_OUTPUT"
+        fi
     - name: "Authenticate to send the report"
       if: steps.check.outputs.secrets_exist == 'true'
       uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6
@@ -51,7 +59,10 @@ runs:
     - name: "Send the CLOC report to the central location"
       shell: bash
       if: steps.check.outputs.secrets_exist == 'true'
+      env:
+        BUCKET_ENDPOINT: ${{ inputs.idp_aws_report_upload_bucket_endpoint }}
+        BUILD_TIMESTAMP: ${{ inputs.build_timestamp }}
       run: |
         aws s3 cp \
           ./lines-of-code-report.json.zip \
-          ${{ inputs.idp_aws_report_upload_bucket_endpoint }}/${{ inputs.build_timestamp }}-lines-of-code-report.json.zip
+          "$BUCKET_ENDPOINT/$BUILD_TIMESTAMP-lines-of-code-report.json.zip"

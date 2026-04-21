@@ -64,6 +64,8 @@ function get_files_to_check() {
       exit 126
       ;;
   esac
+
+  return 0
 }
 
 
@@ -75,18 +77,20 @@ function build_exclude_args() {
     --exclude="scripts/githooks/check-todos.sh"
   ) # Exclude this script and its references by default, as it naturally contains TODOs. Todo todo todo <- see?
 
-  if [ ${#EXCLUDED_DIRS[@]} -gt 0 ]; then
+  if [[ ${#EXCLUDED_DIRS[@]} -gt 0  ]]; then
     for dir in "${EXCLUDED_DIRS[@]}"; do
       args+=(--exclude-dir="$dir")
     done
   fi
 
-  if [ ${#EXCLUDED_FILES[@]} -gt 0 ]; then
+  if [[ ${#EXCLUDED_FILES[@]} -gt 0  ]]; then
     for file in "${EXCLUDED_FILES[@]}"; do
       args+=(--exclude="$file")
     done
   fi
   echo "${args[@]}"
+
+  return 0
 }
 
 
@@ -119,13 +123,15 @@ function search_todos() {
     done
 
     # If the file is excluded, skip it
-    if [ "$skip" = false ] && [ -f "$file" ]; then
+    if [[ "$skip" = false && -f "$file" ]]; then
       file_todos=$(grep -nHiE '\bTODO\b' "$file" || true)
       [ -n "$file_todos" ] && todos+="$file_todos\n"
     fi
   done
 
   echo -e "$todos"
+
+  return 0
 }
 
 
@@ -136,15 +142,15 @@ function filter_todos_with_valid_jira_ticket() {
 
   while IFS= read -r line; do
     # Only lines with TODO but without a valid JIRA ticket
-    if grep -qnHiE '\bTODO\b' <<< "$line"; then
-      if ! [[ "$line" =~ $jira_regex ]]; then
-        todos_without_ticket+="$line\n"
-      fi
+    if grep -qnHiE '\bTODO\b' <<< "$line" && ! [[ "$line" =~ $jira_regex ]]; then
+      todos_without_ticket+="$line\n"
     fi
   done <<< "$(echo -e "$todos")"
 
   # Output only TODOs without a valid JIRA ticket
   echo -e "$todos_without_ticket"
+
+  return 0
 }
 
 
@@ -160,13 +166,13 @@ function print_output() {
   echo "  Check Mode: ${check:-working-tree-changes}"
   echo "  Total TODOs found: $todo_count"
 
-  if [ ${#EXCLUDED_DIRS[@]} -gt 0 ]; then
+  if [[ ${#EXCLUDED_DIRS[@]} -gt 0  ]]; then
     echo "  Excluded Directories: ${EXCLUDED_DIRS[*]}"
   else
     echo "  Excluded Directories: (none)"
   fi
 
-  if [ ${#EXCLUDED_FILES[@]} -gt 0 ]; then
+  if [[ ${#EXCLUDED_FILES[@]} -gt 0  ]]; then
     echo "  Excluded Files: ${EXCLUDED_FILES[*]}"
   else
     echo "  Excluded Files: (none)"
@@ -180,7 +186,7 @@ function print_output() {
   echo "All TODOs found: $todo_count"
   echo "========================================="
 
-  if [ "$todo_count" -gt 0 ]; then
+  if [[ "$todo_count" -gt 0  ]]; then
     echo "$todos"
   else
     echo "No TODOs found."
@@ -195,12 +201,14 @@ function print_output() {
   echo "TODOs without a Jira ticket: $results_count"
   echo "========================================="
 
-  if [ "$results_count" -gt 0 ]; then
+  if [[ "$results_count" -gt 0  ]]; then
     echo "$results"
     exit 1
   else
       echo "No TODOs found without a Jira reference."
   fi
+
+  return 0
 }
 
 
@@ -213,6 +221,8 @@ function main() {
   local todos
   todos=$(search_todos "$check_mode" "${exclude_args[@]}")
   print_output "$todos" "${exclude_args[@]}"
+
+  return 0
 }
 
 # ==============================================================================
@@ -220,15 +230,19 @@ function main() {
 # Count non-empty lines in a string
 function line_count() {
   local input="$1"
-  if [ -n "$input" ]; then
+  if [[ -n "$input"  ]]; then
     echo -e "$input" | wc -l
   else
     echo 0
   fi
+
+  return 0
 }
 
 function is-arg-true() {
-  if [[ "$1" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
+  local arg="$1"
+
+  if [[ "$arg" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
     return 0
   else
     return 1
