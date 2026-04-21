@@ -1,4 +1,4 @@
-import http from 'http';
+import http from 'node:http';
 import { createRequestHandler, startServer } from '../server';
 
 describe('example-app server', () => {

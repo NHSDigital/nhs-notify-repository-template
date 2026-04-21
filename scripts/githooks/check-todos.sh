@@ -125,7 +125,7 @@ function search_todos() {
     # If the file is excluded, skip it
     if [[ "$skip" = false && -f "$file" ]]; then
       file_todos=$(grep -nHiE '\bTODO\b' "$file" || true)
-      [ -n "$file_todos" ] && todos+="$file_todos\n"
+      [[ -n "$file_todos" ]] && todos+="$file_todos\n"
     fi
   done
 

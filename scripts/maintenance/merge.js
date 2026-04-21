@@ -13,7 +13,7 @@
  *
  *******************************************************************************/
 
-const fs = require("fs");
+const fs = require("node:fs");
 
 // Read files
 const [file1, file2] = process.argv.slice(2);
