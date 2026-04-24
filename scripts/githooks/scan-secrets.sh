@@ -54,6 +54,10 @@ function get-cmd-to-run() {
     "staged-changes")
       cmd="protect --source $dir --verbose --staged"
       ;;
+    *)
+      echo "Unknown check mode: $check" >&2
+      return 1
+      ;;
   esac
   # Include base line file if it exists
   if [[ -f "$dir/scripts/config/.gitleaks-baseline.json"  ]]; then

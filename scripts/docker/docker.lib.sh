@@ -189,7 +189,7 @@ function docker-get-image-version-and-pull() {
   local version="latest"
   if [[ -f "$versions_file"  ]]; then
     line=$(grep "docker/${name} " "$versions_file" | sed "s/^#\s*//; s/\s*#.*$//" | grep "${match_version:-".*"}")
-    [ -n "$line" ] && version=$(echo "$line" | awk '{print $2}')
+    [[ -n "$line" ]] && version=$(echo "$line" | awk '{print $2}')
   fi
 
   # Split the image version into two, tag name and digest sha256.
@@ -250,7 +250,7 @@ function _replace-image-latest-by-specific-version() {
     # First, list the entries specific for Docker to take precedence, then the rest but exclude comments
     content=$(grep " docker/" "$versions_file"; grep -v " docker/" "$versions_file" ||: | grep -v "^#")
     echo "$content" | while IFS= read -r line; do
-      [ -z "$line" ] && continue
+      [[ -z "$line" ]] && continue
       line=$(echo "$line" | sed "s/^#\s*//; s/\s*#.*$//" | sed "s;docker/;;")
       name=$(echo "$line" | awk '{print $1}')
       version=$(echo "$line" | awk '{print $2}')
