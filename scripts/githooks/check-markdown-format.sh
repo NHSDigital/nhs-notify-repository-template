@@ -49,6 +49,10 @@ function main() {
     "branch")
       files="$( (git diff --diff-filter=ACMRT --name-only "${BRANCH_NAME:-origin/main}" "*.md"; git diff --name-only "*.md") | sort | uniq )"
       ;;
+    *)
+      echo "Unknown check mode: $check" >&2
+      return 1
+      ;;
   esac
 
   if [[ -n "$files" ]] && command -v markdownlint > /dev/null 2>&1 && ! is-arg-true "${FORCE_USE_DOCKER:-false}"; then
