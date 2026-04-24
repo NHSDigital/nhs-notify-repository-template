@@ -1,0 +1,23 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      nhsuk-frontend:
+        specifier: ^8.1.1
+        version: 8.3.0
+
+packages:
+
+  nhsuk-frontend@8.3.0:
+    resolution: {integrity: sha512-oln8/+0ZJwQgWPrEWcI7+4SeHdAfr3dkvZ5PAKswa6+66f7dbnwYq/IU+Aaqzp25EJsQuSlwElZghJHUKIUOqg==}
+    engines: {node: '>=20.0.0'}
+
+snapshots:
+
+  nhsuk-frontend@8.3.0: {}

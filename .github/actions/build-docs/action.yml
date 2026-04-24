@@ -12,9 +12,9 @@ runs:
     - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
       with:
         node-version: 18
-    - name: Npm cli install
+    - name: Install docs node dependencies
       working-directory: ./docs
-      run: npm ci
+      run: pnpm --ignore-workspace install --frozen-lockfile
       shell: bash
     - name: Setup Ruby
       uses: ruby/setup-ruby@3783f195e29b74ae398d7caca108814bbafde90e # v1.180.1
