@@ -19,6 +19,10 @@ on:
         description: "Node.js version, set by the CI/CD pipeline workflow"
         required: true
         type: string
+      pnpm_version:
+        description: "pnpm version, set by the CI/CD pipeline workflow"
+        required: true
+        type: string
       python_version:
         description: "Python version, set by the CI/CD pipeline workflow"
         required: true
@@ -40,6 +44,11 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: "Setup pnpm"
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+        with:
+          version: "${{ inputs.pnpm_version }}"
+          cache: true
       - name: "Create infractructure"
         run: |
           echo "Creating infractructure..."
@@ -57,6 +66,11 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: "Setup pnpm"
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+        with:
+          version: "${{ inputs.pnpm_version }}"
+          cache: true
       - name: "Run contract test"
         run: |
           make test-contract
@@ -71,6 +85,11 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: "Setup pnpm"
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+        with:
+          version: "${{ inputs.pnpm_version }}"
+          cache: true
       - name: "Run security test"
         run: |
           make test-security
@@ -85,6 +104,11 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: "Setup pnpm"
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+        with:
+          version: "${{ inputs.pnpm_version }}"
+          cache: true
       - name: "Run UI test"
         run: |
           make test-ui
@@ -99,6 +123,11 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: "Setup pnpm"
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+        with:
+          version: "${{ inputs.pnpm_version }}"
+          cache: true
       - name: "Run UI performance test"
         run: |
           make test-ui-performance
@@ -113,6 +142,11 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: "Setup pnpm"
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+        with:
+          version: "${{ inputs.pnpm_version }}"
+          cache: true
       - name: "Run integration test"
         run: |
           make test-integration
@@ -127,6 +161,11 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: "Setup pnpm"
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+        with:
+          version: "${{ inputs.pnpm_version }}"
+          cache: true
       - name: "Run accessibility test"
         run: |
           make test-accessibility
@@ -141,6 +180,11 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: "Setup pnpm"
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+        with:
+          version: "${{ inputs.pnpm_version }}"
+          cache: true
       - name: "Run load tests"
         run: |
           make test-load
@@ -165,6 +209,11 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: "Setup pnpm"
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+        with:
+          version: "${{ inputs.pnpm_version }}"
+          cache: true
       - name: "Tear down environment"
         run: |
           echo "Tearing down environment..."
