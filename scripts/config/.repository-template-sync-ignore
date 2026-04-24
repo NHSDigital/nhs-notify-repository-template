@@ -25,6 +25,7 @@ eslint.config.mjs
 infrastructure/terraform/components/
 lambdas/example-lambda/
 package-lock.json
+pnpm-lock.yaml
 package.json
 scripts/**/examples/
 scripts/terraform/terraform.mk

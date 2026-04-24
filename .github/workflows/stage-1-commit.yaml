@@ -19,6 +19,10 @@ on:
         description: "Node.js version, set by the CI/CD pipeline workflow"
         required: true
         type: string
+      pnpm_version:
+        description: "pnpm version, set by the CI/CD pipeline workflow"
+        required: true
+        type: string
       python_version:
         description: "Python version, set by the CI/CD pipeline workflow"
         required: true

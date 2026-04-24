@@ -19,6 +19,10 @@ on:
         description: "Node.js version, set by the CI/CD pipeline workflow"
         required: true
         type: string
+      pnpm_version:
+        description: "pnpm version, set by the CI/CD pipeline workflow"
+        required: true
+        type: string
       python_version:
         description: "Python version, set by the CI/CD pipeline workflow"
         required: true
@@ -50,7 +54,8 @@ jobs:
       - name: "Setup pnpm"
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
         with:
-          version: 10.33.0
+          version: "${{ inputs.pnpm_version }}"
+          cache: true
       - name: "Use Node.js"
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
@@ -73,7 +78,8 @@ jobs:
       - name: "Setup pnpm"
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
         with:
-          version: 10.33.0
+          version: "${{ inputs.pnpm_version }}"
+          cache: true
       - name: "Use Node.js"
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
@@ -110,7 +116,8 @@ jobs:
       - name: "Setup pnpm"
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
         with:
-          version: 10.33.0
+          version: "${{ inputs.pnpm_version }}"
+          cache: true
       - name: "Use Node.js"
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
@@ -135,7 +142,8 @@ jobs:
       - name: "Setup pnpm"
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
         with:
-          version: 10.33.0
+          version: "${{ inputs.pnpm_version }}"
+          cache: true
       - name: "Use Node.js"
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:

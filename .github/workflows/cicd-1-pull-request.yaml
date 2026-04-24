@@ -22,6 +22,7 @@ jobs:
       build_timestamp: ${{ steps.variables.outputs.build_timestamp }}
       build_epoch: ${{ steps.variables.outputs.build_epoch }}
       nodejs_version: ${{ steps.variables.outputs.nodejs_version }}
+      pnpm_version: ${{ steps.variables.outputs.pnpm_version }}
       python_version: ${{ steps.variables.outputs.python_version }}
       terraform_version: ${{ steps.variables.outputs.terraform_version }}
       version: ${{ steps.variables.outputs.version }}
@@ -44,6 +45,7 @@ jobs:
           echo "build_timestamp=$(date --date=$datetime -u +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
           echo "build_epoch=$(date --date=$datetime -u +'%s')" >> $GITHUB_OUTPUT
           echo "nodejs_version=$(grep "^nodejs\s" .tool-versions | cut -f2 -d' ')" >> $GITHUB_OUTPUT
+          echo "pnpm_version=$(grep "^pnpm\s" .tool-versions | cut -f2 -d' ')" >> $GITHUB_OUTPUT
           echo "python_version=$(grep "^python\s" .tool-versions | cut -f2 -d' ')" >> $GITHUB_OUTPUT
           echo "terraform_version=$(grep "^terraform\s" .tool-versions | cut -f2 -d' ')" >> $GITHUB_OUTPUT
           echo "version=$(echo $version)" >> $GITHUB_OUTPUT
@@ -97,6 +99,7 @@ jobs:
           export BUILD_TIMESTAMP="${{ steps.variables.outputs.build_timestamp }}"
           export BUILD_EPOCH="${{ steps.variables.outputs.build_epoch }}"
           export NODEJS_VERSION="${{ steps.variables.outputs.nodejs_version }}"
+          export PNPM_VERSION="${{ steps.variables.outputs.pnpm_version }}"
           export PYTHON_VERSION="${{ steps.variables.outputs.python_version }}"
           export TERRAFORM_VERSION="${{ steps.variables.outputs.terraform_version }}"
           export VERSION="${{ steps.variables.outputs.version }}"
@@ -112,6 +115,7 @@ jobs:
       build_timestamp: "${{ needs.metadata.outputs.build_timestamp }}"
       build_epoch: "${{ needs.metadata.outputs.build_epoch }}"
       nodejs_version: "${{ needs.metadata.outputs.nodejs_version }}"
+      pnpm_version: "${{ needs.metadata.outputs.pnpm_version }}"
       python_version: "${{ needs.metadata.outputs.python_version }}"
       #TODO - Re-visit Trivy usage https://nhsd-jira.digital.nhs.uk/browse/CCM-15549
       # skip_trivy_package: ${{ needs.metadata.outputs.skip_trivy_package == 'true' }}
@@ -127,6 +131,7 @@ jobs:
       build_timestamp: "${{ needs.metadata.outputs.build_timestamp }}"
       build_epoch: "${{ needs.metadata.outputs.build_epoch }}"
       nodejs_version: "${{ needs.metadata.outputs.nodejs_version }}"
+      pnpm_version: "${{ needs.metadata.outputs.pnpm_version }}"
       python_version: "${{ needs.metadata.outputs.python_version }}"
       terraform_version: "${{ needs.metadata.outputs.terraform_version }}"
       version: "${{ needs.metadata.outputs.version }}"
@@ -141,6 +146,7 @@ jobs:
       build_timestamp: "${{ needs.metadata.outputs.build_timestamp }}"
       build_epoch: "${{ needs.metadata.outputs.build_epoch }}"
       nodejs_version: "${{ needs.metadata.outputs.nodejs_version }}"
+      pnpm_version: "${{ needs.metadata.outputs.pnpm_version }}"
       python_version: "${{ needs.metadata.outputs.python_version }}"
       terraform_version: "${{ needs.metadata.outputs.terraform_version }}"
       version: "${{ needs.metadata.outputs.version }}"
@@ -155,6 +161,7 @@ jobs:
       build_timestamp: "${{ needs.metadata.outputs.build_timestamp }}"
       build_epoch: "${{ needs.metadata.outputs.build_epoch }}"
       nodejs_version: "${{ needs.metadata.outputs.nodejs_version }}"
+      pnpm_version: "${{ needs.metadata.outputs.pnpm_version }}"
       python_version: "${{ needs.metadata.outputs.python_version }}"
       terraform_version: "${{ needs.metadata.outputs.terraform_version }}"
       version: "${{ needs.metadata.outputs.version }}"

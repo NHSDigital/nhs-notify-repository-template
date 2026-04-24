@@ -8,7 +8,7 @@ h help:
 	@egrep '^\S|^$$' Makefile
 
 install:
-	npm install
+	pnpm --ignore-workspace install --frozen-lockfile
 	bundle config set --local path vendor/bundle
 	bundle install
 
@@ -20,10 +20,10 @@ $(if $(BASE_URL),-- --baseurl $(BASE_URL),-- --baseurl "")
 endef
 
 build: version
-	npm run build $(baseurlparam)
+	pnpm --ignore-workspace run build $(baseurlparam)
 
 debug: version
-	npm run debug
+	pnpm --ignore-workspace run debug
 
 version:
 	touch _config.version.yml
