@@ -11,15 +11,15 @@ cd "$(git rev-parse --show-toplevel)"
 #
 #   rails test:unit
 #   python manage.py test
-#   npm run test
+#   pnpm run test
 #
 # or whatever is appropriate to your project. You should *only* run your fast
 # tests from here. If you want to run other test suites, see the predefined
 # tasks in scripts/test.mk.
 
 # run tests
-npm ci
-npm run test:unit --workspaces
+pnpm install --frozen-lockfile
+pnpm run test:unit:silent
 
 # merge coverage reports
 mkdir -p .reports

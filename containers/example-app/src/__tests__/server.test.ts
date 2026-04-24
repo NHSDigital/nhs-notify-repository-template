@@ -1,14 +1,14 @@
-import http from 'node:http';
-import { createRequestHandler, startServer } from '../server';
+import http from "node:http";
+import { createRequestHandler, startServer } from "../server";
 
-describe('example-app server', () => {
-  describe('createRequestHandler', () => {
-    it('returns a request handler function', () => {
+describe("example-app server", () => {
+  describe("createRequestHandler", () => {
+    it("returns a request handler function", () => {
       const handler = createRequestHandler();
-      expect(typeof handler).toBe('function');
+      expect(typeof handler).toBe("function");
     });
 
-    it('responds with 200 status and JSON body', (done) => {
+    it("responds with 200 status and JSON body", () => {
       const handler = createRequestHandler();
       const mockReq = {} as http.IncomingMessage;
       const mockRes = {
@@ -18,44 +18,56 @@ describe('example-app server', () => {
 
       handler(mockReq, mockRes);
 
-      expect(mockRes.writeHead).toHaveBeenCalledWith(200, { 'Content-Type': 'application/json' });
-      expect(mockRes.end).toHaveBeenCalledWith(JSON.stringify({ status: 'ok' }));
-      done();
+      expect(mockRes.writeHead).toHaveBeenCalledWith(200, {
+        "Content-Type": "application/json",
+      });
+      expect(mockRes.end).toHaveBeenCalledWith(
+        JSON.stringify({ status: "ok" }),
+      );
     });
   });
 
-  describe('startServer', () => {
+  describe("startServer", () => {
     let server: http.Server;
     const port = 8888;
 
-    afterEach((done) => {
-      if (server) {
-        server.close(done);
-      } else {
-        done();
-      }
+    afterEach(async () => {
+      await new Promise<void>((resolve) => {
+        if (server) {
+          server.close(() => {
+            resolve();
+          });
+        } else {
+          resolve();
+        }
+      });
     });
 
-    it('starts server on specified port and responds correctly', (done) => {
+    it("starts server on specified port and responds correctly", async () => {
       server = startServer(port);
 
-      // Wait a bit for server to start
-      setTimeout(() => {
-        http.get(`http://localhost:${port}`, (res) => {
-          expect(res.statusCode).toBe(200);
-          expect(res.headers['content-type']).toBe('application/json');
+      await new Promise<void>((resolve, reject) => {
+        setTimeout(() => {
+          http
+            .get(`http://localhost:${port}`, (res) => {
+              expect(res.statusCode).toBe(200);
+              expect(res.headers["content-type"]).toBe("application/json");
 
-          let body = '';
-          res.on('data', (chunk) => {
-            body += chunk;
-          });
+              let body = "";
+              res.on("data", (chunk: Buffer) => {
+                body += chunk.toString();
+              });
 
-          res.on('end', () => {
-            expect(JSON.parse(body)).toEqual({ status: 'ok' });
-            done();
-          });
-        });
-      }, 100);
+              res.on("end", () => {
+                expect(JSON.parse(body)).toEqual({ status: "ok" });
+                resolve();
+              });
+
+              res.on("error", reject);
+            })
+            .on("error", reject);
+        }, 100);
+      });
     });
   });
 });
