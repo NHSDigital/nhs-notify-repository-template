@@ -11,7 +11,7 @@ cd "$(git rev-parse --show-toplevel)"
 #
 #   rails test:unit
 #   python manage.py test
-#   npm run test
+#   pnpm run test
 #
 # or whatever is appropriate to your project. You should *only* run your fast
 # tests from here. If you want to run other test suites, see the predefined

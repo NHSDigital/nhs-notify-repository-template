@@ -4,7 +4,7 @@ set -euo pipefail
 
 rm -rf dist
 
-npx esbuild \
+pnpm exec esbuild \
     --bundle \
     --minify \
     --sourcemap \
