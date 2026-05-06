@@ -1,0 +1,20 @@
+#TODO - Re-visit Trivy usage https://nhsd-jira.digital.nhs.uk/browse/CCM-15549
+# name: "Trivy IaC Scan"
+# description: "Scan Terraform IaC using Trivy"
+# runs:
+#   using: "composite"
+#   steps:
+#     - name: "Trivy Terraform IaC Scan"
+#       shell: bash
+#       run: |
+#         components_exit_code=0
+#         modules_exit_code=0
+#         asdf plugin add trivy || true
+#         asdf install trivy || true
+#         ./scripts/terraform/trivy-scan.sh --mode iac ./infrastructure/terraform/components || components_exit_code=$?
+#         ./scripts/terraform/trivy-scan.sh --mode iac ./infrastructure/terraform/modules || modules_exit_code=$?
+
+#         if [ $components_exit_code -ne 0 ] || [ $modules_exit_code -ne 0 ]; then
+#           echo "Trivy misconfigurations detected."
+#           exit 1
+#         fi

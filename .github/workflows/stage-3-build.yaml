@@ -50,7 +50,7 @@ jobs:
           version: "${{ inputs.pnpm_version }}"
           cache: true
       - name: "Build docs"
-        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/build-docs@3.0.0
+        uses: ./.github/actions/build-docs
         with:
           version: "${{ inputs.version }}"
   artefact-1:
