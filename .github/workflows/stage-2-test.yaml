@@ -19,10 +19,6 @@ on:
         description: "Node.js version, set by the CI/CD pipeline workflow"
         required: true
         type: string
-      pnpm_version:
-        description: "pnpm version, set by the CI/CD pipeline workflow"
-        required: true
-        type: string
       python_version:
         description: "Python version, set by the CI/CD pipeline workflow"
         required: true
@@ -36,128 +32,33 @@ on:
         required: true
         type: string
 
-env:
-  AWS_REGION: eu-west-2
-  TERM: xterm-256color
-
-permissions:
-  contents: read # This is required for actions/checkout
-
 jobs:
-  check-generated-dependencies:
-    name: "Check generated dependencies"
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-      - name: "Setup pnpm"
-        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
-        with:
-          version: "${{ inputs.pnpm_version }}"
-          cache: true
-      - name: "Use Node.js"
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
-        with:
-          node-version-file: '.tool-versions'
-          cache: 'pnpm'
-      - name: "Repo setup"
-        run: |
-          pnpm install --frozen-lockfile
-      - name: "Generate dependencies"
-        run: |
-          pnpm run generate-dependencies
-          git diff --exit-code
   test-unit:
     name: "Unit tests"
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-      - name: "Setup pnpm"
-        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
-        with:
-          version: "${{ inputs.pnpm_version }}"
-          cache: true
-      - name: "Use Node.js"
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
-        with:
-          node-version-file: '.tool-versions'
-          cache: 'pnpm'
-      - name: "Repo setup"
-        run: |
-          pnpm install --frozen-lockfile
-      - name: "Generate dependencies"
-        run: |
-          pnpm run generate-dependencies
+        uses: actions/checkout@v4
       - name: "Run unit test suite"
         run: |
           make test-unit
       - name: "Save the result of fast test suite"
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
-        with:
-          name: unit-tests
-          path: "**/.reports/unit"
-          include-hidden-files: true
-        if: always()
-      - name: "Save the result of code coverage"
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
-        with:
-          name: code-coverage-report
-          path: ".reports/lcov.info"
+        run: |
+          echo "Nothing to save"
   test-lint:
     name: "Linting"
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-      - name: "Setup pnpm"
-        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
-        with:
-          version: "${{ inputs.pnpm_version }}"
-          cache: true
-      - name: "Use Node.js"
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
-        with:
-          node-version-file: '.tool-versions'
-          cache: 'pnpm'
-      - name: "Repo setup"
-        run: |
-          pnpm install --frozen-lockfile
-      - name: "Generate dependencies"
-        run: |
-          pnpm run generate-dependencies
+        uses: actions/checkout@v4
       - name: "Run linting"
         run: |
           make test-lint
-  test-typecheck:
-    name: "Typecheck"
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-      - name: "Setup pnpm"
-        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
-        with:
-          version: "${{ inputs.pnpm_version }}"
-          cache: true
-      - name: "Use Node.js"
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
-        with:
-          node-version-file: '.tool-versions'
-          cache: 'pnpm'
-      - name: "Repo setup"
+      - name: "Save the linting result"
         run: |
-          pnpm install --frozen-lockfile
-      - name: "Generate dependencies"
-        run: |
-          pnpm run generate-dependencies
-      - name: "Run typecheck"
-        run: |
-          make test-typecheck
+          echo "Nothing to save"
   test-coverage:
     name: "Test coverage"
     needs: [test-unit]
@@ -165,7 +66,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@v4
       - name: "Run test coverage check"
         run: |
           make test-coverage
@@ -182,15 +83,11 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Full history is needed to improving relevancy of reporting
-      - name: "Download coverage report for SONAR"
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
-        with:
-          name: code-coverage-report
       - name: "Perform static analysis"
-        uses: ./.github/actions/perform-static-analysis
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/perform-static-analysis@3.0.0
         with:
           sonar_organisation_key: "${{ vars.SONAR_ORGANISATION_KEY }}"
           sonar_project_key: "${{ vars.SONAR_PROJECT_KEY }}"

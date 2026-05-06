@@ -1,0 +1,20 @@
+name: "4. PR Title Check"
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited]
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  check-pr-title:
+    name: "Check PR title"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Check PR title format"
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/check-pr-title-format@4e781d1d72739015821a380871aa5a66d070177c # 3.1.0
+        with:
+          title: ${{ github.event.pull_request.title }}
