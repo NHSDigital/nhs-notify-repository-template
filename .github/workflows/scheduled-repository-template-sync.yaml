@@ -26,7 +26,7 @@ jobs:
 
     - name: Run syncronisation script
       run: |
-        ./nhs-notify-repository-template/scripts/githooks/sync-template-repo.sh
+        ./nhs-notify-repository-template/scripts/maintenance/sync-template-repo.sh
         rm -Rf ./nhs-notify-repository-template
 
     - name: Create Pull Request
