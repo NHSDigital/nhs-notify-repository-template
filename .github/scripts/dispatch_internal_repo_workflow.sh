@@ -32,7 +32,7 @@
 #     --overrides "tf_var=someString" \
 #     --overrideProjectName nhs \
 #     --overrideRoleName nhs-service-iam-role \
-#     --shardCount "6"
+#     --shardCount "4"
 
 set -e
 
