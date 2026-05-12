@@ -1,3 +1,9 @@
+---
+layout: page
+title: Scan dependencies
+parent: User Guides
+---
+
 # Guide: Scan dependencies
 
 - [Guide: Scan dependencies](#guide-scan-dependencies)
@@ -19,7 +25,7 @@ In modern software development, leveraging third-party dependencies is a common 
 - [`syft.yaml`](../../scripts/config/syft.yaml): A configuration file for the SBOM generator
 - [`scan-vulnerabilities.sh`](../../scripts/reports/scan-vulnerabilities.sh): A shell script that performs CVE analysis
 - [`grype.yaml`](../../scripts/config/grype.yaml): A configuration file for the CVE scanner
-- [`scan-dependencies/action.yaml`](https://github.com/NHSDigital/nhs-notify-shared-modules/blob/v2.0.32/.github/actions/scan-dependencies/action.yaml): Shared GitHub action used by the CI/CD pipeline
+- [`scan-dependencies/action.yaml`](https://github.com/NHSDigital/nhs-notify-shared-modules/blob/3.1.2/.github/actions/scan-dependencies/action.yaml): Shared GitHub action used by the CI/CD pipeline
 - [`.gitignore`](../../.gitignore): Excludes the `*sbom*report.json` and `*vulnerabilities*report.json` report files created during the process
 
 ## Configuration checklist

@@ -1,3 +1,9 @@
+---
+layout: page
+title: Scripting Terraform
+parent: Developer Guides
+---
+
 # Developer Guide: Scripting Terraform
 
 - [Developer Guide: Scripting Terraform](#developer-guide-scripting-terraform)
@@ -52,7 +58,7 @@ Here are some key features built into this repository's Terraform module:
 - Configuration
   - [`.tool-versions`](../../.tool-versions): Stores Terraform version to be used
 - Code quality gates
-  - [`lint-terraform/action.yaml`](https://github.com/NHSDigital/nhs-notify-shared-modules/blob/v2.0.32/.github/actions/lint-terraform/action.yaml): Shared GitHub action
+  - [`lint-terraform/action.yaml`](https://github.com/NHSDigital/nhs-notify-shared-modules/blob/3.1.2/.github/actions/lint-terraform/action.yaml): Shared GitHub action
   - [`pre-commit.yaml`](../../scripts/config/pre-commit.yaml): Uses shared hooks including Terraform lint and docs checks
 - Usage example
   - Declarative infrastructure definition example [`terraform-state-aws-s3`](../../scripts/terraform/examples/terraform-state-aws-s3) to store Terraform state

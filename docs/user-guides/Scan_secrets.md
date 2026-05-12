@@ -1,3 +1,9 @@
+---
+layout: page
+title: Scan secrets
+parent: User Guides
+---
+
 # Guide: Scan secrets
 
 - [Guide: Scan secrets](#guide-scan-secrets)
@@ -17,7 +23,7 @@ Scanning a repository for hard-coded secrets is a crucial security practice. "Ha
 
 - [`gitleaks.toml`](../../scripts/config/gitleaks.toml): A configuration file for the secret scanner
 - [`.gitleaksignore`](../../.gitleaksignore): A list of fingerprints to ignore by the secret scanner
-- [`scan-secrets/action.yaml`](https://github.com/NHSDigital/nhs-notify-shared-modules/blob/v2.0.32/.github/actions/scan-secrets/action.yaml): Shared GitHub action used by the CI/CD pipeline
+- [`scan-secrets/action.yaml`](https://github.com/NHSDigital/nhs-notify-shared-modules/blob/3.1.2/.github/actions/scan-secrets/action.yaml): Shared GitHub action used by the CI/CD pipeline
 - [`pre-commit.yaml`](../../scripts/config/pre-commit.yaml): Run the secret scanner as a pre-commit git hook
 
 ## Configuration checklist
