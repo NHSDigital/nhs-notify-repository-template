@@ -4,7 +4,7 @@ title: Perform static analysis
 parent: User Guides
 ---
 
-# Guide: Perform static analysis
+## Guide: Perform static analysis
 
 - [Guide: Perform static analysis](#guide-perform-static-analysis)
   - [Overview](#overview)

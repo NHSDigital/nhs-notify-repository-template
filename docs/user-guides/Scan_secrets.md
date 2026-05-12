@@ -4,7 +4,7 @@ title: Scan secrets
 parent: User Guides
 ---
 
-# Guide: Scan secrets
+## Guide: Scan secrets
 
 - [Guide: Scan secrets](#guide-scan-secrets)
   - [Overview](#overview)
