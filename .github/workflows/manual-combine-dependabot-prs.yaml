@@ -19,6 +19,6 @@ jobs:
         with:
           ci_required: false
           labels: dependencies
-          pr_title: Combined Dependabot PRs
+          pr_title: "CCM-9336: Combined Dependabot PRs"
           combine_branch_name: dependabotCombined
-          pr_body_header: Combined Dependabot PRs
+          pr_body_header: "CCM-9336: Combined Dependabot PRs"
