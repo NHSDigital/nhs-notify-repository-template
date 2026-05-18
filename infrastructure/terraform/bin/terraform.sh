@@ -8,7 +8,7 @@
 ##
 # Set Script Version
 ##
-readonly script_ver="1.8.1";
+readonly script_ver="1.9.0";
 
 ##
 # Standardised failure function
@@ -391,7 +391,7 @@ rm -rf ${component_path}/.terraform;
 
 # Run global pre.sh
 if [ -f "pre.sh" ]; then
-  PROJECT="${project}" REGION="${region}" COMPONENT="${component}" AWS_ACCOUNT_ID="${aws_account_id}" ENVIRONMENT="${environment}" ACTION="${action}" \
+  PROJECT="${project}" REGION="${region}" COMPONENT="${component}" GROUP="${group}" AWS_ACCOUNT_ID="${aws_account_id}" ENVIRONMENT="${environment}" ACTION="${action}" \
     source pre.sh || error_and_die "Global pre script execution failed with exit code ${?}";
 fi;
 
@@ -427,7 +427,7 @@ fi;
 
 # Run pre.sh
 if [ -f "pre.sh" ]; then
-  PROJECT="${project}" REGION="${region}" COMPONENT="${component}" AWS_ACCOUNT_ID="${aws_account_id}" ENVIRONMENT="${environment}" ACTION="${action}" \
+  PROJECT="${project}" REGION="${region}" COMPONENT="${component}" GROUP="${group}" AWS_ACCOUNT_ID="${aws_account_id}" ENVIRONMENT="${environment}" ACTION="${action}" \
   source pre.sh || error_and_die "Component pre script execution failed with exit code ${?}";
 fi;
 
