@@ -1,23 +1,17 @@
 ---
 layout: page
-title:  Perform static analysis
+title: Perform static analysis
 parent: User Guides
-description:  Perform static analysis
-summary:  Perform static analysis
-is_not_draft: false
-last_modified_date: 2024-05-28
-owner: Ross Buggins
-author: Ross Buggins
 ---
 
 ## Guide: Perform static analysis
 
 - [Guide: Perform static analysis](#guide-perform-static-analysis)
-- [Overview](#overview)
-- [Key files](#key-files)
-- [Setup](#setup)
-- [Testing](#testing)
-- [Configuration checklist](#configuration-checklist)
+  - [Overview](#overview)
+  - [Key files](#key-files)
+  - [Setup](#setup)
+  - [Testing](#testing)
+  - [Configuration checklist](#configuration-checklist)
 
 ## Overview
 
@@ -29,7 +23,7 @@ Static code analysis is an essential part of modern software development. It pro
 
 - [perform-static-analysis.sh](../../scripts/reports/perform-static-analysis.sh): A shell script that performs analysis
 - [sonar-scanner.properties](../../scripts/config/sonar-scanner.properties): A configuration file that includes the project details
-- [perform-static-analysis/action.yaml](../../.github/actions/perform-static-analysis/action.yaml): GitHub action to run the script as part of the CI/CD pipeline
+- [perform-static-analysis/action.yaml](https://github.com/NHSDigital/nhs-notify-shared-modules/blob/3.1.2/.github/actions/perform-static-analysis/action.yaml): Shared GitHub action used by the CI/CD pipeline
 - [.gitignore](../../.gitignore): Excludes the `.scannerwork` temporary directory created during the process
 
 ## Setup
