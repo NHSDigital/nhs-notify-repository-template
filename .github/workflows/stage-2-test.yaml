@@ -108,7 +108,7 @@ jobs:
         with:
           name: code-coverage-report
       - name: "Perform static analysis"
-        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/perform-static-analysis@v4.0.5
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/perform-static-analysis@4.0.5
         with:
           sonar_organisation_key: "${{ vars.SONAR_ORGANISATION_KEY }}"
           sonar_project_key: "${{ vars.SONAR_PROJECT_KEY }}"
