@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: combine-prs
         id: combine-prs
-        uses: github/combine-prs@2909f404763c3177a456e052bdb7f2e85d3a7cb3 # v5.2.0
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/combine-dependabot-prs@4.0.6
         with:
           ci_required: false
           labels: dependencies
