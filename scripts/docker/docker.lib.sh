@@ -248,7 +248,7 @@ function _replace-image-latest-by-specific-version() {
 
   if [[ -f "$versions_file"  ]]; then
     # First, list the entries specific for Docker to take precedence, then the rest but exclude comments
-    content=$(grep " docker/" "$versions_file"; grep -v " docker/" "$versions_file" ||: | grep -v "^#")
+	content=$({ grep " docker/" "$versions_file" || true; grep -v " docker/" "$versions_file" || true; } | grep -v "^#" || true)
     echo "$content" | while IFS= read -r line; do
       [ -z "$line" ] && continue
       line=$(echo "$line" | sed "s/^#\s*//; s/\s*#.*$//" | sed "s;docker/;;")
