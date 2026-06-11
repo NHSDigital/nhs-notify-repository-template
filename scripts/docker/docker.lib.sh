@@ -52,7 +52,8 @@ function docker-build() {
   for version in $(_get-all-effective-versions) latest; do
     docker tag "${DOCKER_IMAGE}:$(_get-effective-version)" "${DOCKER_IMAGE}:${version}"
   done
-  docker rmi --force "$(docker images | grep "<none>" | awk '{print $3}')" 2> /dev/null ||:
+  local dangling_images="$(docker images -q -f dangling=true)"
+  [[ -n "$dangling_images" ]] && docker rmi --force $dangling_images 2> /dev/null ||:
 
   return 0
 }
