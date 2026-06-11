@@ -84,7 +84,7 @@ list-variables: # List all the variables available to make @Others
 .NOTPARALLEL:
 .ONESHELL:
 .PHONY: * # Please do not change this line! The alternative usage of it introduces unnecessary complexity and is considered an anti-pattern.
-MAKEFLAGS := --no-print-director
+MAKEFLAGS := --no-print-directory
 SHELL := /bin/bash
 ifeq (true, $(shell [[ "${VERBOSE}" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$$ ]] && echo true))
 	.SHELLFLAGS := -cex
