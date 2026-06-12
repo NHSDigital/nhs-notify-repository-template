@@ -52,7 +52,8 @@ function docker-build() {
   for version in $(_get-all-effective-versions) latest; do
     docker tag "${DOCKER_IMAGE}:$(_get-effective-version)" "${DOCKER_IMAGE}:${version}"
   done
-  docker rmi --force "$(docker images | grep "<none>" | awk '{print $3}')" 2> /dev/null ||:
+  local dangling_images="$(docker images -q -f dangling=true)"
+  [[ -n "$dangling_images" ]] && docker rmi --force $dangling_images 2> /dev/null ||:
 
   return 0
 }
@@ -188,7 +189,7 @@ function docker-get-image-version-and-pull() {
   local versions_file="${TOOL_VERSIONS:=$(git rev-parse --show-toplevel)/.tool-versions}"
   local version="latest"
   if [[ -f "$versions_file"  ]]; then
-    line=$(grep "docker/${name} " "$versions_file" | sed "s/^#\s*//; s/\s*#.*$//" | grep "${match_version:-".*"}")
+    line=$(grep "docker/${name} " "$versions_file" | sed "s/^#\s*//; s/\s*#.*$//" | grep "${match_version:-".*"}" || true)
     [ -n "$line" ] && version=$(echo "$line" | awk '{print $2}')
   fi
 
@@ -248,7 +249,7 @@ function _replace-image-latest-by-specific-version() {
 
   if [[ -f "$versions_file"  ]]; then
     # First, list the entries specific for Docker to take precedence, then the rest but exclude comments
-    content=$(grep " docker/" "$versions_file"; grep -v " docker/" "$versions_file" ||: | grep -v "^#")
+    content=$({ grep " docker/" "$versions_file" || true; grep -v " docker/" "$versions_file" || true; } | grep -v "^#" || true)
     echo "$content" | while IFS= read -r line; do
       [ -z "$line" ] && continue
       line=$(echo "$line" | sed "s/^#\s*//; s/\s*#.*$//" | sed "s;docker/;;")
