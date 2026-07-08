@@ -1,18 +1,22 @@
 # NHS Notify Code Owners
 
 # Notify default owners
-*                           @NHSDigital/nhs-notify-repository-template
+*                             @NHSDigital/nhs-notify-repository-template
 
-/.github/                   @NHSDigital/nhs-notify-repository-template-admins
-*.code-workspace            @NHSDigital/nhs-notify-repository-template-admins
-/infrastructure/terraform/  @NHSDigital/nhs-notify-platform
+/.github/                     @NHSDigital/nhs-notify-repository-template-admins
+*.code-workspace              @NHSDigital/nhs-notify-repository-template-admins
+/infrastructure/terraform/    @NHSDigital/nhs-notify-platform
 
 # Root level AGENTS.md owned by platform.
 AGENTS.md
 
+# Gitleaks files owned by platform
+.gitleaksignore               @NHSDigital/nhs-notify-platform
+/scrips/config/gitleaks.toml  @NHSDigital/nhs-notify-platform
+
 # Codeowners must be final check
-/.github/CODEOWNERS         @NHSDigital/nhs-notify-code-owners
-/CODEOWNERS                 @NHSDigital/nhs-notify-code-owners
+/.github/CODEOWNERS           @NHSDigital/nhs-notify-code-owners
+/CODEOWNERS                   @NHSDigital/nhs-notify-code-owners
 
 
 # Each NHS Notify repository should have clear code owners set.
