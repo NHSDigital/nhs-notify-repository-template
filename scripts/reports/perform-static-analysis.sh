@@ -37,12 +37,15 @@ function main() {
 
 function run-sonar-scanner-natively() {
 
+  local -a context_args
+  context_args=($(build-sonar-context-args))
+
   sonar-scanner \
     -Dproject.settings="$PWD/scripts/config/sonar-scanner.properties" \
-    -Dsonar.branch.name="${BRANCH_NAME:-$(git rev-parse --abbrev-ref HEAD)}" \
     -Dsonar.organization="$SONAR_ORGANISATION_KEY" \
     -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
-    -Dsonar.token="$SONAR_TOKEN"
+    -Dsonar.token="$SONAR_TOKEN" \
+    "${context_args[@]}"
 
   return 0
 }
@@ -52,18 +55,36 @@ function run-sonar-scanner-in-docker() {
   # shellcheck disable=SC1091
   source ./scripts/docker/docker.lib.sh
 
+  local -a context_args
+  context_args=($(build-sonar-context-args))
+
   # shellcheck disable=SC2155
   local image=$(name=sonarsource/sonar-scanner-cli docker-get-image-version-and-pull)
   docker run --rm --platform linux/amd64 \
     --volume "$PWD":/usr/src \
     "$image" \
       -Dproject.settings=/usr/src/scripts/config/sonar-scanner.properties \
-      -Dsonar.branch.name="${BRANCH_NAME:-$(git rev-parse --abbrev-ref HEAD)}" \
       -Dsonar.organization="$SONAR_ORGANISATION_KEY" \
       -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
-      -Dsonar.token="$SONAR_TOKEN"
+      -Dsonar.token="$SONAR_TOKEN" \
+      "${context_args[@]}"
 
   return 0
+}
+
+# ==============================================================================
+
+function build-sonar-context-args() {
+
+  if [[ "${GITHUB_EVENT_NAME:-}" == "pull_request" ]]; then
+    local pr_number
+    pr_number=$(echo "${GITHUB_REF:-}" | grep -oP 'refs/pull/\K[0-9]+')
+    echo "-Dsonar.pullrequest.key=${pr_number}"
+    echo "-Dsonar.pullrequest.branch=${GITHUB_HEAD_REF:-${BRANCH_NAME}}"
+    echo "-Dsonar.pullrequest.base=${GITHUB_BASE_REF:-main}"
+  else
+    echo "-Dsonar.branch.name=${BRANCH_NAME:-$(git rev-parse --abbrev-ref HEAD)}"
+  fi
 }
 
 # ==============================================================================

@@ -3,13 +3,17 @@ name: "1. CI/CD pull request"
 # The total recommended execution time for the "CI/CD Pull Request" workflow is around 20 minutes.
 
 on:
-  push:
-    branches:
-      - "**"
-  pull_request:
-    types: [opened, reopened]
+  push: ## Only trigger on pushes to main branch to prevent unnecessary runs on feature branches, as the pull_request trigger will handle PR events.
     branches:
       - main
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 
 jobs:
   metadata:
