@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 mcr.microsoft.com/devcontainers/jekyll:2-bullseye
+FROM --platform=linux/amd64 mcr.microsoft.com/devcontainers/jekyll:3.4-bookworm
 LABEL org.opencontainers.image.source=https://github.com/NHSDigital/nhs-notify-repository-template
 
 COPY packages.txt packages.txt

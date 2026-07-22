@@ -27,11 +27,6 @@ on:
         description: "Python version, set by the CI/CD pipeline workflow"
         required: true
         type: string
-      #TODO - Re-visit Trivy usage https://nhsd-jira.digital.nhs.uk/browse/CCM-15549
-      # skip_trivy_package:
-      #   description: "Skip Trivy package scan when true"
-      #   type: boolean
-      #   default: false
       terraform_version:
         description: "Terraform version, set by the CI/CD pipeline workflow"
         required: true
@@ -157,36 +152,7 @@ jobs:
         uses: asdf-vm/actions/setup@b7bcd026f18772e44fe1026d729e1611cc435d47 # v4.0.1
       - name: "Lint Terraform"
         uses: NHSDigital/nhs-notify-shared-modules/.github/actions/lint-terraform@5.0.1
-  #TODO - Re-visit Trivy usage https://nhsd-jira.digital.nhs.uk/browse/CCM-15549
-  # trivy-iac:
-  #   name: "Trivy IaC Scan"
-  #   permissions:
-  #     contents: read
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 10
-  #   needs: detect-terraform-changes
-  #   if: needs.detect-terraform-changes.outputs.terraform_changed == 'true'
-  #   steps:
-  #     - name: "Checkout code"
-  #       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-  #     - name: "Setup ASDF"
-  #       uses: asdf-vm/actions/setup@1902764435ca0dd2f3388eea723a4f92a4eb8302 # v4.0.0
-  #     - name: "Trivy IaC Scan"
-  #       uses: NHSDigital/nhs-notify-shared-modules/.github/actions/trivy-iac@3.1.2
-  # trivy-package:
-  #   if: ${{ !inputs.skip_trivy_package }}
-  #   name: "Trivy Package Scan"
-  #   permissions:
-  #     contents: read
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 10
-  #   steps:
-  #     - name: "Checkout code"
-  #       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-  #     - name: "Setup ASDF"
-  #       uses: asdf-vm/actions/setup@1902764435ca0dd2f3388eea723a4f92a4eb8302 # v4.0.0
-  #     - name: "Trivy Package Scan"
-  #       uses: NHSDigital/nhs-notify-shared-modules/.github/actions/trivy-package@3.1.2
+
   count-lines-of-code:
     name: "Count lines of code"
     runs-on: ubuntu-latest
@@ -217,7 +183,7 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: "Scan dependencies"
-        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/scan-dependencies@4.0.5
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/scan-dependencies@5.06
         with:
           build_datetime: "${{ inputs.build_datetime }}"
           build_timestamp: "${{ inputs.build_timestamp }}"
