@@ -3,7 +3,8 @@ version: 2
 updates:
 
   - package-ecosystem: "docker"
-    directory: "/"
+    directories:
+      - "/*"
     schedule:
       interval: "daily"
     commit-message:
@@ -12,7 +13,8 @@ updates:
       default-days: 7
 
   - package-ecosystem: "github-actions"
-    directory: "/"
+    directories:
+      - "/*"
     schedule:
       interval: "daily"
     commit-message:
@@ -21,7 +23,8 @@ updates:
       default-days: 7
 
   - package-ecosystem: "npm"
-    directory: "/"
+    directories:
+      - "/*"
     schedule:
       interval: "daily"
     commit-message:
@@ -30,7 +33,8 @@ updates:
       default-days: 7
 
   - package-ecosystem: "pip"
-    directory: "/"
+    directories:
+      - "/*"
     schedule:
       interval: "daily"
     commit-message:
@@ -39,7 +43,8 @@ updates:
       default-days: 7
 
   - package-ecosystem: "terraform"
-    directory: "/"
+    directories:
+      - "/*"
     schedule:
       interval: "daily"
     commit-message:
