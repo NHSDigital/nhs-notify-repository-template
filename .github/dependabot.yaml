@@ -9,6 +9,10 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "CCM-9336: "
+    groups:
+      docker:
+        patterns:
+          - "*"
     cooldown:
       default-days: 7
 
@@ -19,6 +23,10 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "CCM-9336: "
+    groups:
+      github-actions:
+        patterns:
+          - "*"
     cooldown:
       default-days: 7
 
@@ -29,6 +37,10 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "CCM-9336: "
+    groups:
+      npm:
+        patterns:
+          - "*"
     cooldown:
       default-days: 7
 
@@ -39,6 +51,10 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "CCM-9336: "
+    groups:
+      pip:
+        patterns:
+          - "*"
     cooldown:
       default-days: 7
 
@@ -49,6 +65,10 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "CCM-9336: "
+    groups:
+      terraform:
+        patterns:
+          - "*"
     cooldown:
       default-days: 7
 
@@ -58,6 +78,10 @@ updates:
     schedule:
       interval: "daily"
     commit-message:
-      prefix: "CCM-1234: "
+      prefix: "CCM-9336: "
+    groups:
+      bundler:
+        patterns:
+          - "*"
     cooldown:
       default-days: 7
