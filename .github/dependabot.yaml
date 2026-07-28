@@ -3,46 +3,85 @@ version: 2
 updates:
 
   - package-ecosystem: "docker"
-    directory: "/"
+    directories:
+      - "/*"
     schedule:
       interval: "daily"
     commit-message:
       prefix: "CCM-9336: "
+    groups:
+      docker:
+        patterns:
+          - "*"
     cooldown:
       default-days: 7
 
   - package-ecosystem: "github-actions"
-    directory: "/"
+    directories:
+      - "/*"
     schedule:
       interval: "daily"
     commit-message:
       prefix: "CCM-9336: "
+    groups:
+      github-actions:
+        patterns:
+          - "*"
     cooldown:
       default-days: 7
 
   - package-ecosystem: "npm"
-    directory: "/"
+    directories:
+      - "/*"
     schedule:
       interval: "daily"
     commit-message:
       prefix: "CCM-9336: "
+    groups:
+      npm:
+        patterns:
+          - "*"
     cooldown:
       default-days: 7
 
   - package-ecosystem: "pip"
-    directory: "/"
+    directories:
+      - "/*"
     schedule:
       interval: "daily"
     commit-message:
       prefix: "CCM-9336: "
+    groups:
+      pip:
+        patterns:
+          - "*"
     cooldown:
       default-days: 7
 
   - package-ecosystem: "terraform"
-    directory: "/"
+    directories:
+      - "/*"
     schedule:
       interval: "daily"
     commit-message:
       prefix: "CCM-9336: "
+    groups:
+      terraform:
+        patterns:
+          - "*"
+    cooldown:
+      default-days: 7
+
+  - package-ecosystem: "bundler"
+    directories:
+      - "/*"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "CCM-9336: "
+    groups:
+      bundler:
+        patterns:
+          - "*"
     cooldown:
       default-days: 7
