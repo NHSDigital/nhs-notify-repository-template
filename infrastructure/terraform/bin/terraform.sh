@@ -8,7 +8,7 @@
 ##
 # Set Script Version
 ##
-readonly script_ver="1.9.0";
+readonly script_ver="1.9.1";
 
 ##
 # Standardised failure function
@@ -391,7 +391,7 @@ rm -rf ${component_path}/.terraform;
 
 # Run global pre.sh
 if [ -f "pre.sh" ]; then
-  PROJECT="${project}" REGION="${region}" COMPONENT="${component}" GROUP="${group}" AWS_ACCOUNT_ID="${aws_account_id}" ENVIRONMENT="${environment}" ACTION="${action}" \
+  PROJECT="${project}" REGION="${region}" COMPONENT="${component}" AWS_ACCOUNT_ID="${aws_account_id}" ENVIRONMENT="${environment}" ACTION="${action}" \
     source pre.sh || error_and_die "Global pre script execution failed with exit code ${?}";
 fi;
 
@@ -427,7 +427,7 @@ fi;
 
 # Run pre.sh
 if [ -f "pre.sh" ]; then
-  PROJECT="${project}" REGION="${region}" COMPONENT="${component}" GROUP="${group}" AWS_ACCOUNT_ID="${aws_account_id}" ENVIRONMENT="${environment}" ACTION="${action}" \
+  PROJECT="${project}" REGION="${region}" COMPONENT="${component}" AWS_ACCOUNT_ID="${aws_account_id}" ENVIRONMENT="${environment}" ACTION="${action}" \
   source pre.sh || error_and_die "Component pre script execution failed with exit code ${?}";
 fi;
 
@@ -677,7 +677,7 @@ case "${action}" in
       ${destroy} \
       ${out} \
       ${detailed} \
-      -parallelism=300;
+      -parallelism=${TF_PARALLELISM:-300};
 
     status="${?}";
 
@@ -732,7 +732,7 @@ case "${action}" in
       terraform "${action}" \
         -input=false \
         ${refresh} \
-        -parallelism=300 \
+        -parallelism=${TF_PARALLELISM:-300} \
         ${extra_args} \
         ${force} \
         ${apply_plan};
@@ -742,7 +742,7 @@ case "${action}" in
         -input=false \
         ${refresh} \
         ${tf_var_params} \
-        -parallelism=300 \
+        -parallelism=${TF_PARALLELISM:-300} \
         ${extra_args} \
         ${force};
       exit_code=$?;
