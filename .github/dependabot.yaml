@@ -10,9 +10,17 @@ updates:
     commit-message:
       prefix: "CCM-9336: "
     groups:
-      docker:
+      patch-and-minor:
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
     cooldown:
       default-days: 7
 
@@ -24,9 +32,17 @@ updates:
     commit-message:
       prefix: "CCM-9336: "
     groups:
-      github-actions:
+      patch-and-minor:
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
     cooldown:
       default-days: 7
 
@@ -38,9 +54,17 @@ updates:
     commit-message:
       prefix: "CCM-9336: "
     groups:
-      npm:
+      patch-and-minor:
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
     cooldown:
       default-days: 7
 
@@ -52,9 +76,17 @@ updates:
     commit-message:
       prefix: "CCM-9336: "
     groups:
-      pip:
+      patch-and-minor:
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
     cooldown:
       default-days: 7
 
@@ -66,9 +98,17 @@ updates:
     commit-message:
       prefix: "CCM-9336: "
     groups:
-      terraform:
+      patch-and-minor:
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
     cooldown:
       default-days: 7
 
@@ -80,8 +120,16 @@ updates:
     commit-message:
       prefix: "CCM-9336: "
     groups:
-      bundler:
+      patch-and-minor:
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
     cooldown:
       default-days: 7
