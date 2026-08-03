@@ -4,7 +4,10 @@
 
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.15.8 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 6.56.0 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
