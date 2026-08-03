@@ -1,7 +1,7 @@
 {
   "author": "",
   "dependencies": {
-    "nhsuk-frontend": "^8.1.1"
+    "nhsuk-frontend": "^10.5.2"
   },
   "description": "",
   "devDependencies": {},
