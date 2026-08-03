@@ -8,6 +8,8 @@ terraform 1.15.8
 terraform-docs 0.21.0
 vale 3.6.0
 python 3.13.2
+
+# ==============================================================================
 # The section below is reserved for Docker image versions.
 
 # TODO: Move this section - consider using a different file for the repository template dependencies.
