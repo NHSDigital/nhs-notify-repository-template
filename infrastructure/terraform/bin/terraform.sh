@@ -8,7 +8,7 @@
 ##
 # Set Script Version
 ##
-readonly script_ver="1.9.0";
+readonly script_ver="1.9.1";
 
 ##
 # Standardised failure function
@@ -677,7 +677,7 @@ case "${action}" in
       ${destroy} \
       ${out} \
       ${detailed} \
-      -parallelism=300;
+      -parallelism=${TF_PARALLELISM:-300};
 
     status="${?}";
 
@@ -732,7 +732,7 @@ case "${action}" in
       terraform "${action}" \
         -input=false \
         ${refresh} \
-        -parallelism=300 \
+        -parallelism=${TF_PARALLELISM:-300} \
         ${extra_args} \
         ${force} \
         ${apply_plan};
@@ -742,7 +742,7 @@ case "${action}" in
         -input=false \
         ${refresh} \
         ${tf_var_params} \
-        -parallelism=300 \
+        -parallelism=${TF_PARALLELISM:-300} \
         ${extra_args} \
         ${force};
       exit_code=$?;
