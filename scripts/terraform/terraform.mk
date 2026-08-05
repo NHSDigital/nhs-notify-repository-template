@@ -118,11 +118,6 @@ terraform-validate-all: # Validate all Terraform components @Quality
 		fi; \
 	done
 
-#TODO - Re-visit Trivy usage https://nhsd-jira.digital.nhs.uk/browse/CCM-15549
-# terraform-sec: # Run Trivy IaC security scanning on Terraform code @Quality
-# 	# Example: make terraform-sec
-# 	./scripts/terraform/trivy-scan.sh --mode iac infrastructure/terraform
-
 terraform-docs: # Generate Terraform documentation - optional: component=[specific component, or all if omitted] @Quality
 	# Example: make terraform-docs component=mycomp
 	# Example: make terraform-docs (generates for all components)
