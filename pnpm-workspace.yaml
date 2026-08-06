@@ -16,6 +16,7 @@ overrides:
   collect-v8-coverage: "^1.0.3"
   fast-xml-parser: "^5.5.6"
   flatted: "^3.4.0"
+  "js-yaml@3.14.2": "3.15.0"
   minimatch@3.1.5>brace-expansion: "1.1.18"
   pretty-format>react-is: "19.0.0"
   react: "^19.0.0"
