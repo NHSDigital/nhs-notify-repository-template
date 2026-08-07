@@ -116,6 +116,13 @@ export default defineConfig([
       ],
     },
   },
+  // disable unicorn/no-empty-file for non-JS/TS files
+  {
+    files: ['**/*.{json,html}'],
+    rules: {
+      'unicorn/no-empty-file': 0,
+    },
+  },
 
   // react
   react.configs.flat.recommended,
