@@ -10,18 +10,18 @@ describe("example-app server", () => {
 
     it("responds with 200 status and JSON body", () => {
       const handler = createRequestHandler();
-      const mockReq = {} as http.IncomingMessage;
-      const mockRes = {
+      const mockRequest = {} as http.IncomingMessage;
+      const mockResponse = {
         writeHead: jest.fn(),
         end: jest.fn(),
       } as unknown as http.ServerResponse;
 
-      handler(mockReq, mockRes);
+      handler(mockRequest, mockResponse);
 
-      expect(mockRes.writeHead).toHaveBeenCalledWith(200, {
+      expect(mockResponse.writeHead).toHaveBeenCalledWith(200, {
         "Content-Type": "application/json",
       });
-      expect(mockRes.end).toHaveBeenCalledWith(
+      expect(mockResponse.end).toHaveBeenCalledWith(
         JSON.stringify({ status: "ok" }),
       );
     });
@@ -49,21 +49,21 @@ describe("example-app server", () => {
       await new Promise<void>((resolve, reject) => {
         setTimeout(() => {
           http
-            .get(`http://localhost:${port}`, (res) => {
-              expect(res.statusCode).toBe(200);
-              expect(res.headers["content-type"]).toBe("application/json");
+            .get(`http://localhost:${port}`, (response) => {
+              expect(response.statusCode).toBe(200);
+              expect(response.headers["content-type"]).toBe("application/json");
 
               let body = "";
-              res.on("data", (chunk: Buffer) => {
+              response.on("data", (chunk: Buffer) => {
                 body += chunk.toString();
               });
 
-              res.on("end", () => {
+              response.on("end", () => {
                 expect(JSON.parse(body)).toEqual({ status: "ok" });
                 resolve();
               });
 
-              res.on("error", reject);
+              response.on("error", reject);
             })
             .on("error", reject);
         }, 100);
