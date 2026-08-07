@@ -1,9 +1,9 @@
 // Placeholder HTTP server for AppRunner. Replace with real application code.
 import http from "node:http";
 
-const handleRequest: http.RequestListener = (_req, res) => {
-  res.writeHead(200, { "Content-Type": "application/json" });
-  res.end(JSON.stringify({ status: "ok" }));
+const handleRequest: http.RequestListener = (_request, response) => {
+  response.writeHead(200, { "Content-Type": "application/json" });
+  response.end(JSON.stringify({ status: "ok" }));
 };
 
 export const createRequestHandler = (): http.RequestListener => handleRequest;
