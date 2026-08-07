@@ -241,6 +241,13 @@ export default defineConfig([
     files: ['**/__tests__/**'],
     rules: {
       'no-relative-import-paths/no-relative-import-paths': 0,
+      'unicorn/filename-case': [
+        'error',
+        {
+          case: 'kebabCase',
+          ignore: ['.tsx', '__tests__'],
+        },
+      ],
     },
   },
   {
