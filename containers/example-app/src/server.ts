@@ -1,4 +1,5 @@
 // Placeholder HTTP server for AppRunner. Replace with real application code.
+/* eslint-disable no-console */
 import http from "node:http";
 
 const handleRequest: http.RequestListener = (_request, response) => {
