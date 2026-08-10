@@ -46,7 +46,7 @@ export const baseJestConfig: Config = {
   testEnvironment: "jsdom",
 };
 
-const utilsJestConfig = {
+const utilitiesJestConfig = {
   ...baseJestConfig,
 
   testEnvironment: "node",
@@ -57,4 +57,4 @@ const utilsJestConfig = {
   ],
 };
 
-export default utilsJestConfig;
+export default utilitiesJestConfig;

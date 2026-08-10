@@ -1,4 +1,5 @@
 // Replace me with the actual code for your Lambda function
+/* eslint-disable no-console */
 export const handler = async (
   event: Record<string, unknown>,
 ): Promise<{
