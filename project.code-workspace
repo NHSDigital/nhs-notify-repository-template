@@ -9,10 +9,6 @@
       "path": "./src"
     },
     {
-      "name": "Docs",
-      "path": "./docs"
-    },
-    {
       "name": "Tests",
       "path": "./tests"
     },

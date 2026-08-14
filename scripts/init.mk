@@ -61,8 +61,6 @@ clean:: # Remove all generated and temporary files (common) @Operations
 		.scannerwork \
 		*report*.json \
 		*report*json.zip \
-		docs/diagrams/.*.bkp \
-		docs/diagrams/.*.dtmp \
 		.version
 
 config:: # Configure development environment (common) @Configuration

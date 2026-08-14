@@ -20,7 +20,7 @@
 
 <!-- Go over all the following points, and put an `x` in all the boxes that apply. -->
 
-- [ ] I am familiar with the [contributing guidelines](../docs/CONTRIBUTING.md)
+- [ ] I am familiar with the [contributing guidelines](../CONTRIBUTING.md)
 - [ ] I have followed the code style of the project
 - [ ] I have added tests to cover my changes
 - [ ] I have updated the documentation accordingly
