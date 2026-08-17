@@ -1,9 +1,14 @@
-[A-Z]+s
+anonymised
+asdf
+binutils
 Bitwarden
 bot
 Cognito
+coreutils
+customisability
 Cyber
 Dependabot
+dotfiles
 draw.io
 drawio
 endcapture

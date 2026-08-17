@@ -15,7 +15,7 @@ At a glance, the main areas are:
 - `infrastructure/terraform/` – Terraform components, and shared modules for AWS accounts and environments.
 - `lambdas/` – TypeScript lambda projects (each with their own `package.json`, Jest config, etc.). Root level packages.json defines scripts. Tests for the lambda are stored in `lambdas/{name}/src/__test`.
 - `src/` and `utils/` – Shared code and utilities (for example `utils/logger`).
-- `docs/` – Documentation site, ADRs, RFCS, and other long‑form docs.
+- `CONTRIBUTING.md` – Contribution guidance and repository working practices.
 - `.github/workflows/` and `.github/actions/` – GitHub Actions workflows and composite actions.
 - `scripts/` – Helper scripts and tooling used by humans and workflows.
 - `tests/` – Cross‑cutting tests and harnesses for the repo.

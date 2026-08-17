@@ -1,9 +1,0 @@
-_site
-.sass-cache
-.jekyll-cache
-.jekyll-metadata
-.bundle
-vendor
-*Zone.Identifier
-node_modules
-_config.version.yml

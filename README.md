@@ -20,7 +20,6 @@ Any code files or example documentation that is not used in the new repository s
 
 - [NHS Notify Repository Template](#nhs-notify-repository-template)
   - [Table of Contents](#table-of-contents)
-  - [Documentation](#documentation)
   - [Setup](#setup)
     - [Prerequisites](#prerequisites)
     - [Configuration](#configuration)
@@ -32,11 +31,6 @@ Any code files or example documentation that is not used in the new repository s
   - [Contributing](#contributing)
   - [Contacts](#contacts)
   - [Licence](#licence)
-
-## Documentation
-
-- [Built](/)
-- [Source](/docs/README.md)
 
 ## Setup
 
@@ -85,7 +79,7 @@ make config
 
 ## Usage
 
-After a successful installation, provide an informative example of how this project can be used. Additional code snippets, screenshots and demos work well in this space. You may also link to the other documentation resources, e.g. the [User Guide](./docs/user-guide.md) to demonstrate more use cases and to show more features.
+After a successful installation, provide an informative example of how this project can be used. Additional code snippets, screenshots and demos work well in this space.
 
 ### Testing
 
@@ -97,9 +91,7 @@ There are `make` tasks for you to configure to run your tests.  Run `make test` 
 
 The [C4 model](https://c4model.com/) is a simple and intuitive way to create software architecture diagrams that are clear, consistent, scalable and most importantly collaborative. This should result in documenting all the system interfaces, external dependencies and integration points.
 
-![Repository Template](./docs/diagrams/Repository_Template_GitHub_Generic.png)
-
-The source for diagrams should be in Git for change control and review purposes. Recommendations are [draw.io](https://app.diagrams.net/) (example above in [docs](.docs/diagrams/) folder) and [Mermaids](https://github.com/mermaid-js/mermaid). Here is an example Mermaids sequence diagram:
+The source for diagrams should be in Git for change control and review purposes. Recommendations are [draw.io](https://app.diagrams.net/) and [Mermaids](https://github.com/mermaid-js/mermaid). Here is an example Mermaids sequence diagram:
 
 ```mermaid
 sequenceDiagram
@@ -119,7 +111,7 @@ Most of the projects are built with customisability and extendability in mind. A
 
 Describe or link templates on how to raise an issue, feature request or make a contribution to the codebase. Reference the other documentation files, like
 
-- Environment setup for contribution, i.e. `CONTRIBUTING.md`
+- [Contribution guide](./CONTRIBUTING.md)
 - Coding standards, branching, linting, practices for development and testing
 - Release process, versioning, changelog
 - Backlog, board, roadmap, ways of working

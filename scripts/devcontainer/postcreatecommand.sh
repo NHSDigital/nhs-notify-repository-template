@@ -11,7 +11,3 @@ source ~/.zshrc
 echo 'asdf setup complete'
 
 make config
-
-jekyll --version && cd docs && bundle install
-
-echo 'jekyll setup complete'
