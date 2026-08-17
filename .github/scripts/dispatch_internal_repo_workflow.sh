@@ -177,17 +177,20 @@ signature=$(
 # Create JWT
 JWT="${header_payload}"."${signature}"
 
+GITHUB_API_ACCEPT_HEADER="Accept: application/vnd.github+json"
+GITHUB_API_VERSION_HEADER="X-GitHub-Api-Version: 2022-11-28"
+
 INSTALLATION_ID=$(curl -X GET \
-    -H "Accept: application/vnd.github+json" \
+    -H "$GITHUB_API_ACCEPT_HEADER" \
     -H "Authorization: Bearer ${JWT}" \
-    -H "X-GitHub-Api-Version: 2022-11-28" \
+    -H "$GITHUB_API_VERSION_HEADER" \
     --url "https://api.github.com/app/installations" | jq -r '.[0].id')
 
 PR_TRIGGER_PAT=$(curl --request POST \
   --url "https://api.github.com/app/installations/${INSTALLATION_ID}/access_tokens" \
-  -H "Accept: application/vnd.github+json" \
+  -H "$GITHUB_API_ACCEPT_HEADER" \
   -H "Authorization: Bearer ${JWT}" \
-  -H "X-GitHub-Api-Version: 2022-11-28" | jq -r '.token')
+  -H "$GITHUB_API_VERSION_HEADER" | jq -r '.token')
 
 # Set default values if not provided
 if [[ -z "$PR_TRIGGER_PAT" ]]; then
@@ -253,9 +256,9 @@ echo "[INFO] Triggering workflow '$targetWorkflow' in nhs-notify-internal..."
 trigger_response=$(curl -s -L \
   --fail \
   -X POST \
-  -H "Accept: application/vnd.github+json" \
+  -H "$GITHUB_API_ACCEPT_HEADER" \
   -H "Authorization: Bearer ${PR_TRIGGER_PAT}" \
-  -H "X-GitHub-Api-Version: 2022-11-28" \
+  -H "$GITHUB_API_VERSION_HEADER" \
   "https://api.github.com/repos/NHSDigital/nhs-notify-internal/actions/workflows/$targetWorkflow/dispatches" \
   -d "$DISPATCH_EVENT" 2>&1)
 
@@ -274,9 +277,9 @@ workflow_run_url=""
 for _ in {1..18}; do
 
   response=$(curl -s -L \
-    -H "Accept: application/vnd.github+json" \
+    -H "$GITHUB_API_ACCEPT_HEADER" \
     -H "Authorization: Bearer ${PR_TRIGGER_PAT}" \
-    -H "X-GitHub-Api-Version: 2022-11-28" \
+    -H "$GITHUB_API_VERSION_HEADER" \
     "https://api.github.com/repos/NHSDigital/nhs-notify-internal/actions/runs?event=workflow_dispatch")
 
   if ! echo "$response" | jq empty 2>/dev/null; then
@@ -328,7 +331,7 @@ while true; do
   sleep 10
   response=$(curl -s -L \
     -H "Authorization: Bearer ${PR_TRIGGER_PAT}" \
-    -H "Accept: application/vnd.github+json" \
+    -H "$GITHUB_API_ACCEPT_HEADER" \
     "$workflow_run_url")
 
   status=$(echo "$response" | jq -r '.status')

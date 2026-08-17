@@ -59,8 +59,9 @@ function run-terraform-in-docker() {
 # ==============================================================================
 
 function is-arg-true() {
+  local arg="$1"
 
-  if [[ "$1" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
+  if [[ "$arg" =~ ^(true|yes|y|on|1|TRUE|YES|Y|ON)$ ]]; then
     return 0
   else
     return 1
