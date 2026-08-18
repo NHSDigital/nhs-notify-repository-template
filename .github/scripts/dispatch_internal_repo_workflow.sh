@@ -254,6 +254,7 @@ DISPATCH_EVENT=$(jq -ncM \
 echo "[INFO] Triggering workflow '$targetWorkflow' in nhs-notify-internal..."
 
 trigger_response=$(curl -s -L \
+  --proto '=https' \
   --fail \
   -X POST \
   -H "$GITHUB_API_ACCEPT_HEADER" \
@@ -277,6 +278,7 @@ workflow_run_url=""
 for _ in {1..18}; do
 
   response=$(curl -s -L \
+    --proto '=https' \
     -H "$GITHUB_API_ACCEPT_HEADER" \
     -H "Authorization: Bearer ${PR_TRIGGER_PAT}" \
     -H "$GITHUB_API_VERSION_HEADER" \
@@ -330,6 +332,7 @@ fi
 while true; do
   sleep 10
   response=$(curl -s -L \
+    --proto '=https' \
     -H "Authorization: Bearer ${PR_TRIGGER_PAT}" \
     -H "$GITHUB_API_ACCEPT_HEADER" \
     "$workflow_run_url")
