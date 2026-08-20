@@ -13,7 +13,6 @@
 #     --terraformAction <action> \
 #     --internalRef <ref> \
 #     --overrides <overrides> \
-#     --overrideProjectName <name> \
 #     --overrideRoleName <name> \
 #     --shardCount <count>
 
@@ -30,7 +29,6 @@
 #     --terraformAction "apply" \
 #     --internalRef "main" \
 #     --overrides "tf_var=someString" \
-#     --overrideProjectName nhs \
 #     --overrideRoleName nhs-service-iam-role \
 #     --shardCount "4"
 
@@ -49,7 +47,6 @@ Usage:
     [--terraformAction <action>] \
     [--internalRef <ref>] \
     [--overrides <overrides>] \
-    [--overrideProjectName <name>] \
     [--overrideRoleName <name>] \
     [--shardCount <count>]
 EOF
@@ -105,10 +102,6 @@ while [[ $# -gt 0 ]]; do
       ;;
     --overrides) # Terraform overrides for passing in extra variables (optional)
       overrides="$2"
-      shift 2
-      ;;
-    --overrideProjectName) # Override the project name (optional)
-      overrideProjectName="$2"
       shift 2
       ;;
     --overrideRoleName) # Override the role name (optional)
@@ -216,7 +209,6 @@ echo "  targetAccountGroup: $targetAccountGroup"
 echo "  terraformAction:    $terraformAction"
 echo "  internalRef:        $internalRef"
 echo "  overrides:          $overrides"
-echo "  overrideProjectName: $overrideProjectName"
 echo "  overrideRoleName:   $overrideRoleName"
 echo "  shardCount:         ${shardCount:-}"
 
@@ -230,7 +222,6 @@ DISPATCH_EVENT=$(jq -ncM \
   --arg terraformAction "$terraformAction" \
   --arg targetWorkflow "$targetWorkflow" \
   --arg overrides "$overrides" \
-  --arg overrideProjectName "$overrideProjectName" \
   --arg overrideRoleName "$overrideRoleName" \
   --arg shardCount "${shardCount:-}" \
   '{
@@ -238,7 +229,6 @@ DISPATCH_EVENT=$(jq -ncM \
     "inputs": (
       (if $infraRepoName != "" then { "infraRepoName": $infraRepoName } else {} end) +
       (if $terraformAction != "" then { "terraformAction": $terraformAction } else {} end) +
-      (if $overrideProjectName != "" then { "overrideProjectName": $overrideProjectName } else {} end) +
       (if $overrideRoleName != "" then { "overrideRoleName": $overrideRoleName } else {} end) +
       (if $shardCount != "" then { "shardCount": $shardCount } else {} end) +
       {
