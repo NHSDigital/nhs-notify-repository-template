@@ -40,7 +40,7 @@ githooks-run: # Run git hooks configured in this repository @Operations
 		--config scripts/config/pre-commit.yaml \
 		--all-files
 
-githooks-dependencies: # Run git hook for manually scanning depdencies
+githooks-dependencies: # Run git hook for manually scanning dependencies
 	pre-commit run \
 		--config scripts/config/pre-commit.yaml \
 		--hook-stage manual scan-dependencies \
