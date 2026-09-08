@@ -17,7 +17,7 @@ repos:
     # -   id: ...
 
   - repo: https://github.com/NHSDigital/nhs-notify-shared-modules
-    rev: 5.0.6
+    rev: 6.0.0
     hooks:
       - id: sort-dictionary
       - id: scan-secrets
