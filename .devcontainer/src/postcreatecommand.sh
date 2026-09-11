@@ -10,6 +10,3 @@ echo 'asdf setup complete'
 
 make config
 echo 'make config complete'
-
-jekyll --version && cd docs && bundle install
-echo 'jekyll setup complete'
