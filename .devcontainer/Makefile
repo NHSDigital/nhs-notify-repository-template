@@ -3,7 +3,7 @@ build:
 	ver=$$(head -n 1 ../.version 2> /dev/null || echo unknown); \
 	verb=$$(echo $$ver | sed 's/\+.*//'); \
 	echo "version: $$verb"; \
-	BUILDKIT_PROGRESS=plain pnpm dlx @devcontainers/cli build --workspace-folder .. --config ./devcontainer-template.json --platform linux/amd64 --image-name "ghcr.io/nhsdigital/nhs-notify-template-repository:$$verb"
+	BUILDKIT_PROGRESS=plain pnpm dlx @devcontainers/cli build --workspace-folder .. --config ./devcontainer-template.json --platform linux/amd64 --no-cache --image-name "ghcr.io/nhsdigital/nhs-notify-template-repository:$$verb"
 
 publish:
 	ver=$$(head -n 1 ../.version 2> /dev/null || echo unknown); \
