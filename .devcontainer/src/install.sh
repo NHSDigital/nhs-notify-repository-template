@@ -1,12 +1,12 @@
 #!/bin/bash
 
 cp ./postcreatecommand.sh /postcreatecommand.sh
+cp ./zshrc.template /.zshrc
 
-cp ~/.zshrc /.zshrc
 rm -Rf /.asdf
-git clone https://github.com/asdf-vm/asdf.git /.asdf;
-echo '. /.asdf/completions/asdf.bash' >> /.zshrc
-sed -i "/plugins=/c\plugins=(git ssh-agent sudo terraform dirhistory zsh-autosuggestions)" /.zshrc
+ASDF_VERSION=$(curl -fsSL https://api.github.com/repos/asdf-vm/asdf/releases/latest | grep '"tag_name"' | cut -d '"' -f4)
+curl -fL "https://github.com/asdf-vm/asdf/releases/download/${ASDF_VERSION}/asdf-${ASDF_VERSION}-linux-amd64.tar.gz" | tar -xz -C /usr/local/bin
+asdf version
 
 cat /.zshrc
 
