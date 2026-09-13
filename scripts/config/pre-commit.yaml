@@ -13,8 +13,11 @@ repos:
       - id: mixed-line-ending
       - id: pretty-format-json
         args: ['--autofix']
-        exclude: '(^|/)package(-lock)?\.json$'
-    # -   id: ...
+        exclude: |
+          (?x)^(
+            .*/?package(-lock)?\.json$ |
+            .devcontainer/devcontainer-lock.json$
+          )
 
   - repo: https://github.com/NHSDigital/nhs-notify-shared-modules
     rev: 6.0.0
