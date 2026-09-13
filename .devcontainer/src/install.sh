@@ -4,8 +4,8 @@ cp ./postcreatecommand.sh /postcreatecommand.sh
 cp ./zshrc.template /.zshrc
 
 rm -Rf /.asdf
-ASDF_VERSION=$(curl -fsSL https://api.github.com/repos/asdf-vm/asdf/releases/latest | grep '"tag_name"' | cut -d '"' -f4)
-curl -fL "https://github.com/asdf-vm/asdf/releases/download/${ASDF_VERSION}/asdf-${ASDF_VERSION}-linux-amd64.tar.gz" | tar -xz -C /usr/local/bin
+ASDF_VERSION=$(curl --proto "=https" -fsSL https://api.github.com/repos/asdf-vm/asdf/releases/latest | grep '"tag_name"' | cut -d '"' -f4)
+curl --proto "=https" -fL "https://github.com/asdf-vm/asdf/releases/download/${ASDF_VERSION}/asdf-${ASDF_VERSION}-linux-amd64.tar.gz" | tar -xz -C /usr/local/bin
 asdf version
 
 cat /.zshrc
