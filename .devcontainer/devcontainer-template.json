@@ -1,4 +1,7 @@
 {
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
   "customizations": {
     "codespaces": {
       "openFiles": [
@@ -58,9 +61,41 @@
       }
     }
   },
+  "features": {
+    "./src": {
+      "version": "1.0.1"
+    },
+    "ghcr.io/devcontainers/features/aws-cli:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "configureZshAsDefaultShell": true,
+      "installOhMyZsh": true,
+      "installOhMyZshConfig": true,
+      "installZsh": true,
+      "upgradePackages": true,
+      "userGid": "automatic",
+      "userUid": "automatic",
+      "username": "automatic"
+    },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "dockerDashComposeVersion": "latest",
+      "installDockerBuildx": true,
+      "installDockerComposeSwitch": true,
+      "moby": true
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "installDirectlyFromGitHubRelease": true,
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/node:2": {
+      "nodeGypDependencies": true,
+      "nvmVersion": "latest",
+      "version": "lts"
+    }
+  },
   "forwardPorts": [
     4000
   ],
-  "image": "ghcr.io/nhsdigital/nhs-notify-template-repository:latest",
   "name": "NHS Notify Default Dev Container"
 }
