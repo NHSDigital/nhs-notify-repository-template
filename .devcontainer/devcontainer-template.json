@@ -97,8 +97,5 @@
   "forwardPorts": [
     4000
   ],
-  "name": "NHS Notify Default Dev Container",
-  "runArgs": [
-    "--platform=linux/amd64"
-  ]
+  "name": "NHS Notify Default Dev Container"
 }
