@@ -28,10 +28,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5.0.0
 
+      - name: "Generate GitHub App token for nhs-notify-internal access"
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          repositories: nhs-notify-internal
+          client-id: ${{ secrets.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PEM_FILE }}
+
       - name: Updating Main Environment
         env:
-          APP_PEM_FILE: ${{ secrets.APP_PEM_FILE }}
-          APP_CLIENT_ID: ${{ secrets.APP_CLIENT_ID }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           bash .github/scripts/dispatch_internal_repo_workflow.sh \
             --releaseVersion "${{ github.event.release.tag_name }}" \
