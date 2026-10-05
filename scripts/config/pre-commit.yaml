@@ -34,3 +34,11 @@ repos:
         args: [check=branch]
       - id: scan-dependencies # make githooks-dependencies
         stages: [manual]
+
+  - repo: local
+    hooks:
+      - id: terraform-fmt
+        name: Format Terraform files
+        entry: make terraform-fmt
+        language: system
+        pass_filenames: false

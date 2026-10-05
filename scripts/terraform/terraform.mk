@@ -89,14 +89,14 @@ terraform-fmt: # Format Terraform files in components/ and modules/ (excludes et
 	# Example: make terraform-fmt
 	@cd infrastructure/terraform && \
 		for dir in components modules; do \
-			[ -d "$$dir" ] && terraform fmt -recursive "$$dir"; \
+			if [ -d "$$dir" ]; then terraform fmt -recursive "$$dir" || exit 1; fi; \
 		done
 
 terraform-fmt-check: # Check Terraform formatting in components/ and modules/ (excludes etc/) @Quality
 	# Example: make terraform-fmt-check
 	@cd infrastructure/terraform && \
 		for dir in components modules; do \
-			[ -d "$$dir" ] && terraform fmt -check -recursive "$$dir"; \
+			if [ -d "$$dir" ]; then terraform fmt -check -recursive "$$dir" || exit 1; fi; \
 		done
 
 terraform-validate: # Validate Terraform configuration - mandatory: component=[component_name] @Quality
