@@ -26,6 +26,7 @@ Podman
 Python
 rawContent
 sed
+sublicense
 Syft
 Terraform
 toolchain
