@@ -3,8 +3,7 @@
     "codespaces": {
       "openFiles": [
         "README.md",
-        ".github/SECURITY.md",
-        "docs/index.md"
+        ".github/SECURITY.md"
       ]
     },
     "vscode": {
@@ -63,8 +62,5 @@
     4000
   ],
   "image": "ghcr.io/nhsdigital/nhs-notify-template-repository:latest",
-  "name": "Jekyll",
-  "runArgs": [
-    "--platform=linux/amd64"
-  ]
+  "name": "NHS Notify Default Dev Container"
 }
