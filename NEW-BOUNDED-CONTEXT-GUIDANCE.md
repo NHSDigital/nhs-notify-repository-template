@@ -34,7 +34,7 @@ Anything you keep, you maintain: unused examples still attract Dependabot PRs, v
 | [.github/CODEOWNERS](./.github/CODEOWNERS) | Set your team as owners. |
 | [AGENTS.md](./AGENTS.md) | Keep. Update the layout section to match your repository, and add nested `AGENTS.md` files for areas with specific rules. |
 | [project.code-workspace](./project.code-workspace) | Rename or adjust the workspace folders. |
-| [package.json](./package.json) | Set `name`, and update the `workspaces`/`pnpm-workspace.yaml` globs to match your real packages. |
+| [package.json](./package.json) | Set `name`. Update the `packages` globs in `pnpm-workspace.yaml` to match your real packages (this template uses `pnpm` workspaces, not the `workspaces` field in `package.json`). |
 | `.github/ISSUE_TEMPLATE/` | Keep, or replace with your own. |
 
 **Tip**: Search the repository for `repository-template` and `nhs-england-tools` and update remaining references that are not template-sync related.
@@ -46,8 +46,8 @@ These exist to show a pattern. Delete them and copy the bits you need first.
 | Path | What it shows | Action |
 | ---- | ------------- | ------ |
 | `lambdas/example-lambda/` | A TypeScript lambda with Jest `config`, `build.sh` and a `Dockerfile`. | **Example.** Copy as the basis for your first lambda, then rename or delete. |
-| `containers/example-app/` | A containerised Node app with a `Dockerfile` and Jest. | **Example.** Delete unless you ship a container. If you delete it, also remove any `Dockerfile` based jobs and `docker` Dependabot entries you do not use. |
-| `infrastructure/terraform/components/examplecomponent/` | A Terraform component wiring a zip lambda and a container lambda, remote state and `tfscaffold` locals. | **Example.** Rename it to your component, remove the lambda modules you do not need. `pre.sh.disabled` is an optional pre-hook: rename to `pre.sh` only if needed. |
+| `containers/example-app/` | A containerised Node app with a `Dockerfile` and Jest. | **Example.** Delete unless you ship a container. If you delete it, also remove `scripts/docker/`, the `docker` entry in `.github/dependabot.yaml`, any `build:container` scripts and the container lambda in `examplecomponent`, if you do not ship any other containers. |
+| `infrastructure/terraform/components/examplecomponent/` | A Terraform component wiring a zip lambda and a container lambda, remote state and `tfscaffold` locals. | **Example.** Rename it to your component, remove the lambda modules you do not need. Keep `pre.sh.disabled` and rename it to `pre.sh` if the component deploys lambdas or containers: it is where they are built (see Stage 3 in [section 4](#4-finish-the-placeholder-workflows)). |
 | `infrastructure/terraform/modules/` | Empty (`.gitkeep`). | **Keep.** Put reusable modules here. |
 | `tests/` | Empty (`.gitkeep`). | **Keep.** Put cross-cutting tests here. |
 | `.gitleaksignore` | Historical template findings (docs and sample files that no longer exist). | **Delete the entries** and start empty. Add entries only for genuine false positives, with a comment. |
@@ -64,10 +64,10 @@ CI calls `make <target>`; do not put logic only in workflow YAML.
 
 | Target | State | What to do |
 | ------ | ----- | ---------- |
-| `build` | **Template-specific, broken for you** (runs `cd docs && make build`; there is no `docs/`) | Replace with your build, for example `pnpm run lambda-build`, or remove. |
+| `build` | **Placeholder** (`TODO` only) | Implement if you want a local or CI build entry point, for example by calling the same `pnpm` build commands as your component's `pre.sh`. |
 | `publish`, `deploy` | **Placeholder** | Implement, or remove if the pipeline does not use them. |
 | `clean` | **Configure** | Add project clean-up. |
-| `config` | **Configure** | Remove the `cd docs && make install` line unless you add a `docs/` site. Keep `_install-dependencies` and `version`. |
+| `config` | **Configure** | Keep the `_install-dependencies` and `version` prerequisites. Add any project-specific set-up as a recipe. |
 
 Run `make help` to list every target.
 Targets in [scripts/init.mk](./scripts/init.mk) (`githooks-config`, `githooks-run`, `runner-act`, `help`) are **Keep**.
@@ -79,7 +79,7 @@ A missing script means that test type is skipped locally; the CI job for it will
 
 | Target | Script in template | State |
 | ------ | ------------------ | ----- |
-| `test-unit` | `unit.sh` | **Works** for `pnpm` workspaces: installs, runs `test:unit:silent`, merges `lcov` into `.reports/lcov.info` (used by Sonar). Needs a `test:unit:silent` script in each package. |
+| `test-unit` | `unit.sh` | **Works** for `pnpm` workspaces: installs, runs `test:unit:silent` (root `package.json`, which runs `pnpm -r run test:unit`), merges `lcov` into `.reports/lcov.info` (used by Sonar). Needs a `test:unit` script in each package. |
 | `test-lint` | `lint.sh` | **Works** if your packages define `lint`. |
 | `test-typecheck` | `typecheck.sh` | **Works** if your packages define `typecheck`. |
 | `test-coverage` | none | **Placeholder.** Add `scripts/tests/coverage.sh` or drop the CI job. |
@@ -119,7 +119,13 @@ Remove the `test-coverage` job if you do not add a coverage script.
 ### Stage 3: build ([stage-3-build.yaml](./.github/workflows/stage-3-build.yaml))
 
 **Placeholder.** Jobs `Artefact 1` and `Artefact n` only run `echo`.
-Replace them with real jobs that call `make build` (or specific build targets) and upload artefacts, or delete the stage and its `build` job in `cicd-1-pull-request.yaml` if you build elsewhere.
+**Recommended:** build lambdas and containers at deployment time in your Terraform component's `pre.sh`, as `nhs-notify-deep-ping`, `nhs-notify-supplier-api`, `nhs-notify-digital-channels` and `nhs-notify-digital-letters` do.
+`pre.sh` runs before every Terraform command, so the artefact that is planned and applied is always built from the checked-out commit, by the same steps locally and in CI.
+The template's `pre.sh.disabled` is the reference: it installs dependencies with `pnpm install --frozen-lockfile`, then runs `pnpm -r run --if-present build:archive` for zip lambdas and `build:container` for container lambdas.
+Give each lambda package a `build:archive` script (or `lambda-build`, as the other repositories name it) and keep the call in `pre.sh` consistent with it.
+
+If you follow this pattern there is nothing to build in a separate stage, so delete `stage-3-build.yaml`, the `build-stage` job in `cicd-1-pull-request.yaml` and change the `needs` of the acceptance stage from `build-stage` to `test-stage`.
+Only keep a build stage if you produce an artefact that Terraform does not consume, and then replace the `echo` jobs with real ones that call `make build` and upload the result.
 
 ### Stage 4: acceptance ([stage-4-acceptance.yaml](./.github/workflows/stage-4-acceptance.yaml))
 
@@ -133,7 +139,6 @@ Keep only the jobs you implement. Dynamic environments are normally created by t
 | -------- | ----- | ------ |
 | `cicd-4-pr-title-check.yaml` | **Keep** | Enforces PR title format. |
 | `scorecard.yml` | **Keep** | OpenSSF Scorecard. |
-| `scheduled-repository-template-sync.yaml` | **Keep** | Monthly PR with drift from the template. Review it; list intentional differences in `scripts/config/.repository-template-sync-ignore`. |
 | `cicd-3-deploy.yaml` | **Example, remove** | Deploys a `docs/` site to GitHub Pages. Delete it unless you create a docs site. |
 | `pr_create_dynamic_env.disabled` | **Placeholder, disabled** | Dispatches `nhs-notify-internal` to create a per-PR environment. |
 | `pr_destroy_dynamic_env.disabled` | **Placeholder, disabled** | Tears that environment down. |
@@ -153,7 +158,7 @@ Remove the `## Replace` comments after resolving them: they break the line conti
 
 ## 5. Understand the tooling you are keeping
 
-| Tool | `Config` | Purpose | Keep? |
+| Tool | Configuration | Purpose | Keep? |
 | ---- | ------ | ------- | ----- |
 | pre-commit | [scripts/config/pre-commit.yaml](./scripts/config/pre-commit.yaml) | Runs the same checks as stage 1 before commit. Install with `make config`, run with `make githooks-run`. | Yes |
 | Gitleaks | `scripts/config/gitleaks.toml` | Secret scanning. | Yes |
@@ -166,7 +171,7 @@ Remove the `## Replace` comments after resolving them: they break the line conti
 | SonarCloud | `scripts/config/sonar-scanner.properties` | Static analysis and coverage gate. | Yes |
 | Dependabot | `.github/dependabot.yaml` | Automated dependency PRs. Ecosystems are `docker`, `github-actions`, `npm`, `pip`, `terraform` and `bundler`. | Yes, but remove ecosystems you do not use and update the commit-message prefix to your Jira project. |
 | `.tool-versions` | asdf | Pins Node, `pnpm`, Terraform, Python and others. CI reads versions from here. Remove tools you do not use; bump versions deliberately. | Yes |
-| `.devcontainer/` | VS Code `dev` container | Optional. Delete if the team does not use `dev` containers. | Optional |
+| `.devcontainer/` | VS Code devcontainer | Optional. Delete if the team does not use devcontainers. | Optional |
 | `scripts/docker/` | Docker build, lint and `goss` helpers | Delete if you have no containers. | Optional |
 | `scripts/terraform/`, `infrastructure/terraform/bin/terraform.sh` | Terraform wrappers (`tfscaffold`) | Keep if you have Terraform. Update `etc/global.tfvars` for your domain, then follow the `tfscaffold` bootstrap docs to create the state bucket. | Optional |
 
@@ -183,6 +188,10 @@ make test
 Then open a draft PR and check that every CI/CD stage is green or intentionally removed.
 There should be no job that only runs `echo`.
 
+The required status checks for `main` are not set in this repository. They are managed in Terraform in `nhs-notify-internal`: copy `infrastructure/terraform/components/github/module_nhs_notify_example_repo.tf.template` for a new repository, or see an existing `module_nhs_notify_*.tf` file for its `required_status_checks`.
+The names must match the workflow job names exactly, for example `Test stage / Unit tests`.
+If you delete or rename a job, update the list there, or merges to `main` will be blocked waiting for a check that never runs.
+
 Checklist:
 
 - [ ] README describes this bounded context, no template text or template badges remain
@@ -193,6 +202,7 @@ Checklist:
 - [ ] `cicd-3-deploy.yaml` deleted unless publishing docs
 - [ ] Dependabot ecosystems trimmed to those in use
 - [ ] Sonar secrets set and badge updated
+- [ ] Required status checks for `main` match the jobs that still exist (see below)
 
 ## 7. Delete this file
 
