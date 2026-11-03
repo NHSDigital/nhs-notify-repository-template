@@ -402,7 +402,7 @@ readonly component_name=$(basename ${component_path});
 # install terraform
 # verify terraform version matches mise.toml
 echo ${PWD}
-MISE_LOCKED=1 mise install terraform
+mise --locked install terraform
 tool_version=$(mise current terraform)
 current_version=$(terraform --version | head -n 1 | cut -d 'v' -f 2)
 
