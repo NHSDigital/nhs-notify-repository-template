@@ -21,6 +21,7 @@ overrides:
   pretty-format>react-is: "19.0.0"
   react: "^19.0.0"
   ts-jest>handlebars: "^4.7.9"
+  zod: "^4.6.6"
 
 catalogs:
   lint:

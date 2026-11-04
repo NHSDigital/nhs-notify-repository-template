@@ -16,6 +16,9 @@ Make use of this repository template to expedite your project setup and enhance 
 
 Any code files or example documentation that is not used in the new repository should be removed to prevent the proliferation of duplicate copies of redundant code that if not maintained could introduce vulnerabilities (e.g. via un-patched Dependabot issues).
 
+> [!IMPORTANT]<br>
+> **Just created a repository from this template?** Follow [NEW-BOUNDED-CONTEXT-GUIDANCE.md](./NEW-BOUNDED-CONTEXT-GUIDANCE.md) first. It explains what to configure, what is a placeholder and what to delete. Delete that file when you are done.
+
 ## Table of Contents
 
 - [NHS Notify Repository Template](#nhs-notify-repository-template)
