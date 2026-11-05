@@ -2,6 +2,9 @@
 .github/workflows/cicd-*.yaml
 .gitignore
 mise.toml
+mise.lock
+.docker-versions
+.github/actions/node-install/action.yaml
 scripts/config/.repository-template-sync-ignore
 scripts/config/.repository-template-sync-merge
 scripts/config/vale/styles/config/vocabularies/words/accept.txt

@@ -49,7 +49,7 @@ Agent guidance:
 - Before adding or removing a workspace, update the root `packages` array in `pnpm-workspace.yaml` and ensure CI scripts still succeed with `pnpm run lint`, `pnpm run typecheck`, and `pnpm run test:unit` at the repo root.
 - When adding repo-wide scripts, keep names consistent with existing patterns (e.g. `lint`, `lint:fix`, `typecheck`, `test:unit`, `build-archive`) and prefer `pnpm -r run` fan-out.
 - Do not publish from the root. If adding a new workspace intended for publication, mark that workspace package as `private: false` and keep the root as private.
-- Validate changes by running the repo pre-commit hooks: `make githooks-run`.
+- Validate changes by running the repo Git hooks: `prek run --config scripts/config/pre-commit.yaml`.
 
 Success criteria for changes affecting the root `package.json`:
 
@@ -86,7 +86,7 @@ When proposing a change, agents should:
 - Keep code formatted and idiomatic (Terraform, TypeScript, Bash, YAML).
 - Stick to existing patterns where available (for example `utils/logger`, composite actions under `.github/actions`).
 - Use available information on best practices within the specific area of the codebase.
-- **Always** run local pre-commit hooks from the repo root with:
+- **Always** run local hooks from the repo root with:
 
   ```sh
     prek run \

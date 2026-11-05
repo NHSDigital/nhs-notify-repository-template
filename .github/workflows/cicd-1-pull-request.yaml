@@ -25,10 +25,6 @@ jobs:
       build_datetime: ${{ steps.variables.outputs.build_datetime }}
       build_timestamp: ${{ steps.variables.outputs.build_timestamp }}
       build_epoch: ${{ steps.variables.outputs.build_epoch }}
-      nodejs_version: ${{ steps.variables.outputs.nodejs_version }}
-      pnpm_version: ${{ steps.variables.outputs.pnpm_version }}
-      python_version: ${{ steps.variables.outputs.python_version }}
-      terraform_version: ${{ steps.variables.outputs.terraform_version }}
       version: ${{ steps.variables.outputs.version }}
       is_version_prerelease: ${{ steps.variables.outputs.is_version_prerelease }}
       does_pull_request_exist: ${{ steps.pr_exists.outputs.does_pull_request_exist }}
@@ -47,10 +43,6 @@ jobs:
           echo "build_datetime=$datetime" >> $GITHUB_OUTPUT
           echo "build_timestamp=$(date --date=$datetime -u +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
           echo "build_epoch=$(date --date=$datetime -u +'%s')" >> $GITHUB_OUTPUT
-          echo "nodejs_version=$(grep -E '^node\s*=' mise.toml | cut -d'"' -f2)" >> $GITHUB_OUTPUT
-          echo "pnpm_version=$(grep -E '^pnpm\s*=' mise.toml | cut -d'"' -f2)" >> $GITHUB_OUTPUT
-          echo "python_version=$(grep -E '^python\s*=' mise.toml | cut -d'"' -f2)" >> $GITHUB_OUTPUT
-          echo "terraform_version=$(grep -E '^terraform\s*=' mise.toml | cut -d'"' -f2)" >> $GITHUB_OUTPUT
           echo "version=$(echo $version)" >> $GITHUB_OUTPUT
           echo "is_version_prerelease=$(if [[ $version == *-* ]]; then echo "true"; else echo "false"; fi)" >> $GITHUB_OUTPUT
 
@@ -81,10 +73,6 @@ jobs:
           export BUILD_DATETIME="${{ steps.variables.outputs.build_datetime }}"
           export BUILD_TIMESTAMP="${{ steps.variables.outputs.build_timestamp }}"
           export BUILD_EPOCH="${{ steps.variables.outputs.build_epoch }}"
-          export NODEJS_VERSION="${{ steps.variables.outputs.nodejs_version }}"
-          export PNPM_VERSION="${{ steps.variables.outputs.pnpm_version }}"
-          export PYTHON_VERSION="${{ steps.variables.outputs.python_version }}"
-          export TERRAFORM_VERSION="${{ steps.variables.outputs.terraform_version }}"
           export VERSION="${{ steps.variables.outputs.version }}"
           export DOES_PULL_REQUEST_EXIST="${{ steps.pr_exists.outputs.does_pull_request_exist }}"
           export IS_VERSION_PRERELEASE="${{ steps.variables.outputs.is_version_prerelease }}"
@@ -97,10 +85,6 @@ jobs:
       build_datetime: "${{ needs.metadata.outputs.build_datetime }}"
       build_timestamp: "${{ needs.metadata.outputs.build_timestamp }}"
       build_epoch: "${{ needs.metadata.outputs.build_epoch }}"
-      nodejs_version: "${{ needs.metadata.outputs.nodejs_version }}"
-      pnpm_version: "${{ needs.metadata.outputs.pnpm_version }}"
-      python_version: "${{ needs.metadata.outputs.python_version }}"
-      terraform_version: "${{ needs.metadata.outputs.terraform_version }}"
       version: "${{ needs.metadata.outputs.version }}"
     secrets: inherit
   test-stage: # Recommended maximum execution time is 5 minutes
@@ -111,10 +95,6 @@ jobs:
       build_datetime: "${{ needs.metadata.outputs.build_datetime }}"
       build_timestamp: "${{ needs.metadata.outputs.build_timestamp }}"
       build_epoch: "${{ needs.metadata.outputs.build_epoch }}"
-      nodejs_version: "${{ needs.metadata.outputs.nodejs_version }}"
-      pnpm_version: "${{ needs.metadata.outputs.pnpm_version }}"
-      python_version: "${{ needs.metadata.outputs.python_version }}"
-      terraform_version: "${{ needs.metadata.outputs.terraform_version }}"
       version: "${{ needs.metadata.outputs.version }}"
     secrets: inherit
   build-stage: # Recommended maximum execution time is 3 minutes
@@ -126,10 +106,6 @@ jobs:
       build_datetime: "${{ needs.metadata.outputs.build_datetime }}"
       build_timestamp: "${{ needs.metadata.outputs.build_timestamp }}"
       build_epoch: "${{ needs.metadata.outputs.build_epoch }}"
-      nodejs_version: "${{ needs.metadata.outputs.nodejs_version }}"
-      pnpm_version: "${{ needs.metadata.outputs.pnpm_version }}"
-      python_version: "${{ needs.metadata.outputs.python_version }}"
-      terraform_version: "${{ needs.metadata.outputs.terraform_version }}"
       version: "${{ needs.metadata.outputs.version }}"
     secrets: inherit
   acceptance-stage: # Recommended maximum execution time is 10 minutes
@@ -141,9 +117,5 @@ jobs:
       build_datetime: "${{ needs.metadata.outputs.build_datetime }}"
       build_timestamp: "${{ needs.metadata.outputs.build_timestamp }}"
       build_epoch: "${{ needs.metadata.outputs.build_epoch }}"
-      nodejs_version: "${{ needs.metadata.outputs.nodejs_version }}"
-      pnpm_version: "${{ needs.metadata.outputs.pnpm_version }}"
-      python_version: "${{ needs.metadata.outputs.python_version }}"
-      terraform_version: "${{ needs.metadata.outputs.terraform_version }}"
       version: "${{ needs.metadata.outputs.version }}"
     secrets: inherit

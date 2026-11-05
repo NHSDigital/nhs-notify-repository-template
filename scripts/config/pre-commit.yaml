@@ -1,10 +1,7 @@
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0 # Use the ref you want to point at
+  - repo: builtin
     hooks:
       - id: trailing-whitespace
-      - id: detect-aws-credentials
-        args: [--allow-missing-credentials]
       - id: check-added-large-files
       - id: check-symlinks
       - id: detect-private-key

@@ -5,7 +5,7 @@
 # https://github.com/NHSDigital/software-engineering-quality-framework/blob/main/quality-checks.md
 # should be represented here with the exception of:
 #   - dependency scanning, which we expect to be applied at the repository level
-#   - secret scanning, which we expect to be a pre-commit hook
+#   - secret scanning, which we expect to be a Git hook
 #   - code review, which is outside the scope of automated testing for the moment
 
 test-unit: # Run your unit tests from scripts/test/unit @Testing

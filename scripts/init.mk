@@ -49,10 +49,10 @@ githooks-dependencies: # Run git hook for manually scanning dependencies
 
 _install-dependency: # Install a tool pinned in 'mise.toml', verified against 'mise.lock' - mandatory: name=[listed in the 'mise.toml' file]
 	echo ${name}
-	mise --locked install ${name}
+	MISE_OVERRIDE_TOOL_VERSIONS_FILENAMES=none mise --locked install ${name}
 
 _install-dependencies: # Install all the dependencies listed in mise.toml
-	mise --locked install
+	MISE_OVERRIDE_TOOL_VERSIONS_FILENAMES=none mise --locked install
 
 clean:: # Remove all generated and temporary files (common) @Operations
 	rm -rf \
@@ -63,6 +63,7 @@ clean:: # Remove all generated and temporary files (common) @Operations
 
 config:: # Configure development environment (common) @Configuration
 	make \
+		_install-dependencies \
 		githooks-config
 
 help: # Print help @Others
