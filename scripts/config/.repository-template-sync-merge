@@ -4,6 +4,3 @@
 .tool-versions
 scripts/config/.repository-template-sync-ignore
 scripts/config/.repository-template-sync-merge
-scripts/config/vale/styles/config/vocabularies/words/accept.txt
-scripts/config/vale/styles/config/vocabularies/words/reject.txt
-scripts/config/vale/vale.ini
