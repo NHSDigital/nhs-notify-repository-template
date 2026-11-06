@@ -4,7 +4,6 @@
     "**/.DS_Store": true,
     "**/.git": true,
     "**/.hg": true,
-    "**/.ruby-lsp": true,
     "**/.svn": true,
     "**/CVS": true,
     "**/Thumbs.db": true,
