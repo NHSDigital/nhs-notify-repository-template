@@ -51,7 +51,7 @@ cd nhs-england-tools/repository-template
 The following software packages, or their equivalents, are expected to be installed and configured:
 
 - [Docker](https://www.docker.com/) container runtime or a compatible tool, e.g. [Podman](https://podman.io/),
-- [asdf](https://asdf-vm.com/) version manager,
+- [mise](https://mise.jdx.dev/) tool version manager, installed via Homebrew (`brew install mise`) and activated in your shell (`mise activate`),
 - [GNU make](https://www.gnu.org/software/make/) 3.82 or later,
 
 > [!NOTE]<br>
@@ -69,7 +69,6 @@ The following software packages, or their equivalents, are expected to be instal
 > [!NOTE]<br>
 > For macOS users, installation of the GNU toolchain has been scripted and automated as part of the `dotfiles` project. Please see this [script](https://github.com/nhs-england-tools/dotfiles/blob/main/assets/20-install-base-packages.macos.sh) for details.
 
-- [Python](https://www.python.org/) required to run Git hooks,
 - [`jq`](https://jqlang.github.io/jq/) a lightweight and flexible command-line JSON processor.
 
 ### Configuration
@@ -78,6 +77,31 @@ Installation and configuration of the toolchain dependencies
 
 ```shell
 make config
+```
+
+The tool versions are pinned in `mise.toml` and `mise.lock`. The setup command installs the locked toolchain and repository Git hooks. Keep `asdf` installed while working in repositories that have not migrated. Personal shell configuration remains user-managed; this repository does not edit host dotfiles.
+
+For users of the Z shell who work across both kinds of repository, an optional manager switch can be added to `~/.zshrc`:
+
+```zsh
+function activate() {
+  case "$1" in
+    mise)
+      path=("${path[@]:#$HOME/.asdf/shims}")
+      eval "$(mise activate zsh)"
+      ;;
+    asdf)
+      mise deactivate
+      path=("$HOME/.asdf/shims" "${path[@]:#$HOME/.asdf/shims}")
+      source "$HOME/.asdf/asdf.sh"
+      ;;
+    *)
+      print -u2 "Usage: activate mise|asdf"
+      return 2
+      ;;
+  esac
+  rehash
+}
 ```
 
 ## Usage

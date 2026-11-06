@@ -1,6 +1,9 @@
 # Files and folders to merge when syncing nhs-notify-repository-template back in to this repository
 .github/workflows/cicd-*.yaml
 .gitignore
-.tool-versions
+mise.toml
+mise.lock
+.docker-versions
+.github/actions/node-install/action.yaml
 scripts/config/.repository-template-sync-ignore
 scripts/config/.repository-template-sync-merge

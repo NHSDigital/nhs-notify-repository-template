@@ -13,7 +13,8 @@ set -euo pipefail
 # Arguments (provided as environment variables):
 #   DOCKER_IMAGE=ghcr.io/org/repo             # Docker image name
 #   DOCKER_TITLE="My Docker image"            # Docker image title
-#   TOOL_VERSIONS=$project_dir/.tool-versions # Path to the tool versions file
+#   DOCKER_VERSIONS=$project_dir/.docker-versions # Preferred image versions file override
+#   TOOL_VERSIONS=$project_dir/.tool-versions     # Legacy image versions file override
 
 # ==============================================================================
 # Functions to be used with custom images.
@@ -53,7 +54,11 @@ function docker-build() {
     docker tag "${DOCKER_IMAGE}:$(_get-effective-version)" "${DOCKER_IMAGE}:${version}"
   done
   local dangling_images="$(docker images -q -f dangling=true)"
-  [[ -n "$dangling_images" ]] && docker rmi --force $dangling_images 2> /dev/null ||:
+  if [[ -n "$dangling_images" ]]; then
+    while IFS= read -r dangling_image; do
+      docker rmi --force "$dangling_image" 2> /dev/null ||:
+    done <<< "$dangling_images"
+  fi
 
   return 0
 }
@@ -165,7 +170,7 @@ function version-create-effective-file() {
 # ==============================================================================
 # Functions to be used with external images.
 
-# Retrieve the Docker image version from the '.tool-versions' file and pull the
+# Retrieve the Docker image version from '.docker-versions' or the legacy '.tool-versions' file and pull the
 # image if required. This function is to be used in conjunction with the
 # external images and it prevents Docker from downloading an image each time it
 # is used, since the digest is not stored locally for compressed images. To
@@ -178,18 +183,19 @@ function version-create-effective-file() {
 function docker-get-image-version-and-pull() {
 
   # E.g. for the given entry "# docker/ghcr.io/org/image 1.2.3@sha256:hash" in
-  # the '.tool-versions' file, the following variables will be set to:
+  # the selected Docker versions file, the following variables will be set to:
   #   name="ghcr.io/org/image"
   #   version="1.2.3@sha256:hash"
   #   tag="1.2.3"
   #   digest="sha256:hash"
 
-  # Get the image full version from the '.tool-versions' file,
+  # Get the image full version from the selected versions file,
   # match it by name and version regex, if given.
-  local versions_file="${TOOL_VERSIONS:=$(git rev-parse --show-toplevel)/.tool-versions}"
+  local versions_file
+  versions_file=$(_get-docker-versions-file)
   local version="latest"
   if [[ -f "$versions_file"  ]]; then
-    line=$(grep "docker/${name} " "$versions_file" | sed "s/^#\s*//; s/\s*#.*$//" | grep "${match_version:-".*"}" || true)
+    line=$(grep -F "docker/${name} " "$versions_file" | sed -E "s/^[[:space:]]*#[[:space:]]*//; s/[[:space:]]+#.*$//" | grep -E "${match_version:-.*}" || true)
     [[ -n "$line" ]] && version=$(echo "$line" | awk '{print $2}')
   fi
 
@@ -237,13 +243,34 @@ function _create-effective-dockerfile() {
   return 0
 }
 
+function _get-docker-versions-file() {
+
+  if [[ -n "${DOCKER_VERSIONS:-}" ]]; then
+    echo "$DOCKER_VERSIONS"
+    return 0
+  fi
+  if [[ -n "${TOOL_VERSIONS:-}" ]]; then
+    echo "$TOOL_VERSIONS"
+    return 0
+  fi
+
+  local repository_root
+  repository_root=$(git rev-parse --show-toplevel)
+  if [[ -f "$repository_root/.docker-versions" ]]; then
+    echo "$repository_root/.docker-versions"
+  else
+    echo "$repository_root/.tool-versions"
+  fi
+}
+
 # Replace image:latest by a specific version.
 # Arguments (provided as environment variables):
 #   dir=[path to the image directory where the Dockerfile is located, default is '.']
 function _replace-image-latest-by-specific-version() {
 
   local dir=${dir:-$PWD}
-  local versions_file="${TOOL_VERSIONS:=$(git rev-parse --show-toplevel)/.tool-versions}"
+  local versions_file
+  versions_file=$(_get-docker-versions-file)
   local dockerfile="${dir}/Dockerfile.effective"
   local build_datetime=${BUILD_DATETIME:-$(date -u +'%Y-%m-%dT%H:%M:%S%z')}
 
