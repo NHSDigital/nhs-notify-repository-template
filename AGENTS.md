@@ -1,5 +1,4 @@
 # AGENTS.md
-<!-- vale off -->
 
 ## Scope
 

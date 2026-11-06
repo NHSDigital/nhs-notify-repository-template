@@ -103,8 +103,6 @@ All workflows live in [.github/workflows/](./.github/workflows). Entry point is 
 | Validate action SHA pins | Fails if a GitHub Action is not pinned to a commit SHA. |
 | Check file format | EditorConfig compliance. |
 | Check Markdown format | `markdownlint`. |
-| Run `terraform-docs` | Fails if generated Terraform docs are stale (run `make terraform-docs`). |
-| Check English usage | Vale prose linting. |
 | Check TODO usage | Every `TODO` must reference a ticket, for example `TODO: CCM-12345`. |
 | Detect/Lint Terraform | Only runs when Terraform files changed. |
 | Count lines of code | Report uploaded to the shared reporting bucket. |
@@ -162,12 +160,10 @@ Remove the `## Replace` comments after resolving them: they break the line conti
 | ---- | ------ | ------- | ----- |
 | pre-commit | [scripts/config/pre-commit.yaml](./scripts/config/pre-commit.yaml) | Runs the same checks as stage 1 before commit. Install with `make config`, run with `make githooks-run`. | Yes |
 | Gitleaks | `scripts/config/gitleaks.toml` | Secret scanning. | Yes |
-| Vale | `scripts/config/vale/` | Prose linting for Markdown (NHS style, British English). Catches spelling and style slips in docs. Add words to the vocabulary rather than disabling it. | Yes, unless you have no Markdown (unlikely) |
 | `markdownlint` | `scripts/config/markdownlint.yaml` | Markdown structure. | Yes |
 | EditorConfig | `.editorconfig` | Whitespace and line endings. | Yes |
 | Syft and Grype | `scripts/config/syft.yaml`, `grype.yaml` | SBOM generation and dependency vulnerability scan (`make githooks-dependencies`). | Yes |
 | `Hadolint` | `scripts/config/hadolint.yaml` | `Dockerfile` linting. | Only if you have `Dockerfiles` |
-| `terraform-docs` | `scripts/config/terraform-docs.yml` | Generates Terraform component `READMEs`. | Only if you have Terraform |
 | SonarCloud | `scripts/config/sonar-scanner.properties` | Static analysis and coverage gate. | Yes |
 | Dependabot | `.github/dependabot.yaml` | Automated dependency PRs. Ecosystems are `docker`, `github-actions`, `npm`, `pip`, `terraform` and `bundler`. | Yes, but remove ecosystems you do not use and update the commit-message prefix to your Jira project. |
 | `.tool-versions` | asdf | Pins Node, `pnpm`, Terraform, Python and others. CI reads versions from here. Remove tools you do not use; bump versions deliberately. | Yes |

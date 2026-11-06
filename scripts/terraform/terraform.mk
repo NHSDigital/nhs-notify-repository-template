@@ -118,19 +118,6 @@ terraform-validate-all: # Validate all Terraform components @Quality
 		fi; \
 	done
 
-terraform-docs: # Generate Terraform documentation - optional: component=[specific component, or all if omitted] @Quality
-	# Example: make terraform-docs component=mycomp
-	# Example: make terraform-docs (generates for all components)
-	@if [ -n "$(component)" ]; then \
-		./scripts/terraform/terraform-docs.sh infrastructure/terraform/components/$(component); \
-	else \
-		for dir in infrastructure/terraform/components/* infrastructure/terraform/modules/*; do \
-			if [ -d "$$dir" ]; then \
-				./scripts/terraform/terraform-docs.sh $$dir; \
-			fi; \
-		done; \
-	fi
-
 # ==============================================================================
 # Cleanup
 
@@ -157,7 +144,6 @@ ${VERBOSE}.SILENT: \
 	clean \
 	terraform-apply \
 	terraform-destroy \
-	terraform-docs \
 	terraform-fmt \
 	terraform-fmt-check \
 	terraform-install \
