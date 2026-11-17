@@ -117,8 +117,8 @@ function activate() {
       ;;
     asdf)
       mise deactivate
-      path=("$HOME/.asdf/shims" "${path[@]:#$HOME/.asdf/shims}")
-      source "$HOME/.asdf/asdf.sh"
+      path=("${path[@]:#$HOME/.asdf/shims}")
+      export PATH="$HOME/.asdf/shims:$PATH"
       ;;
     *)
       print -u2 "Usage: activate mise|asdf"
