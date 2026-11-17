@@ -104,7 +104,13 @@ eval "$(mise activate zsh)"
 eval "$(mise activate bash)"
 ```
 
-Restart the terminal or reload your shell configuration, then run `make config` to install the versions pinned in `mise.toml` and `mise.lock` and configure the repository Git hooks. Keep `asdf` installed while working in repositories that have not migrated. Personal shell configuration remains user-managed; this repository does not edit host dotfiles.
+Restart the terminal or reload your shell configuration. From the repository root, review and trust this repository's mise configuration once:
+
+```shell
+mise trust
+```
+
+After changing `mise.toml`, run `mise lock` and review and commit the updated `mise.lock`. Then run `make config` to install the locked tools and configure the repository Git hooks. `make config` uses locked installs and does not update the lockfile. Keep `asdf` installed while working in repositories that have not migrated. Personal shell configuration remains user-managed; this repository does not edit host dotfiles.
 
 For users of the Z shell who work across both kinds of repository, an optional manager switch can be added to `~/.zshrc`:
 
