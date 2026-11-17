@@ -271,6 +271,7 @@ function _replace-image-latest-by-specific-version() {
   local dir=${dir:-$PWD}
   local versions_file
   versions_file=$(_get-docker-versions-file)
+  local image_reference
   local dockerfile="${dir}/Dockerfile.effective"
   local build_datetime=${BUILD_DATETIME:-$(date -u +'%Y-%m-%dT%H:%M:%S%z')}
 
@@ -282,7 +283,12 @@ function _replace-image-latest-by-specific-version() {
       line=$(echo "$line" | sed "s/^#\s*//; s/\s*#.*$//" | sed "s;docker/;;")
       name=$(echo "$line" | awk '{print $1}')
       version=$(echo "$line" | awk '{print $2}')
-      sed -i "s;\(FROM .*\)${name}:latest;\1${name}:${version};g" "$dockerfile"
+      if [[ "$version" == *@* ]]; then
+        image_reference="${name}@${version##*@}"
+      else
+        image_reference="${name}:${version}"
+      fi
+      sed -i "s;\(FROM .*\)${name}:latest;\1${image_reference};g" "$dockerfile"
     done
   fi
 
