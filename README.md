@@ -51,7 +51,7 @@ cd nhs-england-tools/repository-template
 The following software packages, or their equivalents, are expected to be installed and configured:
 
 - [Docker](https://www.docker.com/) container runtime or a compatible tool, e.g. [Podman](https://podman.io/),
-- [asdf](https://asdf-vm.com/) version manager,
+- [mise](https://mise.jdx.dev/) tool version manager, installed via Homebrew (`brew install mise`) and activated in your shell (`mise activate`),
 - [GNU make](https://www.gnu.org/software/make/) 3.82 or later,
 
 > [!NOTE]<br>
@@ -63,21 +63,70 @@ The following software packages, or their equivalents, are expected to be instal
 >
 > You will then see instructions to fix your [`$PATH`](https://github.com/nhs-england-tools/dotfiles/blob/main/dot_path.tmpl) variable to make the newly installed version available. If you are using [dotfiles](https://github.com/nhs-england-tools/dotfiles), this is all done for you.
 
-- [GNU sed](https://www.gnu.org/software/sed/) and [GNU grep](https://www.gnu.org/software/grep/) are required for the scripted command-line output processing,
-- [GNU coreutils](https://www.gnu.org/software/coreutils/) and [GNU binutils](https://www.gnu.org/software/binutils/) may be required to build dependencies like Python, which may need to be compiled during installation,
+- [GNU `sed`](https://www.gnu.org/software/sed/) and [GNU grep](https://www.gnu.org/software/grep/) are required for the scripted command-line output processing,
+- GNU `coreutils` and GNU `binutils` may be required to build dependencies like Python, which may need to be compiled during installation,
 
 > [!NOTE]<br>
 > For macOS users, installation of the GNU toolchain has been scripted and automated as part of the `dotfiles` project. Please see this [script](https://github.com/nhs-england-tools/dotfiles/blob/main/assets/20-install-base-packages.macos.sh) for details.
 
-- [Python](https://www.python.org/) required to run Git hooks,
 - [`jq`](https://jqlang.github.io/jq/) a lightweight and flexible command-line JSON processor.
+
+#### macOS
+
+Install the host tools with [Homebrew](https://brew.sh/):
+
+```shell
+brew install mise make gnu-sed grep coreutils binutils jq
+```
+
+Follow Homebrew's instructions to add GNU make and the GNU utilities to your `PATH`.
+
+#### Ubuntu or Debian on WSL
+
+Run these commands inside your Linux distribution, not in PowerShell. Install mise using the [official Linux instructions](https://mise.jdx.dev/installing-mise.html):
+
+```shell
+sudo apt update
+sudo apt install -y build-essential make gawk sed grep coreutils binutils jq curl
+```
+
+For Docker, use Docker Desktop with WSL integration or install a compatible runtime in the distribution.
 
 ### Configuration
 
-Installation and configuration of the toolchain dependencies
+Activate mise in your shell. For zsh, add this to `~/.zshrc`; for Bash, add it to `~/.bashrc`:
 
-```shell
-make config
+```zsh
+eval "$(mise activate zsh)"
+```
+
+```bash
+eval "$(mise activate bash)"
+```
+
+Restart the terminal or reload your shell configuration, then run `make config` to install the versions pinned in `mise.toml` and `mise.lock` and configure the repository Git hooks. Keep `asdf` installed while working in repositories that have not migrated. Personal shell configuration remains user-managed; this repository does not edit host dotfiles.
+
+For users of the Z shell who work across both kinds of repository, an optional manager switch can be added to `~/.zshrc`:
+
+```zsh
+function activate() {
+  case "$1" in
+    mise)
+      path=("${path[@]:#$HOME/.asdf/shims}")
+      eval "$(mise activate zsh)"
+      ;;
+    asdf)
+      mise deactivate
+      path=("${path[@]:#$HOME/.asdf/shims}")
+      export PATH="$HOME/.asdf/shims:$PATH"
+      ;;
+    *)
+      print -u2 "Usage: activate mise|asdf"
+      return 2
+      ;;
+  esac
+  rehash
+}
 ```
 
 ## Usage
