@@ -25,8 +25,9 @@ Any code files or example documentation that is not used in the new repository s
   - [Table of Contents](#table-of-contents)
   - [Setup](#setup)
     - [Prerequisites](#prerequisites)
+      - [macOS](#macos)
+      - [Ubuntu or Debian on WSL](#ubuntu-or-debian-on-wsl)
     - [Configuration](#configuration)
-    - [Updating pinned tool versions](#updating-pinned-tool-versions)
   - [Usage](#usage)
     - [Testing](#testing)
   - [Design](#design)
@@ -37,6 +38,8 @@ Any code files or example documentation that is not used in the new repository s
   - [Licence](#licence)
 
 ## Setup
+
+For the standard mise and prek setup procedure, see [PLAT-KOP-027 - Local Setup for Mise Prek](https://nhsd-confluence.digital.nhs.uk/spaces/RIS/pages/1559872281/PLAT-KOP-027+-+Local+Setup+for+Mise+Prek).
 
 By including preferably a one-liner or if necessary a set of clear CLI instructions we improve user experience. This should be a frictionless installation process that works on various operating systems (macOS, Linux, Windows WSL) and handles all the dependencies.
 
@@ -52,7 +55,6 @@ cd nhs-england-tools/repository-template
 The following software packages, or their equivalents, are expected to be installed and configured:
 
 - [Docker](https://www.docker.com/) container runtime or a compatible tool, e.g. [Podman](https://podman.io/),
-- [mise](https://mise.jdx.dev/) tool version manager, installed via Homebrew (`brew install mise`) and activated in your shell (`mise activate`),
 - [GNU make](https://www.gnu.org/software/make/) 3.82 or later,
 
 > [!NOTE]<br>
@@ -77,14 +79,14 @@ The following software packages, or their equivalents, are expected to be instal
 Install the host tools with [Homebrew](https://brew.sh/):
 
 ```shell
-brew install mise make gnu-sed grep coreutils binutils jq
+brew install make gnu-sed grep coreutils binutils jq
 ```
 
 Follow Homebrew's instructions to add GNU make and the GNU utilities to your `PATH`.
 
 #### Ubuntu or Debian on WSL
 
-Run these commands inside your Linux distribution, not in PowerShell. Install mise using the [official Linux instructions](https://mise.jdx.dev/installing-mise.html):
+Run these commands inside your Linux distribution, not in PowerShell:
 
 ```shell
 sudo apt update
@@ -95,56 +97,13 @@ For Docker, use Docker Desktop with WSL integration or install a compatible runt
 
 ### Configuration
 
-Activate mise in your shell. For zsh, add this to `~/.zshrc`; for Bash, add it to `~/.bashrc`:
-
-```zsh
-eval "$(mise activate zsh)"
-```
-
-```bash
-eval "$(mise activate bash)"
-```
-
-Restart the terminal or reload your shell configuration. From the repository root, review `mise.toml` and run `mise trust` once if mise reports that the configuration is untrusted. Trust is stored locally and does not change repository files:
-
-```shell
-mise trust
-```
-
-Install the locked tools and configure the repository Git hooks:
+From the repository root, run `make config` to install the pinned tools and configure the repository's Git hooks with prek:
 
 ```shell
 make config
 ```
 
-Keep `asdf` installed while working in repositories that have not migrated. Personal shell configuration remains user-managed; this repository does not edit host dotfiles.
-
-For users of the Z shell who work across both kinds of repository, an optional manager switch can be added to `~/.zshrc`:
-
-```zsh
-function activate() {
-  case "$1" in
-    mise)
-      path=("${path[@]:#$HOME/.asdf/shims}")
-      eval "$(mise activate zsh)"
-      ;;
-    asdf)
-      mise deactivate
-      path=("${path[@]:#$HOME/.asdf/shims}")
-      export PATH="$HOME/.asdf/shims:$PATH"
-      ;;
-    *)
-      print -u2 "Usage: activate mise|asdf"
-      return 2
-      ;;
-  esac
-  rehash
-}
-```
-
-### Updating pinned tool versions
-
-After changing `mise.toml`, run `mise lock`, review the updated `mise.lock`, and commit both files. `make config` uses locked installs and does not update the lockfile.
+Run `make githooks-run` to run the repository hooks manually.
 
 ## Usage
 
