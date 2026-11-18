@@ -26,6 +26,7 @@ Any code files or example documentation that is not used in the new repository s
   - [Setup](#setup)
     - [Prerequisites](#prerequisites)
     - [Configuration](#configuration)
+    - [Updating pinned tool versions](#updating-pinned-tool-versions)
   - [Usage](#usage)
     - [Testing](#testing)
   - [Design](#design)
@@ -104,7 +105,19 @@ eval "$(mise activate zsh)"
 eval "$(mise activate bash)"
 ```
 
-Restart the terminal or reload your shell configuration, then run `make config` to install the versions pinned in `mise.toml` and `mise.lock` and configure the repository Git hooks. Keep `asdf` installed while working in repositories that have not migrated. Personal shell configuration remains user-managed; this repository does not edit host dotfiles.
+Restart the terminal or reload your shell configuration. From the repository root, review `mise.toml` and run `mise trust` once if mise reports that the configuration is untrusted. Trust is stored locally and does not change repository files:
+
+```shell
+mise trust
+```
+
+Install the locked tools and configure the repository Git hooks:
+
+```shell
+make config
+```
+
+Keep `asdf` installed while working in repositories that have not migrated. Personal shell configuration remains user-managed; this repository does not edit host dotfiles.
 
 For users of the Z shell who work across both kinds of repository, an optional manager switch can be added to `~/.zshrc`:
 
@@ -128,6 +141,10 @@ function activate() {
   rehash
 }
 ```
+
+### Updating pinned tool versions
+
+After changing `mise.toml`, run `mise lock`, review the updated `mise.lock`, and commit both files. `make config` uses locked installs and does not update the lockfile.
 
 ## Usage
 
