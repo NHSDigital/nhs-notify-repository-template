@@ -25,8 +25,9 @@ Any code files or example documentation that is not used in the new repository s
   - [Table of Contents](#table-of-contents)
   - [Setup](#setup)
     - [Prerequisites](#prerequisites)
+      - [macOS](#macos)
+      - [Ubuntu or Debian on WSL](#ubuntu-or-debian-on-wsl)
     - [Configuration](#configuration)
-    - [Updating pinned tool versions](#updating-pinned-tool-versions)
   - [Usage](#usage)
     - [Testing](#testing)
   - [Design](#design)
@@ -54,7 +55,6 @@ cd nhs-england-tools/repository-template
 The following software packages, or their equivalents, are expected to be installed and configured:
 
 - [Docker](https://www.docker.com/) container runtime or a compatible tool, e.g. [Podman](https://podman.io/),
-- [mise](https://mise.jdx.dev/) tool version manager, installed via Homebrew (`brew install mise`) and activated in your shell (`mise activate`),
 - [GNU make](https://www.gnu.org/software/make/) 3.82 or later,
 
 > [!NOTE]<br>
@@ -79,113 +79,31 @@ The following software packages, or their equivalents, are expected to be instal
 Install the host tools with [Homebrew](https://brew.sh/):
 
 ```shell
-brew install mise make gnu-sed grep coreutils binutils jq
+brew install make gnu-sed grep coreutils binutils jq
 ```
 
 Follow Homebrew's instructions to add GNU make and the GNU utilities to your `PATH`.
 
 #### Ubuntu or Debian on WSL
 
-Run these commands inside your Linux distribution, not in PowerShell. The mise installer is documented in the [official Linux instructions](https://mise.jdx.dev/installing-mise.html):
+Run these commands inside your Linux distribution, not in PowerShell:
 
 ```shell
 sudo apt update
 sudo apt install -y build-essential make gawk sed grep coreutils binutils jq curl
-curl -fsSL https://mise.run | sh
-```
-
-The installer places mise at `~/.local/bin/mise`. If `~/.local/bin` is not already on your `PATH`, add it to your shell startup file before the mise activation command:
-
-```shell
-export PATH="$HOME/.local/bin:$PATH"
 ```
 
 For Docker, use Docker Desktop with WSL integration or install a compatible runtime in the distribution.
 
 ### Configuration
 
-Mise activation in new shell sessions is optional. Add the command for your shell to its startup file if you want mise to be the default. If you prefer to keep asdf as the default during migration, omit these lines and use the switch function below when you need mise:
-
-```zsh
-eval "$(mise activate zsh)"
-```
-
-```bash
-eval "$(mise activate bash)"
-```
-
-Keep `asdf` installed while working in repositories that have not migrated. Personal shell configuration remains user-managed; this repository does not edit host dotfiles. For users of the Z shell who work across both kinds of repository, an optional manager switch can be added to `~/.zshrc`:
-
-```zsh
-function activate() {
-  case "$1" in
-    mise)
-      path=("${path[@]:#$HOME/.asdf/shims}")
-      eval "$(mise activate zsh)"
-      ;;
-    asdf)
-      mise deactivate
-      path=("${path[@]:#$HOME/.asdf/shims}")
-      export PATH="$HOME/.asdf/shims:$PATH"
-      ;;
-    *)
-      print -u2 "Usage: activate mise|asdf"
-      return 2
-      ;;
-  esac
-  rehash
-}
-```
-
-Restart the terminal or reload your shell configuration. From the repository root, review `mise.toml` and run `mise trust` once if mise reports that the configuration is untrusted. Trust is stored locally and does not change repository files:
-For Bash, add this function to `~/.bashrc`:
-
-```bash
-function activate() {
-  case "$1" in
-    mise)
-      local -a path_entries filtered_path
-      IFS=: read -r -a path_entries <<< "$PATH"
-      for entry in "${path_entries[@]}"; do
-        [[ "$entry" == "$HOME/.asdf/shims" ]] || filtered_path+=("$entry")
-      done
-      PATH=$(IFS=:; printf '%s' "${filtered_path[*]}")
-      export PATH
-      eval "$(mise activate bash)"
-      ;;
-    asdf)
-      mise deactivate
-      PATH="$HOME/.asdf/shims:$PATH"
-      export PATH
-      ;;
-    *)
-      printf 'Usage: activate mise|asdf\n' >&2
-      return 2
-      ;;
-  esac
-  hash -r
-}
-```
-
-Use `activate mise` in migrated repositories and `activate asdf` in legacy repositories.
-
-Restart the terminal or reload your shell configuration. From the repository root, review `mise.toml` and run `mise trust` once if mise reports that the configuration is untrusted. Trust is stored locally and does not change repository files:
-
-```shell
-mise trust
-```
-
-Run `make config` to install the pinned tools and configure the repository's Git hooks with prek:
+From the repository root, run `make config` to install the pinned tools and configure the repository's Git hooks with prek:
 
 ```shell
 make config
 ```
 
 Run `make githooks-run` to run the repository hooks manually.
-
-### Updating pinned tool versions
-
-After changing `mise.toml`, run `mise lock`, review the updated `mise.lock`, and commit both files. `make config` uses locked installs and does not update the lockfile.
 
 ## Usage
 
