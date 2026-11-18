@@ -112,21 +112,7 @@ eval "$(mise activate zsh)"
 eval "$(mise activate bash)"
 ```
 
-Restart the terminal or reload your shell configuration. From the repository root, review `mise.toml` and run `mise trust` once if mise reports that the configuration is untrusted. Trust is stored locally and does not change repository files:
-
-```shell
-mise trust
-```
-
-Install the locked tools and configure the repository Git hooks:
-
-```shell
-make config
-```
-
-Keep `asdf` installed while working in repositories that have not migrated. Personal shell configuration remains user-managed; this repository does not edit host dotfiles.
-
-For users of the Z shell who work across both kinds of repository, an optional manager switch can be added to `~/.zshrc`:
+Keep `asdf` installed while working in repositories that have not migrated. Personal shell configuration remains user-managed; this repository does not edit host dotfiles. For users of the Z shell who work across both kinds of repository, an optional manager switch can be added to `~/.zshrc`:
 
 ```zsh
 function activate() {
@@ -148,6 +134,20 @@ function activate() {
   rehash
 }
 ```
+
+Restart the terminal or reload your shell configuration. From the repository root, review `mise.toml` and run `mise trust` once if mise reports that the configuration is untrusted. Trust is stored locally and does not change repository files:
+
+```shell
+mise trust
+```
+
+Run `make config` to install the pinned tools and configure the repository's Git hooks with prek:
+
+```shell
+make config
+```
+
+Run `make githooks-run` to run the repository hooks manually.
 
 ### Updating pinned tool versions
 
