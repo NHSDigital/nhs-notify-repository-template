@@ -84,11 +84,18 @@ Follow Homebrew's instructions to add GNU make and the GNU utilities to your `PA
 
 #### Ubuntu or Debian on WSL
 
-Run these commands inside your Linux distribution, not in PowerShell. Install mise using the [official Linux instructions](https://mise.jdx.dev/installing-mise.html):
+Run these commands inside your Linux distribution, not in PowerShell. The mise installer is documented in the [official Linux instructions](https://mise.jdx.dev/installing-mise.html):
 
 ```shell
 sudo apt update
 sudo apt install -y build-essential make gawk sed grep coreutils binutils jq curl
+curl -fsSL https://mise.run | sh
+```
+
+The installer places mise at `~/.local/bin/mise`. If `~/.local/bin` is not already on your `PATH`, add it to your shell startup file before the mise activation command:
+
+```shell
+export PATH="$HOME/.local/bin:$PATH"
 ```
 
 For Docker, use Docker Desktop with WSL integration or install a compatible runtime in the distribution.
