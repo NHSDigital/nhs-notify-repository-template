@@ -38,6 +38,8 @@ Any code files or example documentation that is not used in the new repository s
 
 ## Setup
 
+For the standard mise and prek setup procedure, see [PLAT-KOP-027 - Local Setup for Mise Prek](https://nhsd-confluence.digital.nhs.uk/spaces/RIS/pages/1559872281/PLAT-KOP-027+-+Local+Setup+for+Mise+Prek).
+
 By including preferably a one-liner or if necessary a set of clear CLI instructions we improve user experience. This should be a frictionless installation process that works on various operating systems (macOS, Linux, Windows WSL) and handles all the dependencies.
 
 Clone the repository
@@ -102,7 +104,7 @@ For Docker, use Docker Desktop with WSL integration or install a compatible runt
 
 ### Configuration
 
-Activate mise in your shell. For zsh, add this to `~/.zshrc`; for Bash, add it to `~/.bashrc`:
+Mise activation in new shell sessions is optional. Add the command for your shell to its startup file if you want mise to be the default. If you prefer to keep asdf as the default during migration, omit these lines and use the switch function below when you need mise:
 
 ```zsh
 eval "$(mise activate zsh)"
@@ -134,6 +136,38 @@ function activate() {
   rehash
 }
 ```
+
+Restart the terminal or reload your shell configuration. From the repository root, review `mise.toml` and run `mise trust` once if mise reports that the configuration is untrusted. Trust is stored locally and does not change repository files:
+For Bash, add this function to `~/.bashrc`:
+
+```bash
+function activate() {
+  case "$1" in
+    mise)
+      local -a path_entries filtered_path
+      IFS=: read -r -a path_entries <<< "$PATH"
+      for entry in "${path_entries[@]}"; do
+        [[ "$entry" == "$HOME/.asdf/shims" ]] || filtered_path+=("$entry")
+      done
+      PATH=$(IFS=:; printf '%s' "${filtered_path[*]}")
+      export PATH
+      eval "$(mise activate bash)"
+      ;;
+    asdf)
+      mise deactivate
+      PATH="$HOME/.asdf/shims:$PATH"
+      export PATH
+      ;;
+    *)
+      printf 'Usage: activate mise|asdf\n' >&2
+      return 2
+      ;;
+  esac
+  hash -r
+}
+```
+
+Use `activate mise` in migrated repositories and `activate asdf` in legacy repositories.
 
 Restart the terminal or reload your shell configuration. From the repository root, review `mise.toml` and run `mise trust` once if mise reports that the configuration is untrusted. Trust is stored locally and does not change repository files:
 
