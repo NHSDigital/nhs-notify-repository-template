@@ -27,14 +27,14 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
       - name: "Setup Node.js and pnpm from mise"
-        uses: ./.github/actions/node-install
+        uses: $/.github/actions/node-install
       - name: "Run unit test suite"
         run: |
           make test-unit
       - name: "Save the result of code coverage"
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: code-coverage-report
           path: ".reports/lcov.info"
@@ -45,9 +45,9 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
       - name: "Setup Node.js and pnpm from mise"
-        uses: ./.github/actions/node-install
+        uses: $/.github/actions/node-install
       - name: "Run linting"
         run: |
           make test-lint
@@ -57,9 +57,9 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
       - name: "Setup Node.js and pnpm from mise"
-        uses: ./.github/actions/node-install
+        uses: $/.github/actions/node-install
       - name: "Run typecheck"
         run: |
           make test-typecheck
@@ -70,9 +70,9 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
       - name: "Setup Node.js and pnpm from mise"
-        uses: ./.github/actions/node-install
+        uses: $/.github/actions/node-install
       - name: "Run test coverage check"
         run: |
           make test-coverage
@@ -89,15 +89,15 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0 # Full history is needed to improving relevancy of reporting
       - name: "Download coverage report for SONAR"
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        uses: actions/download-artifact@v8.0.2
         with:
           name: code-coverage-report
       - name: "Perform static analysis"
-        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/perform-static-analysis@6.1.0 # NOSONAR - githubactions:S7637 - internally controlled repo, pinned by tag
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/perform-static-analysis@6.1.0
         with:
           sonar_organisation_key: "${{ vars.SONAR_ORGANISATION_KEY }}"
           sonar_project_key: "${{ vars.SONAR_PROJECT_KEY }}"
