@@ -29,7 +29,7 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v7.0.1
       - name: "Setup Node.js and pnpm from mise"
-        uses: ./.github/actions/node-install
+        uses: $/.github/actions/node-install
       - name: "Run unit test suite"
         run: |
           make test-unit
@@ -47,7 +47,7 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v7.0.1
       - name: "Setup Node.js and pnpm from mise"
-        uses: ./.github/actions/node-install
+        uses: $/.github/actions/node-install
       - name: "Run linting"
         run: |
           make test-lint
@@ -59,7 +59,7 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v7.0.1
       - name: "Setup Node.js and pnpm from mise"
-        uses: ./.github/actions/node-install
+        uses: $/.github/actions/node-install
       - name: "Run typecheck"
         run: |
           make test-typecheck
@@ -72,7 +72,7 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v7.0.1
       - name: "Setup Node.js and pnpm from mise"
-        uses: ./.github/actions/node-install
+        uses: $/.github/actions/node-install
       - name: "Run test coverage check"
         run: |
           make test-coverage
