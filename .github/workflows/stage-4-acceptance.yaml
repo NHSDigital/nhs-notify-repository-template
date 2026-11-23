@@ -27,7 +27,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
       - name: "Setup Node.js and pnpm from mise"
         uses: ./.github/actions/node-install
       - name: "Create infractructure"
@@ -46,7 +46,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
       - name: "Setup Node.js and pnpm from mise"
         uses: ./.github/actions/node-install
       - name: "Run contract test"
@@ -62,7 +62,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
       - name: "Setup Node.js and pnpm from mise"
         uses: ./.github/actions/node-install
       - name: "Run security test"
@@ -78,7 +78,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
       - name: "Setup Node.js and pnpm from mise"
         uses: ./.github/actions/node-install
       - name: "Run UI test"
@@ -94,7 +94,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
       - name: "Setup Node.js and pnpm from mise"
         uses: ./.github/actions/node-install
       - name: "Run UI performance test"
@@ -110,7 +110,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
       - name: "Setup Node.js and pnpm from mise"
         uses: ./.github/actions/node-install
       - name: "Run integration test"
@@ -126,7 +126,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
       - name: "Setup Node.js and pnpm from mise"
         uses: ./.github/actions/node-install
       - name: "Run accessibility test"
@@ -142,7 +142,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
       - name: "Setup Node.js and pnpm from mise"
         uses: ./.github/actions/node-install
       - name: "Run load tests"
@@ -168,7 +168,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
       - name: "Setup Node.js and pnpm from mise"
         uses: ./.github/actions/node-install
       - name: "Tear down environment"
