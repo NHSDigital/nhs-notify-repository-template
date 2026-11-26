@@ -19,7 +19,8 @@ regexes = [
 [allowlist]
 paths = [
   '''.terraform.lock.hcl''',
-  '''mise.lock''',
+  '''(^|/)mise\.lock$''',
+  '''(^|/).mise/locks/''',
   '''poetry.lock''',
   '''yarn.lock''',
   '''Gemfile.lock''',
