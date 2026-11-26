@@ -16,6 +16,9 @@ scripts/tests/
 VERSION
 
 # Files and Folders in the template repository to disregard
+mise.toml
+mise.lock
+**/.mise/locks/
 .devcontainer/
 .github/workflows/*.disabled
 */examples/
