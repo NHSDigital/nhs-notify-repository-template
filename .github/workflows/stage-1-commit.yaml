@@ -99,7 +99,7 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v7.0.1
       - name: "Setup mise"
-        uses: jdx/mise-action@v4.3.0
+        uses: jdx/mise-action@v5.2.10
         with:
           install: false
           cache: true
