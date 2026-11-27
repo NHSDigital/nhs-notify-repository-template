@@ -19,7 +19,7 @@ workflows:
         - 'ossf/scorecard-action@v2.5.0'
     '.github/workflows/stage-1-commit.yaml':
         - 'actions/checkout@v7.0.1'
-        - 'jdx/mise-action@v4.3.0'
+        - 'jdx/mise-action@v5.2.10'
         - 'nhsdigital/nhs-notify-shared-modules@6.1.0'
     '.github/workflows/stage-2-test.yaml':
         - 'actions/checkout@v7.0.1'
@@ -75,6 +75,11 @@ dependencies:
     'jdx/mise-action@v4.3.0':
         ref: 'v4.3.0'
         commit: 'sha1-c2a87611a18de5b3828c5652fe268e992400cb5c'
+        owner_id: 216188
+        repo_id: 738284564
+    'jdx/mise-action@v5.2.10':
+        ref: 'v5.2.10'
+        commit: 'sha1-90f833d396d0cc3674b631d2d225e306476c303a'
         owner_id: 216188
         repo_id: 738284564
     'nhsdigital/nhs-notify-shared-modules@6.1.0':
