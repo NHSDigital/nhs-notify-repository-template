@@ -8,26 +8,26 @@ workflows:
     '.github/workflows/cicd-3-deploy.yaml':
         - 'actions/checkout@v7.0.1'
     '.github/workflows/cicd-4-pr-title-check.yaml':
-        - 'nhsdigital/nhs-notify-shared-modules@6.1.0'
+        - 'nhsdigital/nhs-notify-shared-modules@6.2.0'
     '.github/workflows/scheduled-repository-template-sync.yaml':
         - 'actions/checkout@v7.0.1'
-        - 'peter-evans/create-pull-request@v8.1.2'
+        - 'peter-evans/create-pull-request@v8.1.3'
     '.github/workflows/scorecard.yml':
         - 'actions/checkout@v7.0.1'
         - 'actions/upload-artifact@v7.0.2'
         - 'github/codeql-action@v4.39.3'
-        - 'ossf/scorecard-action@v2.5.0'
+        - 'ossf/scorecard-action@v2.6.0'
     '.github/workflows/stage-1-commit.yaml':
         - 'actions/checkout@v7.0.1'
         - 'jdx/mise-action@v4.3.0'
-        - 'nhsdigital/nhs-notify-shared-modules@6.1.0'
+        - 'nhsdigital/nhs-notify-shared-modules@6.2.0'
     '.github/workflows/stage-2-test.yaml':
         - 'actions/checkout@v7.0.1'
         - 'actions/download-artifact@v8.0.2'
         - 'actions/setup-node@v6.4.0'
         - 'actions/upload-artifact@v7.0.2'
         - 'jdx/mise-action@v4.3.0'
-        - 'nhsdigital/nhs-notify-shared-modules@6.1.0'
+        - 'nhsdigital/nhs-notify-shared-modules@6.2.0'
         - 'pnpm/action-setup@v6.1.0'
     '.github/workflows/stage-3-build.yaml':
         - 'actions/checkout@v7.0.1'
@@ -77,22 +77,22 @@ dependencies:
         commit: 'sha1-c2a87611a18de5b3828c5652fe268e992400cb5c'
         owner_id: 216188
         repo_id: 738284564
-    'nhsdigital/nhs-notify-shared-modules@6.1.0':
-        ref: '6.1.0'
-        commit: 'sha1-a818108235ee15a5f49bcecf62f4732b94246f67'
+    'nhsdigital/nhs-notify-shared-modules@6.2.0':
+        ref: '6.2.0'
+        commit: 'sha1-2e0301db0642a6e9278c3e758164636d85654e7a'
         owner_id: 6683590
         repo_id: 846078675
         uses:
             - 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a'
             - 'aws-actions/configure-aws-credentials@acca2b1b2070338fb9fd1ca27ecee81d687e58e5'
-    'ossf/scorecard-action@v2.5.0':
-        ref: 'v2.5.0'
-        commit: 'sha1-fa7117db83c52d787ae5a89f350999701505d78e'
+    'ossf/scorecard-action@v2.6.0':
+        ref: 'v2.6.0'
+        commit: 'sha1-23f22cd43608bae7a1f1fa2603d7314dee9538a5'
         owner_id: 67707773
         repo_id: 421101922
-    'peter-evans/create-pull-request@v8.1.2':
-        ref: 'v8.1.2'
-        commit: 'sha1-15733dbdfeedb4f7fdb73d13c6f5ac83b710fab8'
+    'peter-evans/create-pull-request@v8.1.3':
+        ref: 'v8.1.3'
+        commit: 'sha1-3ffccacd46053766916f087ce41d627c0b8cf2d1'
         owner_id: 18365890
         repo_id: 197176365
     'pnpm/action-setup@v6.1.0':
